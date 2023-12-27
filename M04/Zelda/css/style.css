@@ -1,0 +1,88 @@
+/* Estils generals */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: radial-gradient(circle, #fdef5f, #eddb58, #ddc751, #ccb44a, #bba144);
+}
+
+
+/* Estilos para el menú */
+.sticky-menu {
+    position: sticky;
+    top: 0;
+    background-image: url('/image/zelda.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 1000;
+    padding: 40px 0; /* Aumento del relleno superior e inferior para aumentar la altura */
+
+    /* Media query para dispositivos más pequeños */
+    @media screen and (max-width: 768px) {
+        padding: 20px 0; /* Reducción del relleno para pantallas más pequeñas */
+    }
+}
+
+.sticky-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.sticky-menu ul li {
+    margin: 0 25px;
+}
+
+.sticky-menu ul li a {
+    text-decoration: none;
+    color: #000000;
+    padding: 6px 2px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    font: bold;
+
+    /* Aplicación de la fuente y ajustes */
+    font-family: 'Marker Felt', cursive;
+    font-size: 28px;
+    letter-spacing: 2px; /* Aumento del espacio entre letras */
+
+    /* Media query para dispositivos más pequeños */
+    @media screen and (max-width: 550px) {
+        font-size: 20px; /* Reducción del tamaño de la fuente para pantallas más pequeñas */
+        padding: 4px 10px; /* Ajuste del padding para pantallas más pequeñas */
+        letter-spacing: 1px; /* Ajuste del espaciado de letras para pantallas más pequeñas */
+    }
+}
+
+.sticky-menu ul li a:hover {
+    background-color: #caa9143f;
+    color: #000000;
+}
+
+/* Estilos para el footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-image: radial-gradient(circle, #d1b241, #d4b649, #ccad3d, #ccb44a, #bba144);
+}
+
+/* Estilos para el section game-info */
+/* Estilos para el section game-info */
+/* Estilos para el section game-info */
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    max-height: 80vh;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 20px auto; /* Añade margen superior e inferior */
+    padding: 40px 20px; /* Añade espacio arriba y abajo */
+    max-width: 600px;
+    border-radius: 15px;
+    overflow: auto;
+}
