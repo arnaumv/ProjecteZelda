@@ -18,7 +18,7 @@ body {
     padding: 40px 0; /* Aumento del relleno superior e inferior para aumentar la altura */
 
     /* Media query para dispositivos más pequeños */
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 550px) {
         padding: 20px 0; /* Reducción del relleno para pantallas más pequeñas */
     }
 }
@@ -32,8 +32,10 @@ body {
 }
 
 .sticky-menu ul li {
-    margin: 0 25px;
+    margin: 0 15px; /* Reducción del margen entre elementos del menú */
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
 }
+
 
 .sticky-menu ul li a {
     text-decoration: none;
@@ -49,11 +51,12 @@ body {
     letter-spacing: 2px; /* Aumento del espacio entre letras */
 
     /* Media query para dispositivos más pequeños */
-    @media screen and (max-width: 550px) {
-        font-size: 20px; /* Reducción del tamaño de la fuente para pantallas más pequeñas */
-        padding: 4px 10px; /* Ajuste del padding para pantallas más pequeñas */
-        letter-spacing: 1px; /* Ajuste del espaciado de letras para pantallas más pequeñas */
+    @media screen and (max-width: 400px) {
+        font-size: 16px; /* Reducción adicional del tamaño de la fuente para pantallas muy pequeñas */
+        padding: 2px 8px; /* Ajuste del padding para pantallas muy pequeñas */
+        letter-spacing: 0.5px; /* Reducción del espaciado de letras para pantallas muy pequeñas */
     }
+    
 }
 
 .sticky-menu ul li a:hover {
