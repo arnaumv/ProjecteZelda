@@ -1,5 +1,10 @@
 from datetime import datetime
 import random
+import os
+
+
+
+
 
 
 
@@ -114,27 +119,50 @@ def helpSavedGamesMenu():                                                       
 
 
 #########################################   NEW GAME, MENU    ##################################################
-                                                                                                               #
-                                                                                                               #
-def newGameMenu():                                                                                             #
-     print("* New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                   #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                  Set your name ?                                            * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                  Type 'back' now to go back to 'Main Menu'                  * "                  #
-        "\n *                                                                             * "                  #
-        "\n * Back, Help  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                  #
-    )                                                                                                          #
-                                                                                                               #
+                                                                                                               
+                                                                                                               
+def newGameMenu():
+    print("* New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+          "\n *                                                                             * "
+          "\n *                                                                             * "
+          "\n *                                                                             * "
+          "\n *                                                                             * "
+          "\n *                                                                             * "
+          "\n *                  Set your name ?                                            * "
+          "\n *                                                                             * "
+          "\n *                  Type 'back' now to go back to 'Main Menu'                  * "
+          "\n *                                                                             * "
+          "\n * Back, Help  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    )
+
+    while True:
+        player_name = input("What's your name (Link)? ").strip()  # Elimina espacios al inicio y final
+
+        if player_name.lower() == 'back':
+            mostrar_menu_aleatorio()
+            prompt_usuari()
+            break
+
+        # Verificar si se ha ingresado un nombre
+        if not player_name:
+            player_name = 'Link'  # Asignar 'Link' si no se ingresa un nombre
+
+        # Verificar validez del nombre
+        if player_name.isalnum() or ' ' in player_name:
+            # Validar que solo contiene letras, números y espacios
+            print(f"Welcome to the game, {player_name}")
+            # Ir a la sección 'Legend'
+            legendMenu()
+            break
+        else:
+            print(f'"{player_name}" is not a valid name')   
+            
+                                                                                                                 
+                                                                                                               
 #########################################   HELP NEW GAME, MENU    #############################################
                                                                                                                #     
                                                                                                                #
-def newGameMenu():                                                                                             #
+def helpNewGameMenu():                                                                                             #
      print("* Help, New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                   #
         "\n *                                                                             * "                  #
         "\n *                                                                             * "                  #
@@ -177,7 +205,7 @@ def aboutMenu():                                                                
 ##############################################  LEGEND, MENU    #################################################
                                                                                                                 #
 def legendMenu():                                                                                               #
-     print("* Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     #
+     print(" * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     #
         "\n *    10,000 years ago, Hyrule was a land of prosperity thanks to the Sheikah * "                    #
         "\n *    tribe. The Sheikah were a tribe of warriors who protected the Triforce, * "                    #
         "\n *    a sacred relic that granted wishes.                                     * "                    #
@@ -259,14 +287,34 @@ def prompt_usuari():
         # Acció per a "Continue"
         pass
     elif accio == "new game":
-        # Acció per a "New Game"
+        newGameMenu()
         pass
     elif accio == "help":
-        # Acció per a "Help"
-        pass
+
+         # Acción para "Help"
+        helpMainMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                mostrar_menu_aleatorio()
+                prompt_usuari()
+                break  
+            else:
+                print("Invalid action")
+        
+        
     elif accio == "about":
-        # Acció per a "About"
-        pass
+         # Acción para "About"
+        aboutMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                
+                mostrar_menu_aleatorio()
+                prompt_usuari()
+                break  
+            else:
+                print("Invalid action")
     elif accio == "exit":
         # Acció per a "Exit"
         pass
