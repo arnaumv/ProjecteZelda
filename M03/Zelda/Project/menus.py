@@ -383,7 +383,7 @@ def showingWeapons(uses, count, equipped):
     
 def showingFoods(foods):
     inventory = [
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * Weapons *",
+        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * Foods *",
         f"\n*                                                         *                   *",
         f"\n*                                                         *                   *",
         f"\n*                                                         * Vegetables    {foods[0]} ",
@@ -514,3 +514,7 @@ def separarPlayer(equipment):
                 listas[count].append(k)
 
     return clave, listas
+
+
+
+
