@@ -288,48 +288,6 @@ def deadMenu():
 
 
 
-player = {
-    "default": {
-        "inventory": {
-            "lives": 3,
-            "max_lives": 3,
-            "timeBlood": 60,
-            "weapon1": "Wood Sword",
-            "weapon2": "Wood Shield",
-            "totalFood": 0,
-            "totalWeapons": 2,
-        },
-        "weapons": {
-            "wood sword": {"uses": 4, "count": 1, "equipped": True},
-            "sword": {"uses": 0, "count": 0, "equipped": False},
-            "wood shield": {"uses": 5, "count": 1, "equipped": True},
-            "shield": {"uses": 0, "count": 0, "equipped": False}
-        },
-        "food": {
-            "vegetables": {"count":1, "hearts":1},
-            "fish": {"count": 2, "hearts":0},
-            "meat": {"count": 0, "hearts":0},
-            "salads": {"count": 0, "hearts":2},
-            "pescatarian": {"count": 0, "hearts":3},
-            "roasted": {"count": 2, "hearts":4}
-        },
-        "sanctuaries": {
-            "S0": False,
-            "S1": False,
-            "S2": False,
-            "S3": False,
-            "S4": False,
-            "S5": False,
-            "S6": False
-        },
-    }
-}
-
-santuarios = ["S0", "S1", "S2", "S3", "S4", "S5", "S6"] 
-foods = [1, 2, 0, 0, 0, 2]
-
-
-
 def rellenarEspacios(string):
     spaces = 79 - len(string)
     if spaces > 0:
@@ -339,83 +297,7 @@ def rellenarEspacios(string):
     string += "*"
     return string
 
-def showingMain(player_name, playerInfo):
-    inventory = [
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * Inventory *",
-        f"\n*                                                         * {player_name}  ♥ {playerInfo[0]}/{playerInfo[1]}",
-        f"\n*                                                         * Blood moon in {playerInfo[2]}",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         * Equipment         *",
-        f"\n*                                                         *       {playerInfo[3]} ",
-        f"\n*                                                         *       {playerInfo[4]} ",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         * Food            {playerInfo[5]} ",
-        f"\n*                                                         * Weapons         {playerInfo[6]} ",
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
 
-    inventory = [rellenarEspacios(line) for line in inventory]
-    print("".join(inventory))
-    
-    
-    
-    
-# Funcion que imprime el inventario -- Weapons
-def showingWeapons(uses, count, equipped):
-    inventory = [
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * Weapons *",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         * Wood Sword    {uses[0]}/{count[0]}  *",
-        f"\n*                                                         * {equipped[0]}   ",
-        f"\n*                                                         * Sword         {uses[1]}/{count[1]}  *",
-        f"\n*                                                         * {equipped[1]}        ",
-        f"\n*                                                         * Wood Shield   {uses[2]}/{count[2]} *",
-        f"\n*                                                         * {equipped[2]}        ",
-        f"\n*                                                         * Shield        {uses[3]}/{count[3]} *",
-        f"\n*                                                         * {equipped[3]}       ",
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-
-    inventory = [rellenarEspacios(line) for line in inventory]
-    print("".join(inventory))
-    
-    
-def showingFoods(foods):
-    inventory = [
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * Foods *",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         * Vegetables    {foods[0]} ",
-        f"\n*                                                         * Fish          {foods[1]} ",
-        f"\n*                                                         * Meat          {foods[2]} ",
-        f"\n*                                                         *                   *",
-        f"\n*                                                         * Salads        {foods[3]} ",
-        f"\n*                                                         * Pescatarian   {foods[4]} ",
-        f"\n*                                                         * Roasted       {foods[5]} ",
-        f"\n*                                                         *                   *",
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-
-    inventory = [rellenarEspacios(line) for line in inventory]
-    print("".join(inventory))
-
-def showAllInventory(player_name, playerInfo, uses , count, equipped, foods):
-    inventory = [
-        f"\n* * * * * Inventory * * * * * * Weapons * * * * * *  Food *",
-        f"\n* {player_name.ljust(12)}♥{str(playerInfo[0]).rjust(2)}/{str(playerInfo[1])} * {''.ljust(17)} * {''.ljust(15)} *", 
-        f"\n* {''.ljust(17)} * Wood Sword    {uses[0]}/{count[0]} * Vegetables    {foods[0]} *",
-        f"\n* Equipment         * {equipped[0].ljust(17)} * Fish          {foods[1]} *",
-        f"\n*    {playerInfo[3].rjust(14)} * Sword         {uses[1]}/{count[1]} * Meat          {foods[2]} *",
-        f"\n*    {playerInfo[4].rjust(14)} * {equipped[1].ljust(17)} *                 *",
-        f"\n* {''.ljust(17)} * Wood Shield   {uses[2]}/{count[2]} * Salads        {foods[3]} *",
-        f"\n* Food           {str(playerInfo[5]).rjust(2)} * {equipped[2].ljust(17)} * Pescatarian   {foods[4]} *",
-        f"\n* Weapons        {str(playerInfo[6]).rjust(2)} * Shield        {uses[3]}/{count[3]} * Roasted       {foods[5]} *",
-        f"\n* {''.ljust(17)} * {equipped[3].ljust(17)} *                 *",
-        f"\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-
-    print("".join(inventory))
 
 def map(santuarios):
     map = [
@@ -435,39 +317,14 @@ def map(santuarios):
 
     print("".join(map))
 
-def juntarInfo(santuarios, foods):
-    map = [
-        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-        f"*                                                         *",
-        f"*  Hyrule        {str(santuarios[0]).rjust(3)}                       Death Mountain *",
-        f"*                                 {str(santuarios[2]).rjust(3)}                     *",
-        f"*        {str(santuarios[1]).rjust(3)}                                    {str(santuarios[3]).rjust(3)}       *",
-        f"*                                                         *",
-        f"*                         Castle                          *",
-        f"*                                                         *",
-        f"*                {str(santuarios[4]).rjust(3)}                                 {str(santuarios[5]).rjust(3)}  *",
-        f"*  Gerudo                             {str(santuarios[6]).rjust(3)}        Necluda  *",
-        f"*                                                         *",
-        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
 
-    inventory = [
-        f"* * * * * Weapons *",
-        f"                  *",
-        f"                  *",
-        f"Vegetables      {str(foods[0]).rjust(1)} *",
-        f"Fish            {str(foods[1]).rjust(1)} *",
-        f"Meat            {str(foods[2]).rjust(1)} *",
-        f"                  *",
-        f"Salads          {str(foods[3]).rjust(1)} *",
-        f"Pescatarian     {str(foods[4]).rjust(1)} *",
-        f"Roasted         {str(foods[5]).rjust(1)} *",
-        f"                  *",
-        f"* * * * * * * * * *"
-    ]
 
-    for i in range(len(map)):
-        print(map[i], inventory[i])
+
+
+
+
+
+
 
 def separarWeapons(equipment):
     uses = []
