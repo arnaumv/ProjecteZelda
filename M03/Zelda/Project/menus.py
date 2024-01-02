@@ -7,6 +7,9 @@ def clear_terminal():
     else:  # Para sistemas Unix/Linux/MacOS
         _ = os.system('clear')
 
+
+
+
 ###################################   MENU PRINCIPAL    ############################################
 def menu1():
     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
@@ -119,8 +122,11 @@ def helpSavedGamesMenu():                                                       
 
 #########################################   NEW GAME, MENU    ##################################################
                                                                                                                
-                                                                                                               
+current_player_name = None
+                                                                                                              
 def newGameMenu():
+    global current_player_name  # Indicar que se usará la variable global
+
     clear_terminal()
 
     print(" * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
@@ -152,12 +158,25 @@ def newGameMenu():
         if player_name.isalnum() or ' ' in player_name:
             # Validar que solo contiene letras, números y espacios
             print(f"Welcome to the game, {player_name}")
+            
+            current_player_name = player_name  # Asignar el valor a la variable global
+            
+            clear_terminal()
             # Ir a la sección 'Legend'
             legendMenu(player_name)  # Pasar player_name a legendMenu()
+
             break
         else:
             print(f'"{player_name}" is not a valid name')   
-            
+
+
+ 
+
+
+
+
+
+           
                                                                                                                  
                                                                                                                
 #########################################   HELP NEW GAME, MENU    #############################################
@@ -224,7 +243,8 @@ def legendMenu(player_name):
             user_input = input("Type 'continue' to continue: ")
 
             if user_input.lower() == 'continue':
-                
+                clear_terminal()
+
                 plotMenu(player_name)
                 break
             else:

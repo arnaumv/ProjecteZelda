@@ -1,5 +1,6 @@
 from datetime import datetime
 from menus import *
+from menus import current_player_name
 import random
 import os
 
@@ -127,13 +128,21 @@ equipped = {
 }
 
 
+
+
 ########################################### INVENTARI #####################################################
 
 
 
 
+jugadores = player.keys()
+ultimo_jugador = list(jugadores)[-1]
+playerInfo = {
+    "inventory": player[ultimo_jugador]["inventory"]
+}
 
-def inventoryMain(santuarios, player_name, playerInfo):
+
+def inventoryMain(santuarios, playerInfo):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
@@ -153,20 +162,19 @@ def inventoryMain(santuarios, player_name, playerInfo):
         f"* * * * Inventory *",
         f"                  *",
         f"                  *",
-        f" {player_name}  ♥ {playerInfo[0]}/{playerInfo[1]}",
-        f" Blood moon in {playerInfo[2]}",
+        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}",
+        f" Blood moon in {playerInfo['inventory']['timeBlood']}",
         f"                   *",
         f" Equipment         *",
-        f"       {playerInfo[3]} ",
-        f"       {playerInfo[4]} ",
-        f" Food            {playerInfo[5]} ",
-        f" Weapons         {playerInfo[6]} ",
+        f"       {playerInfo['inventory']['weapon1']} ",
+        f"       {playerInfo['inventory']['weapon2']} ",
+        f" Food            {playerInfo['inventory']['totalFood']} ",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']} ",
         f"* * * * * * * * * *"
     ]
 
     for i in range(len(map)):
         print(map[i], inventory[i])
-
 
 
 
