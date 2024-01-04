@@ -81,18 +81,18 @@ player = {
             "totalWeapons": 2,
         },
         "weapons": {
-            "wood sword": {"uses": 4, "count": 1, "equipped": True},
-            "sword": {"uses": 0, "count": 0, "equipped": False},
+            "wood sword": {"uses": 5, "count": 2, "equipped": True},
+            "sword": {"uses": 9, "count": 1, "equipped": False},
             "wood shield": {"uses": 5, "count": 1, "equipped": True},
-            "shield": {"uses": 0, "count": 0, "equipped": False}
+            "shield": {"uses": 9, "count": 0, "equipped": False}
         },
         "food": {
-            "vegetables": {"count":1, "hearts":1},
+            "vegetables": {"count":5, "hearts":1},
             "fish": {"count": 2, "hearts":0},
-            "meat": {"count": 0, "hearts":0},
-            "salads": {"count": 0, "hearts":2},
-            "pescatarian": {"count": 0, "hearts":3},
-            "roasted": {"count": 2, "hearts":4}
+            "meat": {"count": 2, "hearts":0},
+            "salads": {"count": 2, "hearts":2},
+            "pescatarian": {"count": 1, "hearts":3},
+            "roasted": {"count": 1, "hearts":4}
         },
         "sanctuaries": {
             "S0": False,
@@ -107,25 +107,6 @@ player = {
 }
 
 santuarios = ["S0", "S1", "S2", "S3", "S4", "S5", "S6"] 
-foods = [4, 2, 2, 2, 1, 1]
-uses = {
-    "wood sword": 5,
-    "sword": 9,
-    "wood shield": 5,
-    "shield": 9
-}
-count = {
-    "wood sword": 2,
-    "sword": 1,
-    "wood shield": 0,
-    "shield": 2
-}
-equipped = {
-    "wood sword": True,
-    "sword": False,
-    "wood shield": True,
-    "shield": False
-}
 
 
 
@@ -134,12 +115,14 @@ equipped = {
 
 
 
+########################################### INVENTARI MAIN #####################################################
 
 jugadores = player.keys()
 ultimo_jugador = list(jugadores)[-1]
 playerInfo = {
     "inventory": player[ultimo_jugador]["inventory"]
 }
+
 
 
 def inventoryMain(santuarios, playerInfo):
@@ -162,14 +145,14 @@ def inventoryMain(santuarios, playerInfo):
         f"* * * * Inventory *",
         f"                  *",
         f"                  *",
-        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}",
-        f" Blood moon in {playerInfo['inventory']['timeBlood']}",
-        f"                   *",
-        f" Equipment         *",
-        f"       {playerInfo['inventory']['weapon1']} ",
-        f"       {playerInfo['inventory']['weapon2']} ",
-        f" Food            {playerInfo['inventory']['totalFood']} ",
-        f" Weapons         {playerInfo['inventory']['totalWeapons']} ",
+        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
+        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
+        f"                  *",
+        f" Equipment        *",
+        f"       {playerInfo['inventory']['weapon1']} *",
+        f"       {playerInfo['inventory']['weapon2']}*",
+        f" Food            {playerInfo['inventory']['totalFood']}*",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
         f"* * * * * * * * * *"
     ]
 
@@ -180,9 +163,12 @@ def inventoryMain(santuarios, playerInfo):
 
 
 
+########################################### INVENTARI FOODS #####################################################
 
 
-
+foods = {
+    "food": player[ultimo_jugador]["food"]
+}
 
 def inventoryFoods(santuarios, foods):
     map = [
@@ -200,17 +186,26 @@ def inventoryFoods(santuarios, foods):
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
 
+    # Acceder a los valores de "count" para cada comida
+    vegetables_count = foods['food']['vegetables']['count']
+    fish_count = foods['food']['fish']['count']
+    meat_count = foods['food']['meat']['count']
+    salads_count = foods['food']['salads']['count']
+    pescatarian_count = foods['food']['pescatarian']['count']
+    roasted_count = foods['food']['roasted']['count']
+
+    # Incorporar estos valores en tu inventario
     inventory = [
         f"* * * * * Foods *",
         f"                  *",
         f"                  *",
-        f"Vegetables      {str(foods[0]).rjust(1)} *",
-        f"Fish            {str(foods[1]).rjust(1)} *",
-        f"Meat            {str(foods[2]).rjust(1)} *",
+        f"Vegetables      {str(vegetables_count).rjust(1)} *",
+        f"Fish            {str(fish_count).rjust(1)} *",
+        f"Meat            {str(meat_count).rjust(1)} *",
         f"                  *",
-        f"Salads          {str(foods[3]).rjust(1)} *",
-        f"Pescatarian     {str(foods[4]).rjust(1)} *",
-        f"Roasted         {str(foods[5]).rjust(1)} *",
+        f"Salads          {str(salads_count).rjust(1)} *",
+        f"Pescatarian     {str(pescatarian_count).rjust(1)} *",
+        f"Roasted         {str(roasted_count).rjust(1)} *",
         f"                  *",
         f"* * * * * * * * * *"
     ]
@@ -219,7 +214,20 @@ def inventoryFoods(santuarios, foods):
         print(map[i], inventory[i])
 
 
-def inventoryWeapons(santuarios, uses, count, equipped):
+########################################### INVENTARI WEAPONS #####################################################
+
+def inventoryWeapons(santuarios, player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+
+    # Acceder a la información de armas del último jugador
+    weapons_info = player[ultimo_jugador]['weapons']
+
+    # Acceder a los detalles de las armas del último jugador
+    uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
+    count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
+    equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
@@ -233,23 +241,22 @@ def inventoryWeapons(santuarios, uses, count, equipped):
         f"*  Gerudo                             {str(santuarios[6]).rjust(3)}        Necluda  *",
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-
+        ]
     inventory = [
-        f"* * * * * Weapons *",
-        f"                  *",
-        f"                  *",
-        f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
-        f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
-        f"Sword         {uses['sword']}/{count['sword']} *",
-        f"  {'(equipped)' if equipped['sword'] else ''}                *",
-        f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
-        f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
-        f"Shield        {uses['shield']}/{count['shield']} *",
-        f"  {'(equipped)' if equipped['shield'] else ''}                *",
-        f"* * * * * * * * * *",
-        f"* * * * * * * * * * *"
-    ]
+            f"* * * * * Weapons *",
+            f"                  *",
+            f"                  *",
+            f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
+            f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+            f"Sword         {uses['sword']}/{count['sword']} *",
+            f"  {'(equipped)' if equipped['sword'] else ''}                *",
+            f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
+            f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+            f"Shield        {uses['shield']}/{count['shield']} *",
+            f"  {'(equipped)' if equipped['shield'] else ''}                *",
+            f"* * * * * * * * * *",
+            f"* * * * * * * * * * *"
+        ]
 
     for i in range(len(map)):
         print(map[i], inventory[i])
