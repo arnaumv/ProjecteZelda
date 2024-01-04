@@ -95,18 +95,17 @@ player = {
             "roasted": {"count": 1, "hearts":4}
         },
         "sanctuaries": {
-            "S0": False,
-            "S1": False,
-            "S2": False,
-            "S3": False,
-            "S4": False,
-            "S5": False,
-            "S6": False
+            "S0": {"name": "S0" , "oppened": False} ,
+            "S1":  {"name": "S1" , "oppened": False} ,
+            "S2":  {"name": "S2" , "oppened": False} ,
+            "S3":  {"name": "S3" , "oppened": False} ,
+            "S4":  {"name": "S4" , "oppened": False} ,
+            "S5":  {"name": "S5" , "oppened": False} ,
+            "S6":  {"name": "S6" , "oppened": False} ,
         },
     }
 }
 
-santuarios = ["S0", "S1", "S2", "S3", "S4", "S5", "S6"] 
 
 
 
@@ -124,19 +123,21 @@ playerInfo = {
 }
 
 
-
+santuarios = {
+    "sanctuaries": player[ultimo_jugador]["sanctuaries"]
+}
 def inventoryMain(santuarios, playerInfo):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
-        f"*  Hyrule        {str(santuarios[0]).rjust(3)}                       Death Mountain *",
-        f"*                                 {str(santuarios[2]).rjust(3)}                     *",
-        f"*        {str(santuarios[1]).rjust(3)}                                    {str(santuarios[3]).rjust(3)}       *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
         f"*                                                         *",
         f"*                         Castle                          *",
         f"*                                                         *",
-        f"*                {str(santuarios[4]).rjust(3)}                                 {str(santuarios[5]).rjust(3)}  *",
-        f"*  Gerudo                             {str(santuarios[6]).rjust(3)}        Necluda  *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
@@ -174,14 +175,14 @@ def inventoryFoods(santuarios, foods):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
-        f"*  Hyrule        {str(santuarios[0]).rjust(3)}                       Death Mountain *",
-        f"*                                 {str(santuarios[2]).rjust(3)}                     *",
-        f"*        {str(santuarios[1]).rjust(3)}                                    {str(santuarios[3]).rjust(3)}       *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
         f"*                                                         *",
         f"*                         Castle                          *",
         f"*                                                         *",
-        f"*                {str(santuarios[4]).rjust(3)}                                 {str(santuarios[5]).rjust(3)}  *",
-        f"*  Gerudo                             {str(santuarios[6]).rjust(3)}        Necluda  *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
@@ -231,17 +232,17 @@ def inventoryWeapons(santuarios, player):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
-        f"*  Hyrule        {str(santuarios[0]).rjust(3)}                       Death Mountain *",
-        f"*                                 {str(santuarios[2]).rjust(3)}                     *",
-        f"*        {str(santuarios[1]).rjust(3)}                                    {str(santuarios[3]).rjust(3)}       *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
         f"*                                                         *",
         f"*                         Castle                          *",
         f"*                                                         *",
-        f"*                {str(santuarios[4]).rjust(3)}                                 {str(santuarios[5]).rjust(3)}  *",
-        f"*  Gerudo                             {str(santuarios[6]).rjust(3)}        Necluda  *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        ]
+    ]
     inventory = [
             f"* * * * * Weapons *",
             f"                  *",
