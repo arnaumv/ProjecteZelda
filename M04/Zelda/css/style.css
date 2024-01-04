@@ -11,7 +11,7 @@ body {
 .sticky-menu {
     position: sticky;
     top: 0;
-    background-image: url('/M04/Zelda/image/zelda.jpg');
+    background-image: url('../image/zelda.jpg');
     background-size: cover;
     background-position: center;
     z-index: 1000;

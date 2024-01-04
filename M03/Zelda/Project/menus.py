@@ -211,7 +211,7 @@ def aboutMenu():                                                                
         "\n *                                                                             * "                   #
         "\n *             Arnau Mestre                                                    * "                   #
         "\n *             Adria Martinez                                                  * "                   #
-        "\n *             Moha  El Amine                                                  * "                   #
+        "\n *             Mohamed El Baraka                                               * "                   #
         "\n *                                                                             * "                   #
         "\n *                                                                             * "                   #
         "\n *                                                                             * "                   #
