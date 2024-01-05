@@ -2,15 +2,15 @@ CREATE DATABASE Zelda;
 USE Zelda;
 
 CREATE TABLE game (
-    game_id INT NOT NULL,
+    game_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name CHAR(50) NOT NULL,
     date_started DATE NOT NULL,
-    hearts_remaining INT,
+    hearts_remaining INT DEFAULT 3,
     blood_moon_countdown INT,
     blood_moon_appearances INT,
-    region CHAR(20) NOT NULL CHECK (region IN ('Hyrule', 'Death mountain', 'Gerudo', 'Necluda', 'Castle')),
-    PRIMARY KEY (game_id)
+    region CHAR(20) NOT NULL CHECK (region IN ('Hyrule', 'Death mountain', 'Gerudo', 'Necluda', 'Castle'))
 );
+
 
 CREATE TABLE game_food (
     game_id INT NOT NULL,
