@@ -3,7 +3,10 @@ from menus import *
 from menus import current_player_name
 import random
 import os
+import pymysql
 
+conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+cur = conn.cursor()
 
 
 
@@ -105,7 +108,6 @@ player = {
         },
     }
 }
-
 
 
 
@@ -261,3 +263,153 @@ def inventoryWeapons(santuarios, player):
 
     for i in range(len(map)):
         print(map[i], inventory[i])
+
+
+
+
+
+
+
+
+
+
+def show_games():
+    try:
+        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+        cur = conn.cursor()
+
+        # Query para seleccionar los valores específicos de la tabla game
+        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
+        cur.execute(select_query)
+
+        # Obtener los resultados
+        resultados = cur.fetchall()
+
+        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
+
+        # Construir el formato para mostrar los juegos
+        for i in range(len(resultados)):
+            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
+                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
+
+        show_games = [
+            f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+            f"\n*                                                                             *",
+            f"\n* {games[0]}  *",
+            f"\n* {games[1]}  *",
+            f"\n* {games[2]}  *",
+            f"\n* {games[3]}  *",
+            f"\n* {games[4]}  *",
+            f"\n* {games[5]}  *",
+            f"\n* {games[6]}  *",
+            f"\n* {games[7]}  *",
+            f"\n*                                                                             *",
+            f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+        ]
+        print("".join(show_games))
+
+        cur.close()
+        conn.close()
+    except pymysql.Error as e:
+        print(f"Error: {e}")
+
+
+
+
+
+
+def showStartedGames():
+    import mysql.connector
+    try:
+        conexion = mysql.connector.connect(
+        user = "root",
+        password = "",
+        host = "localhost",
+        database = "zelda",
+        port=3306
+        )
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    cursor = conexion.cursor()
+
+    tabla = "datosplayer"
+
+    consulta = f"SELECT * FROM {tabla}"
+    cursor.execute(consulta)
+    resultados = cursor.fetchall()
+
+    games = ["".ljust(74), "".ljust(74), "".ljust(74),"".ljust(74),"".ljust(74),"".ljust(74), "".ljust(74),"".ljust(74),]
+
+    for i in range(len(resultados)):
+        games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) + f'♥ {resultados[i][4]}/{resultados[i][5]}') 
+
+    showGames = [
+        f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"\n*                                                                             *",
+        f"\n* {games[0]}  *",
+        f"\n* {games[1]}  *",
+        f"\n* {games[2]}  *",
+        f"\n* {games[3]}  *",
+        f"\n* {games[4]}  *",
+        f"\n* {games[5]}  *",
+        f"\n* {games[6]}  *",
+        f"\n* {games[7]}  *",
+        f"\n*                                                                             *",
+        f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+    print("".join(showGames))
+
+
+
+
+
+
+
+
+def saveGame(dateCreated):
+    try:
+        conexion = mysql.connector.connect(
+        user = "root",
+        password = "",
+        host = "localhost",
+        database = "zelda",
+        port=3306
+        )
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    cursor = conexion.cursor()
+
+    playerName, playerInfo = vp.separarPlayer(player) # info del player 
+    playerName = str(playerName) # Convert playerName to a string
+    print(player)
+    print(playerName)
+    if playerInfo == "default":
+        playerInfo = playerTEST
+    countFood = 0   
+    for i in player[playerName]["food"]:
+        countFood += player[playerName]["food"][i]["count"]
+    player[playerName]["inventory"]["totalFood"] = countFood
+
+    countWeapons = 0
+    weapon1_ok = False
+    for i in player[playerName]["weapons"]:
+        countWeapons += player[playerName]["weapons"][i]["count"]
+        if player[playerName]["weapons"][i]["equipped"] and not weapon1_ok:
+            player[playerName]["inventory"]["weapon1"] = i.title()
+            weapon1_ok = True
+        elif player[playerName]["weapons"][i]["equipped"]:
+            player[playerName]["inventory"]["weapon2"] = i.title()
+    player[playerName]["inventory"]["totalWeapons"] = countWeapons
+
+
+    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
+    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!! no acabado !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
+    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
+    saveUserQuery = f"INSERT INTO `datosplayer`(`id`, `dateCreated`, `namePlayer`, `playersDict`, `lives`, `max_lives`) VALUES (1,'{dateCreated}','{playerName}','{json.dumps(player)}','{player[playerName]['inventory']['lives']}','{player[playerName]['inventory']['max_lives']}')"
+
+    cursor.execute(saveUserQuery)
+    conexion.commit()

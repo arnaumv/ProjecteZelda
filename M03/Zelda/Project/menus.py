@@ -1,5 +1,11 @@
 from funciones import *
 import os
+import pymysql
+from datetime import datetime
+from funciones import player
+
+conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+cur = conn.cursor()
 
 def clear_terminal():
     if os.name == 'nt':  # Para sistemas Windows
@@ -83,22 +89,48 @@ def helpMainMenu():
 
 #########################################   SAVED GAMES, MENU    ##############################################
                                                                                                               #
-def savedGamesMenu():                                                                                         #
-     print("* Saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-    )                                                                                                         #
-                                                                                                              #
-                                                                                                              #
+def savedGamesMenu():
+    try:
+        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+        cur = conn.cursor()
+
+        # Query para seleccionar los valores específicos de la tabla game
+        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
+        cur.execute(select_query)
+
+        # Obtener los resultados
+        resultados = cur.fetchall()
+
+        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
+
+        # Construir el formato para mostrar los juegos
+        for i in range(len(resultados)):
+            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
+                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
+
+        show_games = [
+            f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+            f"\n *                                                                             *",
+            f"\n * {games[0]}  *",
+            f"\n * {games[1]}  *",
+            f"\n * {games[2]}  *",
+            f"\n * {games[3]}  *",
+            f"\n * {games[4]}  *",
+            f"\n * {games[5]}  *",
+            f"\n * {games[6]}  *",
+            f"\n * {games[7]}  *",
+            f"\n *                                                                             *",
+            f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+        ]
+        print("".join(show_games))
+
+        cur.close()
+        conn.close()
+    except pymysql.Error as e:
+        print(f"Error: {e}")
+
+
+        
 #########################################   HELP SAVED GAMES, MENU    #########################################
                                                                                                               #
 def helpSavedGamesMenu():                                                                                     #
@@ -119,13 +151,19 @@ def helpSavedGamesMenu():                                                       
 ###############################################################################################################
 
 
+   
+
+
 
 #########################################   NEW GAME, MENU    ##################################################
                                                                                                                
 current_player_name = None
                                                                                                               
+
+
 def newGameMenu():
-    global current_player_name  # Indicar que se usará la variable global
+    global current_player_name
+    from funciones import player
 
     clear_terminal()
 
@@ -156,27 +194,87 @@ def newGameMenu():
 
         # Verificar validez del nombre
         if player_name.isalnum() or ' ' in player_name:
+
             # Validar que solo contiene letras, números y espacios
             print(f"Welcome to the game, {player_name}")
             
             current_player_name = player_name  # Asignar el valor a la variable global
+
+            # Crear los datos del nuevo jugador
+            new_player_data = {
+                "inventory": {
+                    "lives": 3,
+                    "max_lives": 3,
+                    "timeBlood": 60,
+                    "weapon1": "Wood Sword",
+                    "weapon2": "Wood Shield",
+                    "totalFood": 0,
+                    "totalWeapons": 2,
+                },
+                "weapons": {
+                    "wood sword": {"uses": 5, "count": 2, "equipped": True},
+                    "sword": {"uses": 9, "count": 1, "equipped": False},
+                    "wood shield": {"uses": 5, "count": 1, "equipped": True},
+                    "shield": {"uses": 9, "count": 0, "equipped": False}
+                },
+                "food": {
+                    "vegetables": {"count": 5, "hearts": 1},
+                    "fish": {"count": 2, "hearts": 0},
+                    "meat": {"count": 2, "hearts": 0},
+                    "salads": {"count": 2, "hearts": 2},
+                    "pescatarian": {"count": 1, "hearts": 3},
+                    "roasted": {"count": 1, "hearts": 4}
+                },
+                "sanctuaries": {
+                    "S0": {"name": "S0", "oppened": False},
+                    "S1": {"name": "S1", "oppened": False},
+                    "S2": {"name": "S2", "oppened": False},
+                    "S3": {"name": "S3", "oppened": False},
+                    "S4": {"name": "S4", "oppened": False},
+                    "S5": {"name": "S5", "oppened": False},
+                    "S6": {"name": "S6", "oppened": False},
+                },
+            }
             
-            clear_terminal()
+            # Agregar al nuevo jugador al diccionario player
+            player[player_name] = new_player_data
+           
+            
             # Ir a la sección 'Legend'
             legendMenu(player_name)  # Pasar player_name a legendMenu()
 
-            break
-        else:
-            print(f'"{player_name}" is not a valid name')   
+            # INSERT en la base de datos
+            try:
+                conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+                cur = conn.cursor()
+
+                # Obtener la fecha y hora actual
+                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
- 
+                # Valores por defecto para hearts_remaining y region
+                hearts_remaining = 3
+                default_region = 'Hyrule'
+
+                # Consulta para insertar en la tabla game
+                insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
+                               f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
+
+                cur.execute(insert_query)
+                conn.commit()
+
+                cur.close()
+                conn.close()
+                break  # Salir del bucle al completar la inserción
+            except pymysql.Error as e:
+                print(f"Error: {e}")
+                break
+
+        else: 
+            print(f'"{player_name}" is not a valid name')
 
 
 
-
-
-           
                                                                                                                  
                                                                                                                
 #########################################   HELP NEW GAME, MENU    #############################################
@@ -259,7 +357,7 @@ def legendMenu(player_name):
                                                                                                                 
 def plotMenu(player_name):
     clear_terminal()
-
+    
     print(" * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
@@ -278,6 +376,7 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
+            print(player)
             # Start the game section
             break
         
