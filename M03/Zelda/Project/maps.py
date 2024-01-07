@@ -1,6 +1,7 @@
 
 import os
 from funciones import player
+from funciones import * 
 x = "X"
 
 
@@ -27,64 +28,75 @@ hyrule = [
 #print(hyrule[0])
 
 lp = True
+invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
+
 while lp:
-    sistema_operativo = os.name
-    if sistema_operativo == 'posix':
-        os.system('clear')
-    elif sistema_operativo == 'nt':
-        os.system('cls')
+    
     print("".join(hyrule))
-    direction = input("Enter the direction to move (up, down, left, right): ")
+    command = input("What to do now? (ex: 'go up 3'): ").lower().split()
+
+    if len(command) < 3:
+        print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
+        continue
+
+    direction = command[1]
+    try:
+        num_steps = int(command[2])
+    except ValueError:
+        print("You can't go there, is not a valid position")
+        continue
 
 
-
-    if direction == "up":
-        for i in range(len(hyrule)):
-            if x in hyrule[i]:
-                pos = hyrule[i].find("X")
-                if hyrule[i-1][pos] != " " or hyrule[i-1] == hyrule[0]:
-                    input("You can't go there")
-                else:
-                    hyrule[i] = hyrule[i].replace("X", " ")
-                    linea_anterior = hyrule[i-1]
-                    linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
-                    hyrule[i-1] = linea_anterior_modificada
-                break
-    elif direction == "down":
-        for i in range(len(hyrule)):
-            if x in hyrule[i]:
-                pos = hyrule[i].find("X")
-                if hyrule[i+1][pos] != " " or hyrule[i+1] == hyrule[11]:
-                    input("You can't go there")
-                else:
-                    hyrule[i] = hyrule[i].replace("X", " ")
-                    linea_anterior = hyrule[i+1]
-                    linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
-                    hyrule[i+1] = linea_anterior_modificada
-                break
-    elif direction == "left":
-        for i in range(len(hyrule)):
-            if x in hyrule[i]:
-                pos = hyrule[i].find("X")
-                
-                if hyrule[i][pos-1] != " " or hyrule[i][pos-1] == hyrule[i][0]:
-                    input("You can't go there")
-                else:
-                    hyrule[i] = hyrule[i].replace("X", " ")
-                    linea_anterior = hyrule[i]
-                    linea_anterior_modificada = linea_anterior[:pos-1] + x + linea_anterior[pos:]
-                    hyrule[i] = linea_anterior_modificada
-                break
-    elif direction == "right":
-        for i in range(len(hyrule)):
-            if x in hyrule[i]:
-                pos = hyrule[i].find("X")
-                
-                if hyrule[i][pos+1] != " " or hyrule[i][pos+1] == hyrule[i][59]:
-                    input("You can't go there")
-                else:
-                    hyrule[i] = hyrule[i].replace("X", " ")
-                    linea_anterior = hyrule[i]
-                    linea_anterior_modificada = linea_anterior[:pos+1] + x + linea_anterior[pos+2:]
-                    hyrule[i] = linea_anterior_modificada
-                break
+    for _ in range(num_steps):
+        if direction == "up":
+            for i in range(len(hyrule)):
+                if x in hyrule[i]:
+                    pos = hyrule[i].find("X")
+                    if hyrule[i-1][pos] in invalid_positions or hyrule[i-1] == hyrule[0]:
+                        input("You can't go there, is not a valid position")
+                        break
+                    else:
+                        hyrule[i] = hyrule[i].replace("X", " ")
+                        linea_anterior = hyrule[i-1]
+                        linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
+                        hyrule[i-1] = linea_anterior_modificada
+                    break
+        elif direction == "down":
+            for i in range(len(hyrule)):
+                if x in hyrule[i]:
+                    pos = hyrule[i].find("X")
+                    if hyrule[i+1][pos] in invalid_positions or hyrule[i+1] == hyrule[11]:
+                        input("You can't go there, is not a valid position")
+                        break
+                    else:
+                        hyrule[i] = hyrule[i].replace("X", " ")
+                        linea_anterior = hyrule[i+1]
+                        linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
+                        hyrule[i+1] = linea_anterior_modificada
+                    break
+        elif direction == "left":
+            for i in range(len(hyrule)):
+                if x in hyrule[i]:
+                    pos = hyrule[i].find("X")
+                    if hyrule[i][pos-1] in invalid_positions or hyrule[i][pos-1] == hyrule[i][0]:
+                        input("You can't go there, is not a valid position")
+                        break
+                    else:
+                        hyrule[i] = hyrule[i].replace("X", " ")
+                        linea_anterior = hyrule[i]
+                        linea_anterior_modificada = linea_anterior[:pos-1] + x + linea_anterior[pos:]
+                        hyrule[i] = linea_anterior_modificada
+                    break
+        elif direction == "right":
+            for i in range(len(hyrule)):
+                if x in hyrule[i]:
+                    pos = hyrule[i].find("X")
+                    if hyrule[i][pos+1] in invalid_positions or hyrule[i][pos+1] == hyrule[i][59]:
+                        input("You can't go there, is not a valid position")
+                        break
+                    else:
+                        hyrule[i] = hyrule[i].replace("X", " ")
+                        linea_anterior = hyrule[i]
+                        linea_anterior_modificada = linea_anterior[:pos+1] + x + linea_anterior[pos+2:]
+                        hyrule[i] = linea_anterior_modificada
+                    break
