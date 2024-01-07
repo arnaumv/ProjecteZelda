@@ -2,7 +2,7 @@ from funciones import *
 import os
 import pymysql
 from datetime import datetime
-from funciones import player
+
 
 conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
 cur = conn.cursor()
@@ -105,8 +105,11 @@ def savedGamesMenu():
 
         # Construir el formato para mostrar los juegos
         for i in range(len(resultados)):
-            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
-                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
+            max_lives_last_player = 3
+            games[i] = (f'{resultados[i][0]}: {resultados[i][2]} - {resultados[i][1]} , {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
+
+
+
 
         show_games = [
             f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
