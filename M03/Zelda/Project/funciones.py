@@ -99,13 +99,13 @@ player = {
             "roasted": {"count": 1, "hearts":4}
         },
         "sanctuaries": {
-            "S0": {"name": "S0" , "oppened": False} ,
-            "S1":  {"name": "S1" , "oppened": False} ,
-            "S2":  {"name": "S2" , "oppened": False} ,
-            "S3":  {"name": "S3" , "oppened": False} ,
-            "S4":  {"name": "S4" , "oppened": False} ,
-            "S5":  {"name": "S5" , "oppened": False} ,
-            "S6":  {"name": "S6" , "oppened": False} ,
+            "S0": {"name": "S0?" , "oppened": False} ,
+            "S1":  {"name": "S1?" , "oppened": False} ,
+            "S2":  {"name": "S2?" , "oppened": False} ,
+            "S3":  {"name": "S3?" , "oppened": False} ,
+            "S4":  {"name": "S4?" , "oppened": False} ,
+            "S5":  {"name": "S5?" , "oppened": False} ,
+            "S6":  {"name": "S6?" , "oppened": False} ,
         },
     }
 }

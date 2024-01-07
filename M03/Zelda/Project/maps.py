@@ -1,6 +1,12 @@
 
 import os
+from funciones import player
 x = "X"
+
+
+last_player = list(player.keys())[-1]
+sanctuary_value0 = player[last_player]["sanctuaries"]["S0"]["name"]
+sanctuary_value1 = player[last_player]["sanctuaries"]["S1"]["name"]
 hyrule = [
     f"\n* Hyrule  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
     f"\n*                                    ~~~~~~~~~~~~~~~~~~OOO*                   *",
@@ -8,10 +14,10 @@ hyrule = [
     f"\n*                  C                      ~~~~~~    ~~~~~~*                   *",
     f"\n*    T                                                 ~~~*                   *",
     f"\n*                                 E9                      *                   *",
-    f"\n*                                          S0             *                   *",
+    f"\n*                                          {sanctuary_value0}            *                   *",
     f"\n*                                                         *                   *",
     f"\n*          !{x}                                   T         *                   *",  # La X es el personaje (cambiar posiblemente)
-    f"\n* OO    OOOOO       E1        S1!             T M   F     *                   *",
+    f"\n* OO    OOOOO       E1        {sanctuary_value1}             T M   F     *                   *",
     f"\n*OOOOOOOOOOO                                              *                   *",
     f"\n* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * *"
 ]
@@ -82,4 +88,3 @@ while lp:
                     linea_anterior_modificada = linea_anterior[:pos+1] + x + linea_anterior[pos+2:]
                     hyrule[i] = linea_anterior_modificada
                 break
-                
