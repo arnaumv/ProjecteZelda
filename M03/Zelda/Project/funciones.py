@@ -16,6 +16,7 @@ cur = conn.cursor()
 menus = [menu1, menu2, menu3]
 
 def mostrar_menu_aleatorio():
+    clear_terminal()
     menu_aleatorio = random.choice(menus)
     menu_aleatorio()
 

@@ -88,69 +88,96 @@ def helpMainMenu():
 
 
 #########################################   SAVED GAMES, MENU    ##############################################
-                                                                                                              #
 def savedGamesMenu():
     try:
         conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
         cur = conn.cursor()
 
-        # Query para seleccionar los valores específicos de la tabla game
-        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
-        cur.execute(select_query)
+        while True:
+            # Query para seleccionar los valores específicos de la tabla game
+            select_query = "SELECT game_id,user_name, date_started, hearts_remaining, region FROM game ORDER BY date_started DESC"
+            cur.execute(select_query)
 
-        # Obtener los resultados
-        resultados = cur.fetchall()
+            # Obtener los resultados
+            resultados = cur.fetchall()
 
-        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
+            games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
 
-        # Construir el formato para mostrar los juegos
-        for i in range(len(resultados)):
-            max_lives_last_player = 3
-            games[i] = (f'{resultados[i][0]}: {resultados[i][2]} - {resultados[i][1]} , {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
+            # Construir el formato para mostrar los juegos
+            for i in range(len(resultados)):
+                max_lives_last_player = 3
+                games[i] = (f'{i+1}: {resultados[i][1]} - {resultados[i][2]}, {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
 
+            show_games = [
+                f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+                f"\n *                                                                             *",
+                f"\n * {games[0]}  *",
+                f"\n * {games[1]}  *",
+                f"\n * {games[2]}  *",
+                f"\n * {games[3]}  *",
+                f"\n * {games[4]}  *",
+                f"\n * {games[5]}  *",
+                f"\n * {games[6]}  *",
+                f"\n * {games[7]}  *",
+                f"\n *                                                                             *",
+                f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * * *"
+            ]
+            print("".join(show_games))
 
+            # Solicitar al usuario que introduzca una acción
+            action = input("What to do now: ")
 
-
-        show_games = [
-            f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-            f"\n *                                                                             *",
-            f"\n * {games[0]}  *",
-            f"\n * {games[1]}  *",
-            f"\n * {games[2]}  *",
-            f"\n * {games[3]}  *",
-            f"\n * {games[4]}  *",
-            f"\n * {games[5]}  *",
-            f"\n * {games[6]}  *",
-            f"\n * {games[7]}  *",
-            f"\n *                                                                             *",
-            f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
-        ]
-        print("".join(show_games))
+            # Si la acción es "Erase X", eliminar la fila correspondiente de la base de datos
+            if action.lower().startswith("erase "):
+                id_to_erase = int(action.split(" ")[1]) - 1  # Restamos 1 porque los índices en Python empiezan en 0
+                delete_user = "DELETE FROM game WHERE user_name = %s"
+                cur.execute(delete_user, (resultados[id_to_erase][1],))
+                conn.commit()
+            elif action.lower() == "help":
+                helpSavedGamesMenu()
+            elif action.lower() == "back":
+                from funciones import mostrar_menu_aleatorio, prompt_usuari
+                mostrar_menu_aleatorio()
+                prompt_usuari()
+                break
+            else:
+                print("Invalid option. Please try again.")
 
         cur.close()
         conn.close()
     except pymysql.Error as e:
         print(f"Error: {e}")
 
-
         
 #########################################   HELP SAVED GAMES, MENU    #########################################
-                                                                                                              #
-def helpSavedGamesMenu():                                                                                     #
-     print("* Help, saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                  Type 'play X' to continue playing the game 'X'             * "                 #
-        "\n *                  Type 'erase X' to erase the game 'X'                       * "                 #
-        "\n *                  Type 'back' now to go back to the main menu                * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                  Type 'back' now to go back to 'Saved games'                * "                 #
-        "\n *                                                                             * "                 #
-        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 #
-    )                                                                                                         #
-                                                                                                              #
+                                                                                                              
+def helpSavedGamesMenu():    
+    clear_terminal()                                                                                 
+    print("* Help, saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                  Type 'play X' to continue playing the game 'X'             * "                 
+        "\n *                  Type 'erase X' to erase the game 'X'                       * "                 
+        "\n *                  Type 'back' now to go back to the main menu                * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                  Type 'back' now to go back to 'Saved games'                * "                 
+        "\n *                                                                             * "                 
+        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 
+    ) 
+
+    while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "back":
+            clear_terminal()
+            savedGamesMenu()
+            
+            break
+        else:
+            print("Invalid option. Please try again.")                                                                                                       
+                                                                                                              
 ###############################################################################################################
 
 
@@ -203,7 +230,7 @@ def newGameMenu():
             
             current_player_name = player_name  # Asignar el valor a la variable global
 
-            # Crear los datos del nuevo jugador
+            # Guardo informacion del juagdor en el diccionario player para poder usarlo en otras funciones durante la partida
             new_player_data = {
                 "inventory": {
                     "lives": 3,
@@ -360,7 +387,7 @@ def legendMenu(player_name):
                                                                                                                 
 def plotMenu(player_name):
     clear_terminal()
-    
+    from funciones import player
     print(" * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
