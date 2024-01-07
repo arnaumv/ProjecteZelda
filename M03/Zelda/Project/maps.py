@@ -29,9 +29,38 @@ hyrule = [
 
 lp = True
 invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
+def move_player():
+    for _ in range(num_steps):
+        can_move = True
+        for i in range(len(hyrule)):
+            if x in hyrule[i]:
+                pos = hyrule[i].find("X")
+                if direction == "up" and (hyrule[i-1][pos] in invalid_positions or hyrule[i-1] == hyrule[0]):
+                    can_move = False
+                elif direction == "down" and (hyrule[i+1][pos] in invalid_positions or hyrule[i+1] == hyrule[11]):
+                    can_move = False
+                elif direction == "left" and (hyrule[i][pos-1] in invalid_positions or hyrule[i][pos-1] == hyrule[i][0]):
+                    can_move = False
+                elif direction == "right" and (hyrule[i][pos+1] in invalid_positions or hyrule[i][pos+1] == hyrule[i][59]):
+                    can_move = False
+
+                if can_move:
+                    hyrule[i] = hyrule[i].replace("X", " ")
+                    if direction == "up":
+                        hyrule[i-1] = hyrule[i-1][:pos] + x + hyrule[i-1][pos + 1:]
+                    elif direction == "down":
+                        hyrule[i+1] = hyrule[i+1][:pos] + x + hyrule[i+1][pos + 1:]
+                    elif direction == "left":
+                        hyrule[i] = hyrule[i][:pos-1] + x + hyrule[i][pos:]
+                    elif direction == "right":
+                        hyrule[i] = hyrule[i][:pos+1] + x + hyrule[i][pos+2:]
+                else:
+                    print("You can't go there, is not a valid position")
+                break
+        if not can_move:
+            break
 
 while lp:
-    
     print("".join(hyrule))
     command = input("What to do now? (ex: 'go up 3'): ").lower().split()
 
@@ -46,57 +75,4 @@ while lp:
         print("You can't go there, is not a valid position")
         continue
 
-
-    for _ in range(num_steps):
-        if direction == "up":
-            for i in range(len(hyrule)):
-                if x in hyrule[i]:
-                    pos = hyrule[i].find("X")
-                    if hyrule[i-1][pos] in invalid_positions or hyrule[i-1] == hyrule[0]:
-                        input("You can't go there, is not a valid position")
-                        break
-                    else:
-                        hyrule[i] = hyrule[i].replace("X", " ")
-                        linea_anterior = hyrule[i-1]
-                        linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
-                        hyrule[i-1] = linea_anterior_modificada
-                    break
-        elif direction == "down":
-            for i in range(len(hyrule)):
-                if x in hyrule[i]:
-                    pos = hyrule[i].find("X")
-                    if hyrule[i+1][pos] in invalid_positions or hyrule[i+1] == hyrule[11]:
-                        input("You can't go there, is not a valid position")
-                        break
-                    else:
-                        hyrule[i] = hyrule[i].replace("X", " ")
-                        linea_anterior = hyrule[i+1]
-                        linea_anterior_modificada = linea_anterior[:pos] + x + linea_anterior[pos + 1:]
-                        hyrule[i+1] = linea_anterior_modificada
-                    break
-        elif direction == "left":
-            for i in range(len(hyrule)):
-                if x in hyrule[i]:
-                    pos = hyrule[i].find("X")
-                    if hyrule[i][pos-1] in invalid_positions or hyrule[i][pos-1] == hyrule[i][0]:
-                        input("You can't go there, is not a valid position")
-                        break
-                    else:
-                        hyrule[i] = hyrule[i].replace("X", " ")
-                        linea_anterior = hyrule[i]
-                        linea_anterior_modificada = linea_anterior[:pos-1] + x + linea_anterior[pos:]
-                        hyrule[i] = linea_anterior_modificada
-                    break
-        elif direction == "right":
-            for i in range(len(hyrule)):
-                if x in hyrule[i]:
-                    pos = hyrule[i].find("X")
-                    if hyrule[i][pos+1] in invalid_positions or hyrule[i][pos+1] == hyrule[i][59]:
-                        input("You can't go there, is not a valid position")
-                        break
-                    else:
-                        hyrule[i] = hyrule[i].replace("X", " ")
-                        linea_anterior = hyrule[i]
-                        linea_anterior_modificada = linea_anterior[:pos+1] + x + linea_anterior[pos+2:]
-                        hyrule[i] = linea_anterior_modificada
-                    break
+    move_player()
