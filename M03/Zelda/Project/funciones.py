@@ -319,6 +319,15 @@ def show_games():
 
 
 
+
+
+
+
+
+
+
+
+
 def showStartedGames():
     import mysql.connector
     try:
@@ -368,49 +377,3 @@ def showStartedGames():
 
 
 
-
-def saveGame(dateCreated):
-    try:
-        conexion = mysql.connector.connect(
-        user = "root",
-        password = "",
-        host = "localhost",
-        database = "zelda",
-        port=3306
-        )
-
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-
-    cursor = conexion.cursor()
-
-    playerName, playerInfo = vp.separarPlayer(player) # info del player 
-    playerName = str(playerName) # Convert playerName to a string
-    print(player)
-    print(playerName)
-    if playerInfo == "default":
-        playerInfo = playerTEST
-    countFood = 0   
-    for i in player[playerName]["food"]:
-        countFood += player[playerName]["food"][i]["count"]
-    player[playerName]["inventory"]["totalFood"] = countFood
-
-    countWeapons = 0
-    weapon1_ok = False
-    for i in player[playerName]["weapons"]:
-        countWeapons += player[playerName]["weapons"][i]["count"]
-        if player[playerName]["weapons"][i]["equipped"] and not weapon1_ok:
-            player[playerName]["inventory"]["weapon1"] = i.title()
-            weapon1_ok = True
-        elif player[playerName]["weapons"][i]["equipped"]:
-            player[playerName]["inventory"]["weapon2"] = i.title()
-    player[playerName]["inventory"]["totalWeapons"] = countWeapons
-
-
-    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
-    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!! no acabado !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
-    #  !!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!¡¡!!
-    saveUserQuery = f"INSERT INTO `datosplayer`(`id`, `dateCreated`, `namePlayer`, `playersDict`, `lives`, `max_lives`) VALUES (1,'{dateCreated}','{playerName}','{json.dumps(player)}','{player[playerName]['inventory']['lives']}','{player[playerName]['inventory']['max_lives']}')"
-
-    cursor.execute(saveUserQuery)
-    conexion.commit()
