@@ -119,15 +119,15 @@ player = {
 
 ########################################### INVENTARI MAIN #####################################################
 
-jugadores = player.keys()
-ultimo_jugador = list(jugadores)[-1]
+jugadores = player.keys()          
+ultimo_jugador = list(jugadores)[-1]    #Coje el ultimo jugador añadido en el diccionario 
 playerInfo = {
     "inventory": player[ultimo_jugador]["inventory"]
 }
 
 
 santuarios = {
-    "sanctuaries": player[ultimo_jugador]["sanctuaries"]
+    "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
 }
 def inventoryMain(santuarios, playerInfo):
     map = [
