@@ -465,6 +465,19 @@ def zeldaSavedMenu():
 
 
 
+
+
+
+
+
+
+
+
+
+######## ESTO ERAN PRUEBAS  ##########  
+
+
+
 def rellenarEspacios(string):
     spaces = 79 - len(string)
     if spaces > 0:
