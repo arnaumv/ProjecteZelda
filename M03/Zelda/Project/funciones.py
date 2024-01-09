@@ -115,10 +115,6 @@ player = {
 
 ########################################### INVENTARI #####################################################
 
-
-
-########################################### INVENTARI MAIN #####################################################
-
 jugadores = player.keys()          
 ultimo_jugador = list(jugadores)[-1]    #Coje el ultimo jugador añadido en el diccionario 
 playerInfo = {
@@ -129,7 +125,82 @@ playerInfo = {
 santuarios = {
     "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
 }
-def inventoryMain(santuarios, playerInfo):
+
+foods = {
+    "food": player[ultimo_jugador]["food"]
+}
+
+
+# Acceder a la información de armas del último jugador
+weapons_info = player[ultimo_jugador]['weapons']
+
+# Acceder a los detalles de las armas del último jugador
+uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
+count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
+equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
+# Acceder a los valores de "count" para cada comida
+vegetables_count = foods['food']['vegetables']['count']
+fish_count = foods['food']['fish']['count']
+meat_count = foods['food']['meat']['count']
+salads_count = foods['food']['salads']['count']
+pescatarian_count = foods['food']['pescatarian']['count']
+roasted_count = foods['food']['roasted']['count']
+
+# Diccionario con los valores de cada inventario (MAiN, FOODS, WEAPONS)
+inventory = {
+    'inventoryFood': [
+        "* * * * * Foods *",
+        "                  *",
+        "                  *",
+        f"Vegetables      {str(vegetables_count).rjust(1)} *",
+        f"Fish            {str(fish_count).rjust(1)} *",
+        f"Meat            {str(meat_count).rjust(1)} *",
+        "                  *",
+        f"Salads          {str(salads_count).rjust(1)} *",
+        f"Pescatarian     {str(pescatarian_count).rjust(1)} *",
+        f"Roasted         {str(roasted_count).rjust(1)} *",
+        "                  *",
+        "* * * * * * * * * *"
+    ],
+    'inventoryWeapons': [
+        "* * * * * Weapons *",
+        "                  *",
+        "                  *",
+        f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
+        f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+        f"Sword         {uses['sword']}/{count['sword']} *",
+        f"  {'(equipped)' if equipped['sword'] else ''}                *",
+        f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
+        f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+        f"Shield        {uses['shield']}/{count['shield']} *",
+        f"  {'(equipped)' if equipped['shield'] else ''}                *",
+        "* * * * * * * * * *",
+        "* * * * * * * * * * *"
+    ],
+    'inventoryMain': [
+        "* * * * Inventory *",
+        "                  *",
+        "                  *",
+        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
+        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
+        "                  *",
+        " Equipment        *",
+        f"       {playerInfo['inventory']['weapon1']} *",
+        f"       {playerInfo['inventory']['weapon2']}*",
+        f" Food            {playerInfo['inventory']['totalFood']}*",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
+        "* * * * * * * * * *"
+    ]
+}
+
+
+
+########################################### INVENTARI MAIN #####################################################
+
+
+
+def inventoryMain(santuarios, inventory):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
@@ -145,24 +216,10 @@ def inventoryMain(santuarios, playerInfo):
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
 
-    inventory = [
-        f"* * * * Inventory *",
-        f"                  *",
-        f"                  *",
-        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
-        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                  *",
-        f" Equipment        *",
-        f"       {playerInfo['inventory']['weapon1']} *",
-        f"       {playerInfo['inventory']['weapon2']}*",
-        f" Food            {playerInfo['inventory']['totalFood']}*",
-        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
-        f"* * * * * * * * * *"
-    ]
+    inventoryMain = inventory['inventoryMain']
 
     for i in range(len(map)):
-        print(map[i], inventory[i])
-
+        print(map[i], inventoryMain[i])
 
 
 
@@ -170,9 +227,7 @@ def inventoryMain(santuarios, playerInfo):
 ########################################### INVENTARI FOODS #####################################################
 
 
-foods = {
-    "food": player[ultimo_jugador]["food"]
-}
+
 
 def inventoryFoods(santuarios, foods):
     map = [
@@ -190,13 +245,6 @@ def inventoryFoods(santuarios, foods):
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
 
-    # Acceder a los valores de "count" para cada comida
-    vegetables_count = foods['food']['vegetables']['count']
-    fish_count = foods['food']['fish']['count']
-    meat_count = foods['food']['meat']['count']
-    salads_count = foods['food']['salads']['count']
-    pescatarian_count = foods['food']['pescatarian']['count']
-    roasted_count = foods['food']['roasted']['count']
 
     # Incorporar estos valores en tu inventario
     inventory = [
@@ -224,13 +272,6 @@ def inventoryWeapons(santuarios, player):
     jugadores = player.keys()
     ultimo_jugador = list(jugadores)[-1]
 
-    # Acceder a la información de armas del último jugador
-    weapons_info = player[ultimo_jugador]['weapons']
-
-    # Acceder a los detalles de las armas del último jugador
-    uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
-    count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
-    equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
 
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
