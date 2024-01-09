@@ -131,6 +131,8 @@ playerInfo = {
 santuarios = {
     "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
 }
+
+
 def inventoryMain(santuarios, playerInfo):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
