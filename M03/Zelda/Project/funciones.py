@@ -147,7 +147,7 @@ def inventoryMain(santuarios, playerInfo):
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
 
-    inventory = [
+    inventoryM = [
         f"* * * * Inventory *",
         f"                  *",
         f"                  *",
@@ -163,7 +163,7 @@ def inventoryMain(santuarios, playerInfo):
     ]
 
     for i in range(len(map)):
-        print(map[i], inventory[i])
+        print(map[i], inventoryM[i])
 
 
 
@@ -201,7 +201,7 @@ def inventoryFoods(santuarios, foods):
     roasted_count = foods['food']['roasted']['count']
 
     # Incorporar estos valores en tu inventario
-    inventory = [
+    inventoryFood = [
         f"* * * * * Foods *",
         f"                  *",
         f"                  *",
@@ -217,7 +217,7 @@ def inventoryFoods(santuarios, foods):
     ]
 
     for i in range(len(map)):
-        print(map[i], inventory[i])
+        print(map[i], inventoryFood[i])
 
 
 ########################################### INVENTARI WEAPONS #####################################################
@@ -248,7 +248,7 @@ def inventoryWeapons(santuarios, player):
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
-    inventory = [
+    inventoryWeap = [
             f"* * * * * Weapons *",
             f"                  *",
             f"                  *",
@@ -265,7 +265,7 @@ def inventoryWeapons(santuarios, player):
         ]
 
     for i in range(len(map)):
-        print(map[i], inventory[i])
+        print(map[i], inventoryWeap[i])
 
 
 
