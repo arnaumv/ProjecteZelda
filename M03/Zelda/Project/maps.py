@@ -76,3 +76,13 @@ while lp:
         continue
 
     move_player()
+
+
+# def combine_maps(hyrule, inventoryM):
+#     for i in range(max(len(hyrule), len(inventoryM))):
+#         if i < len(hyrule):
+#             hyrule_line = hyrule[i] if i < len(hyrule) else ""
+#             inventory_line = inventoryM[i] if i < len(inventoryM) else ""
+#             print(hyrule_line + " " * (40 - len(hyrule_line)) + inventory_line)
+#         else:
+#             print(" " * 40 + inventoryM[i])
