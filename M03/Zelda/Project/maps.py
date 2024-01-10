@@ -72,20 +72,7 @@ maps = {
     ]
 }
 
-hyrule = [
-    f"\n* Hyrule  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-    f"\n*                                    ~~~~~~~~~~~~~~~~~~OOO*                   *",
-    f"\n*                                    ~~~~~~~~~~~~~OO~OOOO~*                   *",
-    f"\n*                  C                      ~~~~~~    ~~~~~~*                   *",
-    f"\n*    T                                                 ~~~*                   *",
-    f"\n*                                 E9                      *                   *",
-    f"\n*                                          {sanctuary_value0}            *                   *",
-    f"\n*                                                         *                   *",
-    f"\n*          !{x}                                   T         *                   *",  # La X es el personaje (cambiar posiblemente)
-    f"\n* OO    OOOOO       E1        {sanctuary_value1}             T M   F     *                   *",
-    f"\n*OOOOOOOOOOO                                              *                   *",
-    f"\n* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * *"
-]
+
 
 # Utiliza el método replace y asigna el resultado a la posición 0 de hyrule
 #hyrule[0] = hyrule[0].replace(hyrule[0][1], "X")
