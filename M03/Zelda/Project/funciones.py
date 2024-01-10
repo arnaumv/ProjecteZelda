@@ -1,239 +1,12 @@
 from datetime import datetime
+from menus import *
+from menus import current_player_name
 import random
+import os
+import pymysql
 
-
-
-###################################   MENU PRINCIPAL    ############################################
-def menu1():
-    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        "\n *                                                             ##              * "
-        "\n *                                                             ##              * "
-        "\n *                                                          ##~~~              * "
-        "\n *                                                          ##~~~O             * "
-        "\n *    Zelda, Breath of the Wild                            ###~~~ \            * "
-        "\n *                                                           |@@@| \           * "
-        "\n *                                                           |   |  \          * "
-        "\n *                                                           =   ==            * "
-        "\n *                                                       %%%%%%%%%%%%          * "
-        "\n *                                                    %%%%%%%%%%%%%%%          * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
-    )
-
-def menu2():
-     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        "\n *                                                             &&              * "
-        "\n *                                                            oo &             * "
-        "\n *                                                    $       -- &##           * "
-        "\n *                                                    $$    <<OO####           * "
-        "\n *    Zelda, Breath of the Wild                        $$  //OOO####           * "
-        "\n *                                                      $$// OO#####           * "
-        "\n *                                                       **  OOO###            * "
-        "\n *                                                        &  @@@@\             * "
-        "\n *                                                            Q  Q             * "
-        "\n *                                                            Q  Q             * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
-    )
-
-def menu3():
-    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        "\n *                                                             &&              * "
-        "\n *                                                            ####             * "
-        "\n *                                                           ||                * "
-        "\n *                                                        @@@@@@@@@@@@         * "
-        "\n *    Zelda, Breath of the Wild                          @     ||@@@           * "
-        "\n *                                                             |@@@            * "
-        "\n *                                                            @@@              * "
-        "\n *                                                         @@@@||     @        * "
-        "\n *                                                      @@@@@@@@@@@@@          * "
-        "\n *                                                             ||              * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
-    )
-
-
-
-#############################################################################################################
-
-
-#########################################   HELP, MAIN MENU    ##############################################
-
-
-def helpMainMenu():
-     print("* Help, main menu * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        "\n *                                                                             * "
-        "\n *                                                                             * "
-        "\n *                 Type 'continue' to continue a saved game                    * "
-        "\n *                 Type 'new game' to start a new game                         * "
-        "\n *                 Type 'about' to see information about the game              * "
-        "\n *                 Type 'exit' to exit the game                                * "
-        "\n *                                                                             * "
-        "\n *                 Type 'back' now to go back to the 'Main menu'               * "
-        "\n *                                                                             * "
-        "\n *                                                                             * "
-        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "
-    )
-
-
-
-#########################################   SAVED GAMES, MENU    ##############################################
-                                                                                                              #
-def savedGamesMenu():                                                                                         #
-     print("* Saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-    )                                                                                                         #
-                                                                                                              #
-                                                                                                              #
-#########################################   HELP SAVED GAMES, MENU    #########################################
-                                                                                                              #
-def helpSavedGamesMenu():                                                                                     #
-     print("* Help, saved games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                  Type 'play X' to continue playing the game 'X'             * "                 #
-        "\n *                  Type 'erase X' to erase the game 'X'                       * "                 #
-        "\n *                  Type 'back' now to go back to the main menu                * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                                                                             * "                 #
-        "\n *                  Type 'back' now to go back to 'Saved games'                * "                 #
-        "\n *                                                                             * "                 #
-        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 #
-    )                                                                                                         #
-                                                                                                              #
-###############################################################################################################
-
-
-
-#########################################   NEW GAME, MENU    ##################################################
-                                                                                                               #
-                                                                                                               #
-def newGameMenu():                                                                                             #
-     print("* New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                   #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                  Set your name ?                                            * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *                  Type 'back' now to go back to 'Main Menu'                  * "                  #
-        "\n *                                                                             * "                  #
-        "\n * Back, Help  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                  #
-    )                                                                                                          #
-                                                                                                               #
-#########################################   HELP NEW GAME, MENU    #############################################
-                                                                                                               #     
-                                                                                                               #
-def newGameMenu():                                                                                             #
-     print("* Help, New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                   #
-        "\n *                                                                             * "                  #
-        "\n *                                                                             * "                  #
-        "\n *       When asked, type your name and press enter                            * "                  #
-        "\n *       if 'Link' is fine for you, just press enter                           * "                  #
-        "\n *                                                                             * "                  #
-        "\n *       Name must be between 3 and 10 characters long and only                * "                  #
-        "\n *       letters, numbers and spaces are allowed                               * "                  #
-        "\n *                                                                             * "                  #
-        "\n *       Type 'back' now to go back to 'Set Your Name'                         * "                  #
-        "\n *                                                                             * "                  #
-        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                  #
-    )                                                                                                          #
-                                                                                                               #
-################################################################################################################
-     
-
-
-##############################################  ABOUT, MENU    ##################################################
-                                                                                                                #
-def aboutMenu():                                                                                                #
-     print("* About * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                    #
-        "\n *                                                                             * "                   #
-        "\n *       Game developed by ‘Team 2, The hometown bugs’ :                       * "                   #
-        "\n *                                                                             * "                   #
-        "\n *                                                                             * "                   #
-        "\n *             Arnau Mestre                                                    * "                   #
-        "\n *             Adria Martinez                                                  * "                   #
-        "\n *             Moha  El Amine                                                  * "                   #
-        "\n *                                                                             * "                   #
-        "\n *                                                                             * "                   #
-        "\n *                                                                             * "                   #
-        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                   #
-    )                                                                                                           #
-                                                                                                                #
-#################################################################################################################
-     
-
-
-##############################################  LEGEND, MENU    #################################################
-                                                                                                                #
-def legendMenu():                                                                                               #
-     print("* Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     #
-        "\n *    10,000 years ago, Hyrule was a land of prosperity thanks to the Sheikah * "                    #
-        "\n *    tribe. The Sheikah were a tribe of warriors who protected the Triforce, * "                    #
-        "\n *    a sacred relic that granted wishes.                                     * "                    #
-        "\n *                                                                            * "                    #
-        "\n *    But one day, Ganondorf, an evil sorcerer, stole the Triforce and began  * "                    #
-        "\n *    to rule Hyrule with an iron fist.                                       * "                    #
-        "\n *                                                                            * "                    #
-        "\n *    The princess, with the help of a heroic young man, managed to defeat    * "                    #
-        "\n *    Ganondorf and recover the Triforce.                                     * "                    #
-        "\n *                                                                            * "                    #
-        "\n * Continue * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                    #
-    )                                                                                                           #
-#################################################################################################################
-     
-
-
-
-################################################  PLOT, MENU    #################################################
-                                                                                                                #
-def plotMenu():                                                                                                 #
-     print("* Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *   Now history is repeating itself, and Princess Zelda has been captured by * "                    #
-        "\n *   Ganon. He has taken over the Guardians and filled Hyrule with monsters.  * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *   But a young man named 'Link' has just awakened and                       * "                    #
-        "\n *   must reclaim the Guardians to defeat Ganon and save Hyrule.              * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n * Continue * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                    #
-    )                                                                                                           #
-#################################################################################################################
-
-
-
-################################################  DEAD    #######################################################
-                                                                                                                #
-def deadMenu():                                                                                                 #
-     print("* Link Dead  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *      Game Over                                                             * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n *                                                                            * "                    #
-        "\n * Continue * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                    #
-    )
-
-#################################################################################################################
-
+conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+cur = conn.cursor()
 
 
 
@@ -243,6 +16,7 @@ def deadMenu():                                                                 
 menus = [menu1, menu2, menu3]
 
 def mostrar_menu_aleatorio():
+    clear_terminal()
     menu_aleatorio = random.choice(menus)
     menu_aleatorio()
 
@@ -259,17 +33,360 @@ def prompt_usuari():
         # Acció per a "Continue"
         pass
     elif accio == "new game":
-        # Acció per a "New Game"
+        newGameMenu()
         pass
     elif accio == "help":
-        # Acció per a "Help"
-        pass
+
+         # Acción para "Help"
+        helpMainMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                mostrar_menu_aleatorio()
+                prompt_usuari()
+                break  
+            else:
+                print("Invalid action")
+        
+        
     elif accio == "about":
-        # Acció per a "About"
-        pass
+         # Acción para "About"
+        aboutMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                
+                mostrar_menu_aleatorio()
+                prompt_usuari()
+                break  
+            else:
+                print("Invalid action")
     elif accio == "exit":
         # Acció per a "Exit"
         pass
 
 
 ##################################################################################
+
+##########################      INFO PLAYER        #########################
+    
+
+    
+
+player = {
+    "default": {
+        "inventory": {
+            "lives": 3,
+            "max_lives": 3,
+            "timeBlood": 60,
+            "weapon1": "Wood Sword",
+            "weapon2": "Wood Shield",
+            "totalFood": 0,
+            "totalWeapons": 2,
+        },
+        "weapons": {
+            "wood sword": {"uses": 5, "count": 2, "equipped": True},
+            "sword": {"uses": 9, "count": 1, "equipped": False},
+            "wood shield": {"uses": 5, "count": 1, "equipped": True},
+            "shield": {"uses": 9, "count": 0, "equipped": False}
+        },
+        "food": {
+            "vegetables": {"count":5, "hearts":1},
+            "fish": {"count": 2, "hearts":0},
+            "meat": {"count": 2, "hearts":0},
+            "salads": {"count": 2, "hearts":2},
+            "pescatarian": {"count": 1, "hearts":3},
+            "roasted": {"count": 1, "hearts":4}
+        },
+        "sanctuaries": {
+            "S0": {"name": "S0?" , "opened": False} ,
+            "S1":  {"name": "S1?" , "opened": False} ,
+            "S2":  {"name": "S2?" , "opened": False} ,
+            "S3":  {"name": "S3?" , "opened": False} ,
+            "S4":  {"name": "S4?" , "opened": False} ,
+            "S5":  {"name": "S5?" , "opened": False} ,
+            "S6":  {"name": "S6?" , "opened": False} ,
+        },
+    }
+}
+
+
+
+
+
+
+########################################### INVENTARI #####################################################
+
+
+
+########################################### INVENTARI MAIN #####################################################
+
+jugadores = player.keys()          
+ultimo_jugador = list(jugadores)[-1]    #Coje el ultimo jugador añadido en el diccionario 
+playerInfo = {
+    "inventory": player[ultimo_jugador]["inventory"]
+}
+
+
+santuarios = {
+    "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
+}
+
+inventoryM = [
+        f"* * * * Inventory *",
+        f"                  *",
+        f"                  *",
+        f" {player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
+        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
+        f"                  *",
+        f" Equipment        *",
+        f"       {playerInfo['inventory']['weapon1']} *",
+        f"       {playerInfo['inventory']['weapon2']}*",
+        f" Food            {playerInfo['inventory']['totalFood']}*",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
+        f"* * * * * * * * * *"
+    ]
+def inventoryMain(inventoryM):
+    map = [
+        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"*                                                         *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
+        f"*                                                         *",
+        f"*                         Castle                          *",
+        f"*                                                         *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
+        f"*                                                         *",
+        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+
+   
+
+    for i in range(len(map)):
+        print(map[i], inventoryM[i])
+
+
+
+
+
+########################################### INVENTARI FOODS #####################################################
+
+
+foods = {
+    "food": player[ultimo_jugador]["food"]
+}
+# Acceder a los valores de "count" para cada comida
+vegetables_count = foods['food']['vegetables']['count']
+fish_count = foods['food']['fish']['count']
+meat_count = foods['food']['meat']['count']
+salads_count = foods['food']['salads']['count']
+pescatarian_count = foods['food']['pescatarian']['count']
+roasted_count = foods['food']['roasted']['count']
+# Incorporar estos valores en tu inventario
+inventoryFood = [
+        f"* * * * * Foods *",
+        f"                  *",
+        f"                  *",
+        f"Vegetables      {str(vegetables_count).rjust(1)} *",
+        f"Fish            {str(fish_count).rjust(1)} *",
+        f"Meat            {str(meat_count).rjust(1)} *",
+        f"                  *",
+        f"Salads          {str(salads_count).rjust(1)} *",
+        f"Pescatarian     {str(pescatarian_count).rjust(1)} *",
+        f"Roasted         {str(roasted_count).rjust(1)} *",
+        f"                  *",
+        f"* * * * * * * * * *"
+    ]
+
+def inventoryFoods(inventoryFood):
+    map = [
+        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"*                                                         *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
+        f"*                                                         *",
+        f"*                         Castle                          *",
+        f"*                                                         *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
+        f"*                                                         *",
+        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+
+ 
+
+   
+
+    for i in range(len(map)):
+        print(map[i], inventoryFood[i])
+
+
+########################################### INVENTARI WEAPONS #####################################################
+
+
+
+
+
+jugadores = player.keys()
+ultimo_jugador = list(jugadores)[-1]
+
+# Acceder a la información de armas del último jugador
+weapons_info = player[ultimo_jugador]['weapons']
+
+# Acceder a los detalles de las armas del último jugador
+uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
+count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
+equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
+inventoryWeap = [
+            f"* * * * * Weapons *",
+            f"                  *",
+            f"                  *",
+            f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
+            f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+            f"Sword         {uses['sword']}/{count['sword']} *",
+            f"  {'(equipped)' if equipped['sword'] else ''}                *",
+            f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
+            f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+            f"Shield        {uses['shield']}/{count['shield']} *",
+            f"  {'(equipped)' if equipped['shield'] else ''}                *",
+            f"* * * * * * * * * *",
+            f"* * * * * * * * * * *"
+        ]
+
+def inventoryWeapons(inventoryWeap):
+    
+
+    map = [
+        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"*                                                         *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
+        f"*                                                         *",
+        f"*                         Castle                          *",
+        f"*                                                         *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
+        f"*                                                         *",
+        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+   
+
+    for i in range(len(map)):
+        print(map[i], inventoryWeap[i])
+
+
+
+
+
+
+
+
+
+
+def show_games():
+    try:
+        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+        cur = conn.cursor()
+
+        # Query para seleccionar los valores específicos de la tabla game
+        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
+        cur.execute(select_query)
+
+        # Obtener los resultados
+        resultados = cur.fetchall()
+
+        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
+
+        # Construir el formato para mostrar los juegos
+        for i in range(len(resultados)):
+            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
+                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
+
+        show_games = [
+            f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+            f"\n*                                                                             *",
+            f"\n* {games[0]}  *",
+            f"\n* {games[1]}  *",
+            f"\n* {games[2]}  *",
+            f"\n* {games[3]}  *",
+            f"\n* {games[4]}  *",
+            f"\n* {games[5]}  *",
+            f"\n* {games[6]}  *",
+            f"\n* {games[7]}  *",
+            f"\n*                                                                             *",
+            f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+        ]
+        print("".join(show_games))
+
+        cur.close()
+        conn.close()
+    except pymysql.Error as e:
+        print(f"Error: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def showStartedGames():
+    import mysql.connector
+    try:
+        conexion = mysql.connector.connect(
+        user = "root",
+        password = "",
+        host = "localhost",
+        database = "zelda",
+        port=3306
+        )
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    cursor = conexion.cursor()
+
+    tabla = "datosplayer"
+
+    consulta = f"SELECT * FROM {tabla}"
+    cursor.execute(consulta)
+    resultados = cursor.fetchall()
+
+    games = ["".ljust(74), "".ljust(74), "".ljust(74),"".ljust(74),"".ljust(74),"".ljust(74), "".ljust(74),"".ljust(74),]
+
+    for i in range(len(resultados)):
+        games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) + f'♥ {resultados[i][4]}/{resultados[i][5]}') 
+
+    showGames = [
+        f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"\n*                                                                             *",
+        f"\n* {games[0]}  *",
+        f"\n* {games[1]}  *",
+        f"\n* {games[2]}  *",
+        f"\n* {games[3]}  *",
+        f"\n* {games[4]}  *",
+        f"\n* {games[5]}  *",
+        f"\n* {games[6]}  *",
+        f"\n* {games[7]}  *",
+        f"\n*                                                                             *",
+        f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+    print("".join(showGames))
+
+
+
+
+
+
