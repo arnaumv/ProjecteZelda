@@ -167,6 +167,7 @@ def move_player(map, direction, positions=1):
         player_posx =+ positions
     
     if maps[map]["map"][player_posy][player_posx] in invalid_positions or player_posy < 0 or player_posx < 0 or player_posy > len(maps[map]) or player_posx > len(maps[map][0]):
+        print("Invalid position, you can't move here")
         return
     else:
         for cnt in range (0, len(maps[map]["elements"])):
@@ -177,6 +178,7 @@ def move_player(map, direction, positions=1):
                         value = player_posx
                     if key == "y":
                         value = player_posy
+    return
         
 
 
