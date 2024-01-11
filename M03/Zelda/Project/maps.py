@@ -146,8 +146,39 @@ maps = {
 #print(hyrule[0])
 
 
-def move_player(map, direction, positions="1"):
-    invalid_positions = ["*", "T", "F", "C", "O","~", sanctuary_value0, sanctuary_value1, sanctuary_value2, sanctuary_value3, sanctuary_value4, sanctuary_value5, sanctuary_value6, ]
+def move_player(map, direction, positions=1):
+    global maps
+    invalid_positions = ["*", "T", "F", "C", "O","~", sanctuary_value0, sanctuary_value1, sanctuary_value2, sanctuary_value3, sanctuary_value4, sanctuary_value5, sanctuary_value6, "E1", "E2", "E3", "E4","E5","E6","E7","E8","E9" ]
+    for cnt in range (0, len(maps[map]["elements"])):
+        dict = maps[map]["elements"][cnt]
+        if dict["name"] == "Player":
+            for key, value in dict.items():
+                if key == "x":
+                    player_posx = value
+                if key == "y":
+                    player_posy = value
+    if direction == "up":
+        player_posy =+ positions
+    elif direction == "down":
+        player_posy =+ positions
+    elif direction == "left":
+        player_posx =+ positions
+    elif direction == "right":
+        player_posx =+ positions
+    
+    if maps[map]["map"][player_posy][player_posx] in invalid_positions or player_posy < 0 or player_posx < 0 or player_posy > len(maps[map]) or player_posx > len(maps[map][0]):
+        return
+    else:
+        for cnt in range (0, len(maps[map]["elements"])):
+            dict = maps[map]["elements"][cnt]
+            if dict["name"] == "Player":
+                for key, value in dict.items():
+                    if key == "x":
+                        value = player_posx
+                    if key == "y":
+                        value = player_posy
+        
+
 
 """ lp = True
 invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
