@@ -34,11 +34,11 @@ maps = {
             {"name" : "Cuina" , "symbol" : "C", "x" : 16, "y" : 2},
             {"name" : "Tree" , "symbol" : "T", "x" : 5, "y" : 3, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 35, "y" : 4, "life" : 9,"EnemyNumber" : 0},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 42, "y" : 5, "SanctuaryNumber" : 0},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value0, "x" : 42, "y" : 5, "SanctuaryNumber" : 0},
             {"name" : "Player" , "symbol" : "X", "x" : 10, "y" : 7},
             {"name" : "Tree" , "symbol" : "T", "x" : 46, "y" : 7, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 20, "y" : 8, "life" : 1,"EnemyNumber" : 1},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 28, "y" : 8, "SanctuaryNumber" : 1},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value1, "x" : 28, "y" : 8, "SanctuaryNumber" : 1},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 46, "y" : 8, "item" : "Sword"},
             {"name" : "Tree" , "symbol" : "T", "x" : 44, "y" : 8, "hits" : 0},
             {"name" : "Fox" , "symbol" : "F", "x" : 50, "y" : 8, "visible" : False}
@@ -59,7 +59,7 @@ maps = {
             [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
         ],
         "elements" : [
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 5, "y" : 2, "SanctuaryNumber" : 2},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value2, "x" : 5, "y" : 2, "SanctuaryNumber" : 2},
             {"name" : "Enemy" , "symbol" : "E", "x" : 11, "y" : 3, "life" : 2,"EnemyNumber" : 0},
             {"name" : "Player" , "symbol" : "X", "x" : 1, "y" : 8},
             {"name" : "Cuina" , "symbol" : "C", "x" : 5, "y" : 8},
@@ -68,7 +68,7 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 18, "y" : 6, "hits" : 0},
             {"name" : "Fox" , "symbol" : "F", "x" : 29, "y" : 1, "visible" : False},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 35, "y" : 7, "item" : "Shield"},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 48, "y" : 8, "SanctuaryNumber" : 3},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value3, "x" : 48, "y" : 8, "SanctuaryNumber" : 3},
             {"name" : "Enemy" , "symbol" : "E", "x" : 50, "y" : 2, "life" : 2,"EnemyNumber" : 1}
         ]
     },
@@ -99,7 +99,7 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 31, "y" : 2, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 37, "y" : 5, "life" : 2,"EnemyNumber" : 1},
             {"name" : "Fox" , "symbol" : "F", "x" : 47, "y" : 7, "visible" : False},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 45, "y" : 2, "SanctuaryNumber" : 4},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value4, "x" : 45, "y" : 2, "SanctuaryNumber" : 4},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 51, "y" : 0, "item" : "Sword"},
         ]
     },
@@ -127,13 +127,13 @@ maps = {
             {"name" : "Cuina" , "symbol" : "C", "x" : 18, "y" : 2},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 21, "y" : 0, "item" : "Shield"},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 22, "y" : 8, "item" : "Shield"},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 32, "y" : 8, "SanctuaryNumber" : 6},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value6, "x" : 32, "y" : 8, "SanctuaryNumber" : 6},
             {"name" : "Tree" , "symbol" : "T", "x" : 34, "y" : 2, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 35, "y" : 2, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 36, "y" : 1, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 37, "y" : 1, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 37, "y" : 5, "life" : 2,"EnemyNumber" : 1},
-            {"name" : "Sanctuary" , "symbol" : "S", "x" : 50, "y" : 5, "SanctuaryNumber" : 5},
+            {"name" : "Sanctuary" , "symbol" : sanctuary_value5, "x" : 50, "y" : 5, "SanctuaryNumber" : 5},
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 50, "y" : 1, "item" : "Shield"}
         ]
     },
