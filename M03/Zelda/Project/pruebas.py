@@ -2,4 +2,4 @@ import sys
 from funciones import *
 from maps import *
 
-inventoryMain(inventoryM)
+print_hyrule(maps["Hyrule"]["map"], inventoryM)

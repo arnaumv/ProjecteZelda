@@ -138,13 +138,13 @@ inventoryM = [
         f"                  *",
         f" {player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
         f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                  *",
+        f"                *",
         f" Equipment        *",
         f"       {playerInfo['inventory']['weapon1']} *",
-        f"       {playerInfo['inventory']['weapon2']}*",
+        f"     {playerInfo['inventory']['weapon2']}*",
         f" Food            {playerInfo['inventory']['totalFood']}*",
         f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
-        f"* * * * * * * * * *"
+        f"* * * * * * * * * * *"
     ]
 def inventoryMain(inventoryM):
     map = [
