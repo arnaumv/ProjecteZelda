@@ -181,6 +181,8 @@ def move_player(map, direction, positions=1):
     return
 
 def go_by(map, entity):
+    global maps
+    invalid_positions = ["*", "T", "F", "C", "O","~", sanctuary_value0, sanctuary_value1, sanctuary_value2, sanctuary_value3, sanctuary_value4, sanctuary_value5, sanctuary_value6, "E1", "E2", "E3", "E4","E5","E6","E7","E8","E9" ]
     for cnt in range (0, len(maps[map]["elements"])):
         dict = maps[map]["elements"][cnt]
         if dict["name"] == entity.upper():
@@ -189,6 +191,7 @@ def go_by(map, entity):
                     entity_posx = value
                 if key == "y":
                     entity_posy = value
+    
                 
 
 """ lp = True
