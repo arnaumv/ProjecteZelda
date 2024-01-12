@@ -179,8 +179,17 @@ def move_player(map, direction, positions=1):
                     if key == "y":
                         value = player_posy
     return
-        
 
+def go_by(map, entity):
+    for cnt in range (0, len(maps[map]["elements"])):
+        dict = maps[map]["elements"][cnt]
+        if dict["name"] == entity.upper():
+            for key, value in dict.items():
+                if key == "x":
+                    entity_posx = value
+                if key == "y":
+                    entity_posy = value
+                
 
 """ lp = True
 invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
