@@ -17,6 +17,53 @@ def clear_terminal():
 
 
 ###################################   MENU PRINCIPAL    ############################################
+
+def gameMenu():
+    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             ##              * "
+        "\n *                                                             ##              * "
+        "\n *                                                          ##~~~              * "
+        "\n *                                                          ##~~~O             * "
+        "\n *    Zelda, Breath of the Wild                            ###~~~ \            * "
+        "\n *                                                           |@@@| \           * "
+        "\n *                                                           |   |  \          * "
+        "\n *                                                           =   ==            * "
+        "\n *                                                       %%%%%%%%%%%%          * "
+        "\n *                                                    %%%%%%%%%%%%%%%          * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+def gameMenu2():
+     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             &&              * "
+        "\n *                                                            oo &             * "
+        "\n *                                                    $       -- &##           * "
+        "\n *                                                    $$    <<OO####           * "
+        "\n *    Zelda, Breath of the Wild                        $$  //OOO####           * "
+        "\n *                                                      $$// OO#####           * "
+        "\n *                                                       **  OOO###            * "
+        "\n *                                                        &  @@@@\             * "
+        "\n *                                                            Q  Q             * "
+        "\n *                                                            Q  Q             * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+def gameMenu3():
+    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             &&              * "
+        "\n *                                                            ####             * "
+        "\n *                                                           ||                * "
+        "\n *                                                        @@@@@@@@@@@@         * "
+        "\n *    Zelda, Breath of the Wild                          @     ||@@@           * "
+        "\n *                                                             |@@@            * "
+        "\n *                                                            @@@              * "
+        "\n *                                                         @@@@||     @        * "
+        "\n *                                                      @@@@@@@@@@@@@          * "
+        "\n *                                                             ||              * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+
 def menu1():
     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
         "\n *                                                             ##              * "
@@ -29,7 +76,7 @@ def menu1():
         "\n *                                                           =   ==            * "
         "\n *                                                       %%%%%%%%%%%%          * "
         "\n *                                                    %%%%%%%%%%%%%%%          * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
 
 def menu2():
@@ -44,7 +91,7 @@ def menu2():
         "\n *                                                        &  @@@@\             * "
         "\n *                                                            Q  Q             * "
         "\n *                                                            Q  Q             * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
 
 def menu3():
@@ -59,10 +106,8 @@ def menu3():
         "\n *                                                         @@@@||     @        * "
         "\n *                                                      @@@@@@@@@@@@@          * "
         "\n *                                                             ||              * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
-
-
 
 #############################################################################################################
 

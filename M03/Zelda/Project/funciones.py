@@ -1,6 +1,7 @@
 from datetime import datetime
 from menus import *
 from menus import current_player_name
+from consultas import * 
 import random
 import os
 import pymysql
@@ -13,14 +14,69 @@ cur = conn.cursor()
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles
-menus = [menu1, menu2, menu3]
+
+menus = [gameMenu, gameMenu2, gameMenu3]
+
+menus2 = [menu1, menu2, menu3]
 
 def mostrar_menu_aleatorio():
     clear_terminal()
     menu_aleatorio = random.choice(menus)
     menu_aleatorio()
+def mostrar_menu_aleatorio2():
+    clear_terminal()
+    menu_aleatorio = random.choice(menus2)
+    menu_aleatorio()
 
-def prompt_usuari():
+def prompt_game1():
+    opcions_valides = ["new game", "help", "about", "exit"]
+    accio = input("What to do now? ").lower()
+    
+    while accio not in opcions_valides:
+        print("Invalid action")
+        accio = input("What to do now? ").lower()
+
+    # Realitzar accions segons l'opció escollida
+    if accio == "continue":
+        # Acció per a "Continue"
+        pass
+    elif accio == "new game":
+        newGameMenu()
+        pass
+    elif accio == "help":
+
+         # Acción para "Help"
+        helpMainMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                mostrar_menu_aleatorio()
+                prompt_game1()
+                break  
+            else:
+                print("Invalid action")
+        
+        
+    elif accio == "about":
+         # Acción para "About"
+        aboutMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                
+                mostrar_menu_aleatorio()
+                prompt_game1()
+                break  
+            else:
+                print("Invalid action")
+    elif accio == "exit":
+        # Acció per a "Exit"
+        pass
+
+
+# Este será el menú principal del juego si hay algun jugador registrado
+
+def prompt_game2():
     opcions_valides = ["continue", "new game", "help", "about", "exit"]
     accio = input("What to do now? ").lower()
     
@@ -43,7 +99,7 @@ def prompt_usuari():
             aboutInput = input("What to do now? ").lower()
             if aboutInput == 'back':
                 mostrar_menu_aleatorio()
-                prompt_usuari()
+                prompt_game1()
                 break  
             else:
                 print("Invalid action")
@@ -57,7 +113,7 @@ def prompt_usuari():
             if aboutInput == 'back':
                 
                 mostrar_menu_aleatorio()
-                prompt_usuari()
+                prompt_game1()
                 break  
             else:
                 print("Invalid action")
@@ -66,6 +122,18 @@ def prompt_usuari():
         pass
 
 
+def mainMenu():
+    # Primero ejecuta check_game_records
+    plays = check_game_records()
+
+    if plays:
+        # Si el resultado es True, ejecuta estas funciones
+        mostrar_menu_aleatorio2()
+        prompt_game2()
+    else:
+        # Si el resultado es False, ejecuta estas funciones
+        mostrar_menu_aleatorio()
+        prompt_game1()
 ##################################################################################
 
 ##########################      INFO PLAYER        #########################
