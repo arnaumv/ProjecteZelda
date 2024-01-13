@@ -242,7 +242,7 @@ def newGameMenu():
 
     clear_terminal()
 
-    print(" * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print("   * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                             * "
           "\n *                                                                             * "
           "\n *                                                                             * "
@@ -397,7 +397,7 @@ def aboutMenu():                                                                
                                                                                                                 
 def legendMenu(player_name):
         clear_terminal()
-        print(" * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        print("   * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
               "\n *    10,000 years ago, Hyrule was a land of prosperity thanks to the Sheikah * "
               "\n *    tribe. The Sheikah were a tribe of warriors who protected the Triforce, * "
               "\n *    a sacred relic that granted wishes.                                     * "
@@ -432,7 +432,7 @@ def legendMenu(player_name):
 def plotMenu(player_name):
     clear_terminal()
     from funciones import player
-    print(" * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print("   * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
          f"\n *   Now history is repeating itself, and Princess Zelda has been captured by * "
@@ -502,7 +502,36 @@ def zeldaSavedMenu():
 #################################################################################################################
 
 
+#########################################   REPORTS GAMES, MENU    #########################################
+                                                                                                              
+def reportsGamesMenu():    
+    clear_terminal()                                                                                 
+    print(" * Reports Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                  1. Usuaris que han jugat                                   * "                 
+        "\n *                  2. Quantitat de partides jugades per usuari                * "                 
+        "\n *                  3. Armes usades per cada usuari i dades de la partida      * "                 
+        "\n *                     on n’ha gastat més                                      * "                 
+        "\n *                  4. Menjar consumit per cada usuari i dades de la partida   * "                 
+        "\n *                     on n’ha consumit més                                    * "                 
+        "\n *                  5. Estadística de “blood moons”                            * "                 
+        "\n *                                                                             * "                 
+        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 
+    )  
 
+    while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "back":
+            clear_terminal()
+            mainMenu()
+            
+            break
+        else:
+            print("Invalid option. Please try again.")                                                                                                       
+                                                                                                              
+###############################################################################################################
 
 
 

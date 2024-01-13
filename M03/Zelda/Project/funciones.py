@@ -69,6 +69,11 @@ def prompt_game1():
                 break  
             else:
                 print("Invalid action")
+
+    elif accio == "reports":
+        reportsGamesMenu()
+        pass
+
     elif accio == "exit":
         # Acció per a "Exit"
         pass
@@ -117,6 +122,11 @@ def prompt_game2():
                 break  
             else:
                 print("Invalid action")
+
+
+    elif accio == "reports":
+        reportsGamesMenu()
+        pass
     elif accio == "exit":
         # Acció per a "Exit"
         pass

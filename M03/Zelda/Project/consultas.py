@@ -26,5 +26,5 @@ def check_game_records():
     else:
         plays = False
 
-# Llamar a la función
-check_game_records()
+    # Devolver el valor de plays
+    return plays
