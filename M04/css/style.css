@@ -7,11 +7,18 @@ body {
 }
 
 
+
+h3 {
+    font-family: 'Georgia', serif;
+    font-size: 2em; /* Ajusta este valor según tus necesidades */
+}
+
+/********************   Estilos para el menú ********************/
 /********************   Estilos para el menú ********************/
 .sticky-menu {
     position: sticky;
     top: 0;
-    background-image: url('/image/zelda.jpg');
+    background-image: url('/M04/image/zelda.jpg');
     background-size: cover;
     background-position: center;
     z-index: 1000;
@@ -29,8 +36,14 @@ body {
     padding: 0;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; /* Permitir que los elementos del menú se envuelvan en pantallas pequeñas */
+    /* Cambiar a un menú vertical en pantallas pequeñas */
+    @media screen and (max-width: 200px) {
+        flex-direction: row;
+        align-items: center;
+    }
 }
+
+
 
 .sticky-menu ul li {
     margin: 5px; /* Reducción del margen entre elementos del menú */
@@ -52,7 +65,7 @@ body {
     letter-spacing: 1px; /* Reducción del espacio entre letras */
 
     /* Media query para dispositivos más pequeños */
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 200px) {
         font-size: 14px; /* Reducción adicional del tamaño de la fuente para pantallas muy pequeñas */
         padding: 8px 12px; /* Ajuste del padding para pantallas muy pequeñas */
         letter-spacing: 0.5px; /* Reducción del espaciado de letras para pantallas muy pequeñas */
@@ -89,7 +102,13 @@ footer {
     border-radius: 15px;
     overflow: auto;
 }
-
+@media (max-width: 1480px) {
+    .game-info {
+        padding: 20px 10px; /* Reduce el espacio arriba y abajo */
+        max-width: 90%; /* Ajusta el ancho máximo a un porcentaje de la anchura de la ventana del navegador */
+        max-height: none; /* Elimina la altura máxima */
+    }
+}
 
 .section-about-us {
     display: flex;
@@ -99,7 +118,7 @@ footer {
     height: auto;
     max-height: 80vh;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(133, 223, 160, 0.8);
     margin: 20px auto; /* Añade margen superior e inferior */
     padding: 40px 20px; /* Añade espacio arriba y abajo */
     max-width: 600px;
@@ -137,7 +156,50 @@ footer {
     font-size: 58px; /* Tamaño del texto */
     text-align: center; /* Alineación del texto */
     text-shadow: 5px 2px 4px black; /* Contorno del texto */
+    font-family: 'Georgia', serif;
 }
+
+
+
+/******************   Estilos para el section game-image  (PERSONAJES) **********************/
+.image-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-image {
+    width: 350px; /* Ajusta este valor según tus necesidades */
+    height: 310px; /* Ajusta este valor según tus necesidades */
+    border: 3px solid #a1891fa9; /* Ajusta el color y el grosor del borde según tus necesidades */
+    box-sizing: border-box;
+    margin: 0 10px; /* Añade espacio a los lados de cada imagen */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Añade transiciones para suavizar el cambio de zoom y color de fondo */
+}
+
+.game-image:hover,
+.game-image:focus {
+    transform: scale(1.1); /* Aumenta el tamaño de la imagen al pasar el cursor sobre ella */
+    background-image: linear-gradient(to right, #d8bb96, #e4cc60f5); /* Cambia el color de fondo a un gradiente al pasar el cursor sobre la imagen */
+}
+
+@media (max-width: 800px) {
+    .image-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-image {
+       /* width: 90%; /* Ajusta este valor según tus necesidades */
+        height: 400px; /* Ajusta este valor según tus necesidades */
+        margin: 10px 0; /* Añade espacio arriba y abajo de cada imagen */
+        border: 2px solid #a1891fa9; /* Ajusta el color y el grosor del borde según tus necesidades */
+        box-sizing: border-box;
+        transition: transform 0.3s ease, background-color 0.3s ease; /* Añade transiciones para suavizar el cambio de zoom y color de fondo */
+    }
+}
+
+
+
 
 
 
@@ -168,10 +230,10 @@ footer {
     text-align:  justify; /* Centrar el texto */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipo de fuente elegante y profesional */
     font-size: 23px; /* Tamaño de letra más grande */
-    padding-left: 180px; /* Espacio a la izquierda del texto */
-    padding-right: 180px; /* Espacio a la derecha del texto */
+    /*padding-left: 180px; /* Espacio a la izquierda del texto */
+   /* padding-right: 180px; /* Espacio a la derecha del texto */
     @media screen and (max-width: 550px) {
-        padding: 15px 5px; /* Ajuste adicional del relleno para pantallas aún más pequeñas */
+        /*padding: 15px 5px; /* Ajuste adicional del relleno para pantallas aún más pequeñas */
         text-align: center;
     }
 }
