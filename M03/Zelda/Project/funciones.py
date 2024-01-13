@@ -29,7 +29,7 @@ def mostrar_menu_aleatorio2():
     menu_aleatorio()
 
 def prompt_game1():
-    opcions_valides = ["new game", "help", "about", "exit"]
+    opcions_valides = ["new game", "help", "about", "exit", "reports"]
     accio = input("What to do now? ").lower()
     
     while accio not in opcions_valides:
@@ -77,7 +77,7 @@ def prompt_game1():
 # Este será el menú principal del juego si hay algun jugador registrado
 
 def prompt_game2():
-    opcions_valides = ["continue", "new game", "help", "about", "exit"]
+    opcions_valides = ["continue", "new game", "help", "about", "exit", "reports"]
     accio = input("What to do now? ").lower()
     
     while accio not in opcions_valides:
@@ -121,7 +121,7 @@ def prompt_game2():
         # Acció per a "Exit"
         pass
 
-
+# Funcion que ejecuta el menu del juego 
 def mainMenu():
     # Primero ejecuta check_game_records
     plays = check_game_records()
@@ -134,6 +134,7 @@ def mainMenu():
         # Si el resultado es False, ejecuta estas funciones
         mostrar_menu_aleatorio()
         prompt_game1()
+
 ##################################################################################
 
 ##########################      INFO PLAYER        #########################
