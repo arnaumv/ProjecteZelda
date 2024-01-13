@@ -142,7 +142,10 @@ maps = {
 def print_hyrule(map_data, elements, inventory, map_name="Hyrule"):
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
     for element in elements:
-        map_data[element["y"]][element["x"]] = element["symbol"]
+        if element["name"] == "Enemy":
+            map_data[element["y"]][element["x"]] = element["symbol"] + str(element["life"])
+        else:
+            map_data[element["y"]][element["x"]] = element["symbol"]
 
     # Imprimir borde superior con el nombre del mapa y la primera línea del inventario
     print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * * *{inventory[0]}")
@@ -153,8 +156,6 @@ def print_hyrule(map_data, elements, inventory, map_name="Hyrule"):
 
     # Imprimir borde inferior con el mensaje
     print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open  * * * * * * * * * * *")
-
-# Llamar a la función para imprimir el terreno de Hyrule y el inventario
     
 #print_hyrule(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], inventoryM)
 
@@ -180,24 +181,32 @@ def move_player(map_data, elements, direction, num_steps):
             map_data[y_pos][x_pos] = "X"
             element["x"], element["y"] = x_pos, y_pos
     return True
+
 while True:
     print_hyrule(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], inventoryM)
     
-    command = input("What to do now? (ex: 'go up 3'): ").lower().split()
+    while True:
+        command = input("What to do now? (ex: 'go up 3'): ").lower().split()
 
-    if len(command) < 3:
-        print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
-        continue
+        if len(command) < 3:
+            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
+            continue
 
-    direction = command[1]
-    try:
-        num_steps = int(command[2])
-    except ValueError:
-        print("You can't go there, it's not a valid position")
-        continue
+        direction = command[1]
+        try:
+            num_steps = int(command[2])
+        except ValueError:
+            print("You can't go there, it's not a valid position")
+            continue
 
-    if not move_player(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], direction, num_steps):
-        print("You can't go there, it's not a valid position")
+        if move_player(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], direction, num_steps):
+            break
+        else:
+            print("You can't go there, it's not a valid position")
+
+
+
+            
 """ lp = True
 invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
 def move_player():
