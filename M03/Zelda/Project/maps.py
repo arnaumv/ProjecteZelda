@@ -138,6 +138,8 @@ maps = {
         ]
     },
 }
+
+
 def print_map(map_data, elements, inventory, map_name="Hyrule"):
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
     for element in elements:
@@ -146,23 +148,17 @@ def print_map(map_data, elements, inventory, map_name="Hyrule"):
         else:
             map_data[element["y"]][element["x"]] = element["symbol"]
 
-    # Add "*" to the borders
-    for i, row in enumerate(map_data):
-        for j, cell in enumerate(row):
-            if i == 0 or i == len(map_data) - 1 or j == 0 or j == len(row) - 1:
-                map_data[i][j] = "*"
-
-    # Imprimir borde superior con el nombre del mapa y la primera línea del inventario
-    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * * *{inventory[0]}")
+    # Imprimir borde superior con el nombre del mapa y el título del inventario
+    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * {inventory[0]}")
 
     # Imprime cada fila de map_data y las líneas restantes de inventory uno al lado del otro
-    for i in range(1, len(map_data) - 1):
-        print("* " + "".join(map_data[i][1:-1]) + " * " + inventory[i])
+    for i in range(1, len(map_data)):
+        # Limit the inventory to 20 characters per line
+        inventory_line = inventory[i][:20] if i < len(inventory) else ''
+        print("* " + "".join(map_data[i]) + " *" + inventory_line)
 
     # Imprimir borde inferior con el mensaje
-    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open  * * * * * * * * * * *")
-    
-#print_hyrule(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], inventoryM)
+    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open  * * * * * * * * *")
 
 def move_player(map_data, elements, direction, num_steps):
     invalid_positions = ["#", "T", "F", "K", "~", "*"]  # Añade aquí cualquier otro símbolo que represente una posición inválida
