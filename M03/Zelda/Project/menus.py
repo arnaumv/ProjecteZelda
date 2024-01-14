@@ -3,7 +3,6 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-
 conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
 cur = conn.cursor()
 
@@ -259,6 +258,7 @@ def newGameMenu():
         player_name = input("What's your name (Link)? ").strip()  # Elimina espacios al inicio y final
 
         if player_name.lower() == 'back':
+            from funciones import mainMenu  # Importación local
             mainMenu()
             break
 
@@ -525,8 +525,8 @@ def reportsGamesMenu():
 
         if action.lower() == "back":
             clear_terminal()
+            from funciones import mainMenu  # Importación local
             mainMenu()
-            
             break
         else:
             print("Invalid option. Please try again.")                                                                                                       
