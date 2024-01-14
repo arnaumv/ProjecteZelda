@@ -157,7 +157,7 @@ player = {
         "inventory": {
             "lives": 3,
             "max_lives": 3,
-            "timeBlood": 60,
+            "timeBlood": 25,
             "weapon1": "Wood Sword",
             "weapon2": "Wood Shield",
             "totalFood": 0,
@@ -212,19 +212,19 @@ santuarios = {
 }
 
 inventoryM = [
-        f"* * * * Inventory *",
-        f"                  *",
-        f"                  *",
-        f" {player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
-        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                *",
-        f" Equipment        *",
-        f"       {playerInfo['inventory']['weapon1']} *",
-        f"     {playerInfo['inventory']['weapon2']}*",
-        f" Food            {playerInfo['inventory']['totalFood']}*",
-        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
-        f"* * * * * * * * * * *"
-    ]
+    f"* * * * Inventory *",
+    f"                  *",
+    f"                  *",
+    f" {player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
+    f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
+    f"                *",
+    f" Equipment        *",
+    f"       {playerInfo['inventory']['weapon1']} *",
+    f"     {playerInfo['inventory']['weapon2']}*",
+    f" Food            {playerInfo['inventory']['totalFood']}*",
+    f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
+    f"* * * * * * * * * * *"
+]
 def inventoryMain(inventoryM):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",

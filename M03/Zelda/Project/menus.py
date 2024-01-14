@@ -279,7 +279,7 @@ def newGameMenu():
                 "inventory": {
                     "lives": 3,
                     "max_lives": 3,
-                    "timeBlood": 60,
+                    "timeBlood": 25,
                     "weapon1": "Wood Sword",
                     "weapon2": "Wood Shield",
                     "totalFood": 0,

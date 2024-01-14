@@ -138,7 +138,7 @@ maps = {
         ]
     },
 }
-def print_hyrule(map_data, elements, inventory, map_name="Hyrule"):
+def print_map(map_data, elements, inventory, map_name="Hyrule"):
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
     for element in elements:
         if element["name"] == "Enemy":
@@ -187,15 +187,36 @@ def move_player(map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
+## Definir las conexiones entre los mapas
+map_connections = {
+    "Hyrule": ["Gerudo", "Death mountain", "Castle"],
+    "Death mountain": ["Hyrule", "Necluda", "Castle"],
+    "Gerudo": ["Hyrule", "Necluda", "Castle"],
+    "Necluda": ["Death mountain", "Gerudo", "Castle"]
+}
+
+# Iniciar en el mapa "Hyrule"
+current_map = "Hyrule"
+
 while True:
-    print_hyrule(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], inventoryM)
+    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventoryM, map_name=current_map)
     
     while True:
-        command = input("What to do now? (ex: 'go up 3'): ").lower().split()
+        command = input("What to do now? (ex: 'go up 3' or 'go to Castle'): ").lower().split()
 
-        if len(command) < 3:
-            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
+        if len(command) < 2:
+            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]' or 'go to [map]'.")
             continue
+
+        if command[0] == "go" and command[1] == "to":
+            # Cambiar de mapa
+            new_map = " ".join(command[2:]).capitalize()
+            if new_map in map_connections[current_map]:
+                current_map = new_map
+                break
+            else:
+                print(f"You can't go to {new_map} from {current_map}.")
+                continue
 
         direction = command[1]
         try:
@@ -204,11 +225,10 @@ while True:
             print("You can't go there, it's not a valid position")
             continue
 
-        if move_player(maps["Hyrule"]["map"], maps["Hyrule"]["elements"], direction, num_steps):
+        if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
             break
         else:
             print("You can't go there, it's not a valid position")
-
 
             
 """ lp = True
