@@ -535,6 +535,35 @@ def reportsGamesMenu():
 
 
 
+#########################################   HELP, INVENTORY, MENU    #########################################
+                                                                                                              
+def helpInventoryMenu():    
+    clear_terminal()                                                                                 
+    print(" * Help, inventory * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                  
+        "\n *       Type 'show inventory main' to show the main inventory                 * "                 
+        "\n *             (main, weapons, Food)                                           * "                 
+        "\n *       Type 'eat X' to eat X, where X is a Food item                         * "                 
+        "\n *       Type 'Cook X' to Cook X, where X is a Food item                       * "                 
+        "\n *       Type 'equip X' to equip X, where X is a weapon                        * "                 
+        "\n *       Type 'unequip X' to unequip X, where X is a weapon                    * "                 
+        "\n *       Type 'back' now to go back to the 'Game'                              * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 
+    )  
+
+    while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "back":
+            clear_terminal()
+           
+           
+            break
+        else:
+            print("Invalid option. Please try again.")                                                                                                       
+                                                       
 
 
 

@@ -139,7 +139,6 @@ maps = {
     },
 }
 
-
 def print_map(map_data, elements, inventory, map_name="Hyrule"):
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
     for element in elements:
@@ -148,18 +147,28 @@ def print_map(map_data, elements, inventory, map_name="Hyrule"):
         else:
             map_data[element["y"]][element["x"]] = element["symbol"]
 
+    # Calculate the length of the longest line
+    max_length = max(len("".join(row)) for row in map_data)
+    max_length = max(max_length, len(map_name))
+
     # Imprimir borde superior con el nombre del mapa y el título del inventario
-    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * {inventory[0]}")
+    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * * *{inventory[0]}")
+
 
     # Imprime cada fila de map_data y las líneas restantes de inventory uno al lado del otro
-    for i in range(1, len(map_data)):
+    for i in range(len(map_data)):  # Comenzar desde 0
         # Limit the inventory to 20 characters per line
-        inventory_line = inventory[i][:20] if i < len(inventory) else ''
-        print("* " + "".join(map_data[i]) + " *" + inventory_line)
+        inventory_line = inventory[i+1][:20] if i+1 < len(inventory) else ''  # Start from 1 in inventory
+        print("*" + "".join(map_data[i]).ljust(max_length) +"*" + inventory_line.ljust(20))  # Pad inventory_line to 20 characters
 
     # Imprimir borde inferior con el mensaje
-    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open  * * * * * * * * *")
+    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * * *")
 
+
+
+
+#Funcion para moverse por el mapa
+    
 def move_player(map_data, elements, direction, num_steps):
     invalid_positions = ["#", "T", "F", "K", "~", "*"]  # Añade aquí cualquier otro símbolo que represente una posición inválida
     for element in elements:
@@ -183,6 +192,9 @@ def move_player(map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
+
+
+
 ## Definir las conexiones entre los mapas
 map_connections = {
     "Hyrule": ["Gerudo", "Death mountain", "Castle"],
@@ -190,19 +202,47 @@ map_connections = {
     "Gerudo": ["Hyrule", "Necluda", "Castle"],
     "Necluda": ["Death mountain", "Gerudo", "Castle"]
 }
+# Diccionario de inventarios
+inventories = {
+    "main": inventoryM,
+    "weapons": inventoryWeap,
+    "food": inventoryFood
+}
 
 # Iniciar en el mapa "Hyrule"
 current_map = "Hyrule"
+current_inventory = "main"  # Iniciar con el inventario principal
+
+
+
+
+
 
 while True:
-    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventoryM, map_name=current_map)
+    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
     
     while True:
-        command = input("What to do now? (ex: 'go up 3' or 'go to Castle'): ").lower().split()
+        command = input("What to do now? (ex: 'go up 3' or 'go to Castle' or 'show inventory [main/weapons/food/help]'): ").lower().split()
 
         if len(command) < 2:
-            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]' or 'go to [map]'.")
+            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]' or 'go to [map]' or 'show inventory [main/weapons/food/help]'.")
             continue
+
+        if command[0] == "show" and command[1] == "inventory":
+            if command[2] == "help":
+                # Llamar a la función helpInventoryMenu
+                from maps import helpInventoryMenu
+                helpInventoryMenu()
+                break
+            else:
+                # Cambiar de inventario
+                new_inventory = command[2]
+                if new_inventory in inventories:
+                    current_inventory = new_inventory
+                    break
+                else:
+                    print(f"You can't show {new_inventory} inventory.")
+                    continue
 
         if command[0] == "go" and command[1] == "to":
             # Cambiar de mapa

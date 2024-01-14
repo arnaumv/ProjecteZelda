@@ -1,6 +1,7 @@
 from datetime import datetime
 from menus import *
 from menus import current_player_name
+from menus import player_name
 from consultas import * 
 import random
 import os
@@ -212,17 +213,17 @@ santuarios = {
 }
 
 inventoryM = [
-    f" * * * * * * * * * * *",
-    f"       Inventory *",
-    f"{player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
-    f"Blood moon in {playerInfo['inventory']['timeBlood']} *",
-f"                *",
-    f"Equipment      *",
-    f"{playerInfo['inventory']['weapon1']}       *",
-    f"{playerInfo['inventory']['weapon2']}      *",
-    f"Food        {playerInfo['inventory']['totalFood']} *",
-    f"Weapons        {playerInfo['inventory']['totalWeapons']} *",
-    f""
+    f" * * * * Inventory *",
+    f"                   *",
+    f" {player_name}         ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}*",
+    f"  Blood moon in {playerInfo['inventory']['timeBlood']} *",
+    f"                   *",
+    f" Equipment         *",
+    f"       {playerInfo['inventory']['weapon1']}  *",
+    f"       {playerInfo['inventory']['weapon2']} *",
+    f" Food            {playerInfo['inventory']['totalFood']} *",
+    f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
+    f"                   *"
 ]
 def inventoryMain(inventoryM):
     map = [
