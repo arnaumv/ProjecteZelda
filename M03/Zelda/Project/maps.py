@@ -137,7 +137,55 @@ maps = {
             {"name" : "Closed Chest" , "symbol" : "M", "x" : 50, "y" : 1, "item" : "Shield"}
         ]
     },
+     "Castle" : {
+        "map" : [
+            [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," ","\\"," ","/"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," ","-","-"," ","O"," ","-","-"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","G","a","n","o","n"," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," ","/"," ","\\"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","|",">"," "," ","v","-","v","-","v","-","v"," "," "," ","|",">"," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ",","," "," "," ",","," "," ","/","_","\\"," "," ","|"," "," "," "," "," ","|"," "," ","/","_","\\"," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","|","\\","_","/","|"," "," ","|"," ","|","'","'","'","'","'","'","'","'","'","'","'","|"," ","|"," "," "," "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","(","q"," ","p",")",",","-","|"," ","|"," ","|","|"," "," ","_"," "," ","|","|"," ","|"," ","|","'","-",".","_"," ","|","\\"," "," "," "," "," "],
+            ["O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","\\","_","/","_","(","/","|"," ","|"," "," "," "," ","|","#","|"," "," "," "," ","|"," ","|"," ",")"," "," ","'","/","/"," "," "," "," "," "],
+            ["O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O"]
+        ],
+        "elements" : [
+            {"name" : "Player" , "symbol" : "X", "x" : 2, "y" : 8},
+            {"name" : "Tree" , "symbol" : "T", "x" : 1, "y" : 8, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 46, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 47, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 48, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 49, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 50, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 51, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 52, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 53, "y" :2, "hits" : 0},
+            {"name" : "Ganon" , "symbol" : "G", "x" : 20, "y" :8},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 0, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 1, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 2, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 3, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 4, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 5, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 6, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 7, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 8, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 9, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 10, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 11, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 12, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 13, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 14, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 15, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 16, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 17, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 18, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 19, "y" :7},
+        ]
+    }
 }
+
 
 def print_map(map_data, elements, inventory, map_name="Hyrule"):
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
@@ -168,7 +216,7 @@ def print_map(map_data, elements, inventory, map_name="Hyrule"):
 
 
 #Funcion para moverse por el mapa
-    
+  
 def move_player(map_data, elements, direction, num_steps):
     invalid_positions = ["#", "T", "F", "K", "~", "*"]  # Añade aquí cualquier otro símbolo que represente una posición inválida
     for element in elements:
@@ -216,7 +264,7 @@ current_inventory = "main"  # Iniciar con el inventario principal
 
 
 
-
+# Logica del Juego
 
 while True:
     print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
@@ -267,52 +315,3 @@ while True:
             print("You can't go there, it's not a valid position")
 
             
-""" lp = True
-invalid_positions = ["*", "T", "F", "C", "O","~"]  # Add other invalid positions here
-def move_player():
-    for _ in range(num_steps):
-        can_move = True
-        for i in range(len(hyrule)):
-            if x in hyrule[i]:
-                pos = hyrule[i].find("X")
-                if direction == "up" and (hyrule[i-1][pos] in invalid_positions or hyrule[i-1] == hyrule[0]):
-                    can_move = False
-                elif direction == "down" and (hyrule[i+1][pos] in invalid_positions or hyrule[i+1] == hyrule[11]):
-                    can_move = False
-                elif direction == "left" and (hyrule[i][pos-1] in invalid_positions or hyrule[i][pos-1] == hyrule[i][0]):
-                    can_move = False
-                elif direction == "right" and (hyrule[i][pos+1] in invalid_positions or hyrule[i][pos+1] == hyrule[i][59]):
-                    can_move = False
-
-                if can_move:
-                    hyrule[i] = hyrule[i].replace("X", " ")
-                    if direction == "up":
-                        hyrule[i-1] = hyrule[i-1][:pos] + x + hyrule[i-1][pos + 1:]
-                    elif direction == "down":
-                        hyrule[i+1] = hyrule[i+1][:pos] + x + hyrule[i+1][pos + 1:]
-                    elif direction == "left":
-                        hyrule[i] = hyrule[i][:pos-1] + x + hyrule[i][pos:]
-                    elif direction == "right":
-                        hyrule[i] = hyrule[i][:pos+1] + x + hyrule[i][pos+2:]
-                else:
-                    print("You can't go there, is not a valid position")
-                break
-        if not can_move:
-            break
-
-while lp:
-    print("".join(hyrule))
-    command = input("What to do now? (ex: 'go up 3'): ").lower().split()
-
-    if len(command) < 3:
-        print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
-        continue
-
-    direction = command[1]
-    try:
-        num_steps = int(command[2])
-    except ValueError:
-        print("You can't go there, is not a valid position")
-        continue
-
-    move_player() """
