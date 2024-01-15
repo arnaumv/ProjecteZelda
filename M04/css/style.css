@@ -18,7 +18,7 @@ h3 {
 .sticky-menu {
     position: sticky;
     top: 0;
-    background-image: url('/M04/image/zelda.jpg');
+    background-image: url('/image/zelda.jpg');
     background-size: cover;
     background-position: center;
     z-index: 1000;
@@ -93,20 +93,21 @@ footer {
     align-items: center;
     justify-content: center;
     height: auto;
-    /*max-height: 80vh;*/
     text-align: center;
     background-color: rgba(255, 255, 255, 0.8);
-    margin: 60px auto; /* Añade margen superior e inferior */
-    padding: 40px 20px; /* Añade espacio arriba y abajo */
+    margin: 60px auto;
+    padding: 40px 20px;
     max-width: 1300px;
     border-radius: 15px;
-    overflow: auto;
+    overflow: hidden; /* Prevents scrolling */
 }
+
 @media (max-width: 1480px) {
     .game-info {
-        padding: 20px 10px; /* Reduce el espacio arriba y abajo */
-        max-width: 90%; /* Ajusta el ancho máximo a un porcentaje de la anchura de la ventana del navegador */
-        max-height: none; /* Elimina la altura máxima */
+        padding: 20px 10px;
+        max-width: 92%;
+        max-height: none;
+        overflow: hidden; /* Prevents scrolling */
     }
 }
 
@@ -211,23 +212,49 @@ footer {
 }
 
 .map-itemWeapons {
-    
     display: flex;
     flex-direction: column;
-    /*align-items: center;*/
-    width: 45%;  /* Ajustado para permitir solo dos elementos por fila */
-    height: 200px;  /* Altura fija para todos los recuadros */
-    overflow: auto;  /* Asegura que el contenido no se desborde */
-    margin-bottom: 20px;  /* Agrega un espacio debajo de cada recuadro */
+    width: 45%;
+    height: 200px;
+    overflow: auto;
+    margin-bottom: 30px; /* Increase bottom margin */
+    margin-right: 10px; /* Add right margin */
+    margin-left: 10px; /* Add left margin */
+    position: relative;
+    transition: transform 0.3s; /* Add transition for smooth scaling */
+}
+
+.map-itemWeapons::before {
+    content: attr(data-text); /* Usa el atributo data-text */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-size: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    white-space: pre-wrap; /* Preserves line breaks */
+}
+.map-itemWeapons:hover::before {
+    opacity: 1;
 }
 
 .map-imageWeapons {
-    width: 100%;  /* Asegura que la imagen ocupe todo el ancho del recuadro */
-    height: 100%;  /* Asegura que la imagen ocupe toda la altura del recuadro */
-    border: 2px solid #427728;  /* Ajusta el color y el grosor del borde según tus preferencias */
+    width: auto;
+    height: 100%;
+    border: 2px solid #a1891fa9;
     box-sizing: border-box;
+    transition: transform 0.3s;
 }
 
+.map-itemWeapons:hover {
+    transform: scale(1.1); /* Scale the element up to 110% when hovered */
+}
 
 
 
@@ -305,3 +332,17 @@ footer {
 }
 
 /****************************************************/
+
+
+
+.texto-centrado {
+    text-align:  center; /* Centrar el texto */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipo de fuente elegante y profesional */
+    font-size: 23px; /* Tamaño de letra más grande */
+    /*padding-left: 180px; /* Espacio a la izquierda del texto */
+   /* padding-right: 180px; /* Espacio a la derecha del texto */
+    @media screen and (max-width: 550px) {
+        /*padding: 15px 5px; /* Ajuste adicional del relleno para pantallas aún más pequeñas */
+        text-align: center;
+    }
+}
