@@ -1,2 +1,4 @@
 He creado la BD en el servidor remoto "Proxmox" alojado en el Instituto Esteve Terradas.
 
+-- No la vamos a usar, era para hacer pruebas. --
+
