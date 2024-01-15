@@ -4,11 +4,22 @@ from menus import current_player_name
 import random
 import os
 import pymysql
+import mysql.connector
+
 
 conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
 cur = conn.cursor()
 
 
+############################### QUERYS ##############################
+
+def db_query(qry):
+    cnx = mysql.connector.connect(user='root', password='pwd', host='127.0.0.1', database='world')
+    cur = cnx.cursor()
+    cur.execute("SELECT * FROM city")
+    rst = cur.fetchall()
+    cnx.close()
+    return rst
 
 ###############################  OPCIONES MENU INICIO ##############################
 
