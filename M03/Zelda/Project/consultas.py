@@ -35,7 +35,7 @@ def generate_insert_weapon_query(game_id, weapon_name, equipped=False, lives_rem
                       VALUES ({}, '{}', {}, {})""".format(game_id, weapon_name, equipped, lives_remaining)
 
     return insert_query
-
+s
 # Ejemploo
 weapon_query = generate_insert_weapon_query(game_id=1, weapon_name="Espada", equipped=True, lives_remaining=3)
 print(weapon_query)
