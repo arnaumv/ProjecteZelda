@@ -1,1 +1,6 @@
+--------- WINDOWS -----------
+
+ssh -i (RUTA DE LA PRIVATE KEY) azureuser@20.26.234.155
+
+---------- LINUX ------------
 
