@@ -193,7 +193,6 @@ def move_player(map_data, elements, direction, num_steps):
 
                 # Update the player's position
                 x_pos, y_pos = new_x_pos, new_y_pos
->>>>>>> Stashed changes
 
             # Set the new position to "X"
             map_data[y_pos][x_pos] = "X"
