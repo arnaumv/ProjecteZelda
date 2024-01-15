@@ -2,8 +2,7 @@ from funciones import *
 import os
 import pymysql
 from datetime import datetime
-
-
+from consultas import *
 conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
 cur = conn.cursor()
 
@@ -17,6 +16,53 @@ def clear_terminal():
 
 
 ###################################   MENU PRINCIPAL    ############################################
+
+def gameMenu():
+    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             ##              * "
+        "\n *                                                             ##              * "
+        "\n *                                                          ##~~~              * "
+        "\n *                                                          ##~~~O             * "
+        "\n *    Zelda, Breath of the Wild                            ###~~~ \            * "
+        "\n *                                                           |@@@| \           * "
+        "\n *                                                           |   |  \          * "
+        "\n *                                                           =   ==            * "
+        "\n *                                                       %%%%%%%%%%%%          * "
+        "\n *                                                    %%%%%%%%%%%%%%%          * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+def gameMenu2():
+     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             &&              * "
+        "\n *                                                            oo &             * "
+        "\n *                                                    $       -- &##           * "
+        "\n *                                                    $$    <<OO####           * "
+        "\n *    Zelda, Breath of the Wild                        $$  //OOO####           * "
+        "\n *                                                      $$// OO#####           * "
+        "\n *                                                       **  OOO###            * "
+        "\n *                                                        &  @@@@\             * "
+        "\n *                                                            Q  Q             * "
+        "\n *                                                            Q  Q             * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+def gameMenu3():
+    print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        "\n *                                                             &&              * "
+        "\n *                                                            ####             * "
+        "\n *                                                           ||                * "
+        "\n *                                                        @@@@@@@@@@@@         * "
+        "\n *    Zelda, Breath of the Wild                          @     ||@@@           * "
+        "\n *                                                             |@@@            * "
+        "\n *                                                            @@@              * "
+        "\n *                                                         @@@@||     @        * "
+        "\n *                                                      @@@@@@@@@@@@@          * "
+        "\n *                                                             ||              * "
+        "\n * New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * * * * * * * "
+    )
+
+
 def menu1():
     print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
         "\n *                                                             ##              * "
@@ -29,7 +75,7 @@ def menu1():
         "\n *                                                           =   ==            * "
         "\n *                                                       %%%%%%%%%%%%          * "
         "\n *                                                    %%%%%%%%%%%%%%%          * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
 
 def menu2():
@@ -44,7 +90,7 @@ def menu2():
         "\n *                                                        &  @@@@\             * "
         "\n *                                                            Q  Q             * "
         "\n *                                                            Q  Q             * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
 
 def menu3():
@@ -59,10 +105,8 @@ def menu3():
         "\n *                                                         @@@@||     @        * "
         "\n *                                                      @@@@@@@@@@@@@          * "
         "\n *                                                             ||              * "
-        "\n * Continue, New Game, Help, About, Exit * * * * * * * * * * * * * * * * * * * * "
+        "\n * Continue, New Game, Help, About, Exit, Reports  * * * * * * * * * * * * * * *"
     )
-
-
 
 #############################################################################################################
 
@@ -186,7 +230,7 @@ def helpSavedGamesMenu():
 
 
 #########################################   NEW GAME, MENU    ##################################################
-                                                                                                               
+player_name = 'Link'    ##prueba###                                                                                                           
 current_player_name = None
                                                                                                               
 
@@ -197,7 +241,7 @@ def newGameMenu():
 
     clear_terminal()
 
-    print(" * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print("   * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                             * "
           "\n *                                                                             * "
           "\n *                                                                             * "
@@ -214,8 +258,8 @@ def newGameMenu():
         player_name = input("What's your name (Link)? ").strip()  # Elimina espacios al inicio y final
 
         if player_name.lower() == 'back':
-            mostrar_menu_aleatorio()
-            prompt_usuari()
+            from funciones import mainMenu  # Importación local
+            mainMenu()
             break
 
         # Verificar si se ha ingresado un nombre
@@ -235,7 +279,7 @@ def newGameMenu():
                 "inventory": {
                     "lives": 3,
                     "max_lives": 3,
-                    "timeBlood": 60,
+                    "timeBlood": 25,
                     "weapon1": "Wood Sword",
                     "weapon2": "Wood Shield",
                     "totalFood": 0,
@@ -256,13 +300,13 @@ def newGameMenu():
                     "roasted": {"count": 1, "hearts": 4}
                 },
                 "sanctuaries": {
-                    "S0": {"name": "S0?", "oppened": False},
-                    "S1": {"name": "S1?", "oppened": False},
-                    "S2": {"name": "S2?", "oppened": False},
-                    "S3": {"name": "S3?", "oppened": False},
-                    "S4": {"name": "S4?", "oppened": False},
-                    "S5": {"name": "S5?", "oppened": False},
-                    "S6": {"name": "S6?", "oppened": False},
+                    "S0": {"name": "S0?", "opened": False},
+                    "S1": {"name": "S1?", "opened": False},
+                    "S2": {"name": "S2?", "opened": False},
+                    "S3": {"name": "S3?", "opened": False},
+                    "S4": {"name": "S4?", "opened": False},
+                    "S5": {"name": "S5?", "opened": False},
+                    "S6": {"name": "S6?", "opened": False},
                 },
             }
             
@@ -353,7 +397,7 @@ def aboutMenu():                                                                
                                                                                                                 
 def legendMenu(player_name):
         clear_terminal()
-        print(" * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        print("   * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
               "\n *    10,000 years ago, Hyrule was a land of prosperity thanks to the Sheikah * "
               "\n *    tribe. The Sheikah were a tribe of warriors who protected the Triforce, * "
               "\n *    a sacred relic that granted wishes.                                     * "
@@ -388,7 +432,7 @@ def legendMenu(player_name):
 def plotMenu(player_name):
     clear_terminal()
     from funciones import player
-    print(" * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print("   * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
          f"\n *   Now history is repeating itself, and Princess Zelda has been captured by * "
@@ -406,7 +450,7 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
-            print(player)
+            print(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
             # Start the game section
             break
         
@@ -458,10 +502,68 @@ def zeldaSavedMenu():
 #################################################################################################################
 
 
+#########################################   REPORTS GAMES, MENU    #########################################
+                                                                                                              
+def reportsGamesMenu():    
+    clear_terminal()                                                                                 
+    print(" * Reports Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                  
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                  1. Usuaris que han jugat                                   * "                 
+        "\n *                  2. Quantitat de partides jugades per usuari                * "                 
+        "\n *                  3. Armes usades per cada usuari i dades de la partida      * "                 
+        "\n *                     on n’ha gastat més                                      * "                 
+        "\n *                  4. Menjar consumit per cada usuari i dades de la partida   * "                 
+        "\n *                     on n’ha consumit més                                    * "                 
+        "\n *                  5. Estadística de “blood moons”                            * "                 
+        "\n *                                                                             * "                 
+        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 
+    )  
+
+    while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "back":
+            clear_terminal()
+            from funciones import mainMenu  # Importación local
+            mainMenu()
+            break
+        else:
+            print("Invalid option. Please try again.")                                                                                                       
+                                                                                                              
+###############################################################################################################
 
 
 
+#########################################   HELP, INVENTORY, MENU    #########################################
+                                                                                                              
+def helpInventoryMenu():    
+    clear_terminal()                                                                                 
+    print(" * Help, inventory * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                  
+        "\n *       Type 'show inventory main' to show the main inventory                 * "                 
+        "\n *             (main, weapons, Food)                                           * "                 
+        "\n *       Type 'eat X' to eat X, where X is a Food item                         * "                 
+        "\n *       Type 'Cook X' to Cook X, where X is a Food item                       * "                 
+        "\n *       Type 'equip X' to equip X, where X is a weapon                        * "                 
+        "\n *       Type 'unequip X' to unequip X, where X is a weapon                    * "                 
+        "\n *       Type 'back' now to go back to the 'Game'                              * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n *                                                                             * "                 
+        "\n * Back  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                 
+    )  
 
+    while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "back":
+            clear_terminal()
+           
+           
+            break
+        else:
+            print("Invalid option. Please try again.")                                                                                                       
+                                                       
 
 
 
@@ -506,11 +608,3 @@ def map(santuarios):
     ]
 
     print("".join(map))
-
-
-
-
-
-
-
-
