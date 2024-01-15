@@ -9,15 +9,7 @@ conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda
 cur = conn.cursor()
 
 
-############################### QUERYS ##############################
 
-def db_query(qry):
-    cnx = mysql.connector.connect(user='root', password='pwd', host='127.0.0.1', database='world')
-    cur = cnx.cursor()
-    cur.execute("SELECT * FROM city")
-    rst = cur.fetchall()
-    cnx.close()
-    return rst
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles
@@ -155,20 +147,6 @@ def inventoryMain(santuarios, playerInfo):
         f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-    inventoryM = [
-        f"* * * * Inventory *",
-        f"                  *",
-        f"                  *",
-        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
-        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                  *",
-        f" Equipment        *",
-        f"       {playerInfo['inventory']['weapon1']} *",
-        f"       {playerInfo['inventory']['weapon2']}*",
-        f" Food            {playerInfo['inventory']['totalFood']}*",
-        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
-        f"* * * * * * * * * *"
     ]
 
     inventoryM = [
