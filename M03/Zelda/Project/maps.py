@@ -146,6 +146,7 @@ maps = {
 #print(hyrule[0])
 
 
+<<<<<<< Updated upstream
 def move_player(map, direction, positions=1):
     global maps
     invalid_positions = ["*", "T", "F", "C", "O","~", sanctuary_value0, sanctuary_value1, sanctuary_value2, sanctuary_value3, sanctuary_value4, sanctuary_value5, sanctuary_value6, "E1", "E2", "E3", "E4","E5","E6","E7","E8","E9" ]
@@ -226,20 +227,131 @@ def move_player():
                 break
         if not can_move:
             break
+=======
+def print_map(map_data, elements, inventory, map_name="Hyrule"):
+    # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
+    for element in elements:
+        if element["name"] == "Enemy":
+            map_data[element["y"]][element["x"]] = element["symbol"] + str(element["life"])
+        else:
+            map_data[element["y"]][element["x"]] = element["symbol"]
 
-while lp:
-    print("".join(hyrule))
-    command = input("What to do now? (ex: 'go up 3'): ").lower().split()
+    # Calculate the length of the longest line
+    max_length = max(len("".join(row)) for row in map_data)
+    max_length = max(max_length, len(map_name))
 
-    if len(command) < 3:
-        print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]'.")
-        continue
+    # Imprimir borde superior con el nombre del mapa y el título del inventario
+    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * * *{inventory[0]}")
 
-    direction = command[1]
-    try:
-        num_steps = int(command[2])
-    except ValueError:
-        print("You can't go there, is not a valid position")
-        continue
 
-    move_player() """
+    # Imprime cada fila de map_data y las líneas restantes de inventory uno al lado del otro
+    for i in range(len(map_data)):  # Comenzar desde 0
+        # Limit the inventory to 20 characters per line
+        inventory_line = inventory[i+1][:20] if i+1 < len(inventory) else ''  # Start from 1 in inventory
+        print("*" + "".join(map_data[i]).ljust(max_length) +"*" + inventory_line.ljust(20))  # Pad inventory_line to 20 characters
+
+    # Imprimir borde inferior con el mensaje
+    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * * *")
+
+
+
+
+#Funcion para moverse por el mapa
+  
+def move_player(map_data, elements, direction, num_steps):
+    invalid_positions = ["#", "T", "F", "K", "~", "*"]  # Añade aquí cualquier otro símbolo que represente una posición inválida
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+            for _ in range(num_steps):
+                new_x_pos = x_pos + (1 if direction == "right" else -1) if direction in ["left", "right"] else x_pos
+                new_y_pos = y_pos + (1 if direction == "down" else -1) if direction in ["up", "down"] else y_pos
+
+                if new_x_pos < 0 or new_y_pos < 0 or new_y_pos >= len(map_data) or new_x_pos >= len(map_data[new_y_pos]) or map_data[new_y_pos][new_x_pos] in invalid_positions:
+                    return False
+
+                # Set the old position to empty
+                map_data[y_pos][x_pos] = " "
+
+                # Update the player's position
+                x_pos, y_pos = new_x_pos, new_y_pos
+>>>>>>> Stashed changes
+
+            # Set the new position to "X"
+            map_data[y_pos][x_pos] = "X"
+            element["x"], element["y"] = x_pos, y_pos
+    return True
+
+
+
+
+## Definir las conexiones entre los mapas
+map_connections = {
+    "Hyrule": ["Gerudo", "Death mountain", "Castle"],
+    "Death mountain": ["Hyrule", "Necluda", "Castle"],
+    "Gerudo": ["Hyrule", "Necluda", "Castle"],
+    "Necluda": ["Death mountain", "Gerudo", "Castle"]
+}
+# Diccionario de inventarios
+inventories = {
+    "main": inventoryM,
+    "weapons": inventoryWeap,
+    "food": inventoryFood
+}
+
+# Iniciar en el mapa "Hyrule"
+current_map = "Hyrule"
+current_inventory = "main"  # Iniciar con el inventario principal
+
+
+
+
+# Logica del Juego
+
+while True:
+    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
+    
+    while True:
+        command = input("What to do now? (ex: 'go up 3' or 'go to Castle' or 'show inventory [main/weapons/food/help]'): ").lower().split()
+
+        if len(command) < 2:
+            print("Invalid command. Please enter a command in the format 'go [direction] [number of steps]' or 'go to [map]' or 'show inventory [main/weapons/food/help]'.")
+            continue
+
+        if command[0] == "show" and command[1] == "inventory":
+            if command[2] == "help":
+                # Llamar a la función helpInventoryMenu
+                from maps import helpInventoryMenu
+                helpInventoryMenu()
+                break
+            else:
+                # Cambiar de inventario
+                new_inventory = command[2]
+                if new_inventory in inventories:
+                    current_inventory = new_inventory
+                    break
+                else:
+                    print(f"You can't show {new_inventory} inventory.")
+                    continue
+
+        if command[0] == "go" and command[1] == "to":
+            # Cambiar de mapa
+            new_map = " ".join(command[2:]).capitalize()
+            if new_map in map_connections[current_map]:
+                current_map = new_map
+                break
+            else:
+                print(f"You can't go to {new_map} from {current_map}.")
+                continue
+
+        direction = command[1]
+        try:
+            num_steps = int(command[2])
+        except ValueError:
+            print("You can't go there, it's not a valid position")
+            continue
+
+        if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
+            break
+        else:
+            print("You can't go there, it's not a valid position")
