@@ -1,36 +1,36 @@
 from datetime import datetime
 from menus import *
 from menus import current_player_name
+from menus import player_name
+from consultas import * 
 import random
 import os
 import pymysql
-import mysql.connector
 
 conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
 cur = conn.cursor()
 
-############################### QUERYS ##############################
 
-def db_query(qry):
-    cnx = mysql.connector.connect(user='root', password='pwd', host='127.0.0.1', database='world')
-    cur = cnx.cursor()
-    cur.execute("SELECT * FROM city")
-    rst = cur.fetchall()
-    cnx.close()
-    return rst
 
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles
-menus = [menu1, menu2, menu3]
+
+menus = [gameMenu, gameMenu2, gameMenu3]
+
+menus2 = [menu1, menu2, menu3]
 
 def mostrar_menu_aleatorio():
     clear_terminal()
     menu_aleatorio = random.choice(menus)
     menu_aleatorio()
+def mostrar_menu_aleatorio2():
+    clear_terminal()
+    menu_aleatorio = random.choice(menus2)
+    menu_aleatorio()
 
-def prompt_usuari():
-    opcions_valides = ["continue", "new game", "help", "about", "exit"]
+def prompt_game1():
+    opcions_valides = ["new game", "help", "about", "exit", "reports"]
     accio = input("What to do now? ").lower()
     
     while accio not in opcions_valides:
@@ -52,7 +52,7 @@ def prompt_usuari():
             aboutInput = input("What to do now? ").lower()
             if aboutInput == 'back':
                 mostrar_menu_aleatorio()
-                prompt_usuari()
+                prompt_game1()
                 break  
             else:
                 print("Invalid action")
@@ -66,14 +66,85 @@ def prompt_usuari():
             if aboutInput == 'back':
                 
                 mostrar_menu_aleatorio()
-                prompt_usuari()
+                prompt_game1()
                 break  
             else:
                 print("Invalid action")
+
+    elif accio == "reports":
+        reportsGamesMenu()
+        pass
+
     elif accio == "exit":
         # Acció per a "Exit"
         pass
 
+
+# Este será el menú principal del juego si hay algun jugador registrado
+
+def prompt_game2():
+    opcions_valides = ["continue", "new game", "help", "about", "exit", "reports"]
+    accio = input("What to do now? ").lower()
+    
+    while accio not in opcions_valides:
+        print("Invalid action")
+        accio = input("What to do now? ").lower()
+
+    # Realitzar accions segons l'opció escollida
+    if accio == "continue":
+        # Acció per a "Continue"
+        pass
+    elif accio == "new game":
+        newGameMenu()
+        pass
+    elif accio == "help":
+
+         # Acción para "Help"
+        helpMainMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                mostrar_menu_aleatorio()
+                prompt_game1()
+                break  
+            else:
+                print("Invalid action")
+        
+        
+    elif accio == "about":
+         # Acción para "About"
+        aboutMenu()
+        while True:  
+            aboutInput = input("What to do now? ").lower()
+            if aboutInput == 'back':
+                
+                mostrar_menu_aleatorio()
+                prompt_game1()
+                break  
+            else:
+                print("Invalid action")
+
+
+    elif accio == "reports":
+        reportsGamesMenu()
+        pass
+    elif accio == "exit":
+        # Acció per a "Exit"
+        pass
+
+# Funcion que ejecuta el menu del juego 
+def mainMenu():
+    # Primero ejecuta check_game_records
+    plays = check_game_records()
+
+    if plays:
+        # Si el resultado es True, ejecuta estas funciones
+        mostrar_menu_aleatorio2()
+        prompt_game2()
+    else:
+        # Si el resultado es False, ejecuta estas funciones
+        mostrar_menu_aleatorio()
+        prompt_game1()
 
 ##################################################################################
 
@@ -87,7 +158,7 @@ player = {
         "inventory": {
             "lives": 3,
             "max_lives": 3,
-            "timeBlood": 60,
+            "timeBlood": 25,
             "weapon1": "Wood Sword",
             "weapon2": "Wood Shield",
             "totalFood": 0,
@@ -108,13 +179,13 @@ player = {
             "roasted": {"count": 1, "hearts":4}
         },
         "sanctuaries": {
-            "S0": {"name": "S0?" , "oppened": False} ,
-            "S1":  {"name": "S1?" , "oppened": False} ,
-            "S2":  {"name": "S2?" , "oppened": False} ,
-            "S3":  {"name": "S3?" , "oppened": False} ,
-            "S4":  {"name": "S4?" , "oppened": False} ,
-            "S5":  {"name": "S5?" , "oppened": False} ,
-            "S6":  {"name": "S6?" , "oppened": False} ,
+            "S0": {"name": "S0?" , "opened": False} ,
+            "S1":  {"name": "S1?" , "opened": False} ,
+            "S2":  {"name": "S2?" , "opened": False} ,
+            "S3":  {"name": "S3?" , "opened": False} ,
+            "S4":  {"name": "S4?" , "opened": False} ,
+            "S5":  {"name": "S5?" , "opened": False} ,
+            "S6":  {"name": "S6?" , "opened": False} ,
         },
     }
 }
@@ -141,8 +212,20 @@ santuarios = {
     "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
 }
 
-
-def inventoryMain(santuarios, playerInfo):
+inventoryM = [
+    f" * * * * Inventory *",
+    f"                   *",
+    f" {player_name}         ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}*",
+    f"  Blood moon in {playerInfo['inventory']['timeBlood']} *",
+    f"                   *",
+    f" Equipment         *",
+    f"       {playerInfo['inventory']['weapon1']}  *",
+    f"       {playerInfo['inventory']['weapon2']} *",
+    f" Food            {playerInfo['inventory']['totalFood']} *",
+    f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
+    f"                   *"
+]
+def inventoryMain(inventoryM):
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
         f"*                                                         *",
@@ -158,20 +241,7 @@ def inventoryMain(santuarios, playerInfo):
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
 
-    inventoryM = [
-        f"* * * * Inventory *",
-        f"                  *",
-        f"                  *",
-        f" {current_player_name}  ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}      *",
-        f" Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                  *",
-        f" Equipment        *",
-        f"       {playerInfo['inventory']['weapon1']} *",
-        f"       {playerInfo['inventory']['weapon2']}*",
-        f" Food            {playerInfo['inventory']['totalFood']}*",
-        f" Weapons         {playerInfo['inventory']['totalWeapons']}*",
-        f"* * * * * * * * * *"
-    ]
+   
 
     for i in range(len(map)):
         print(map[i], inventoryM[i])
@@ -186,33 +256,15 @@ def inventoryMain(santuarios, playerInfo):
 foods = {
     "food": player[ultimo_jugador]["food"]
 }
-
-def inventoryFoods(santuarios, foods):
-    map = [
-        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-        f"*                                                         *",
-        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
-        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
-        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
-        f"*                                                         *",
-        f"*                         Castle                          *",
-        f"*                                                         *",
-        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
-        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
-        f"*                                                         *",
-        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-
-    # Acceder a los valores de "count" para cada comida
-    vegetables_count = foods['food']['vegetables']['count']
-    fish_count = foods['food']['fish']['count']
-    meat_count = foods['food']['meat']['count']
-    salads_count = foods['food']['salads']['count']
-    pescatarian_count = foods['food']['pescatarian']['count']
-    roasted_count = foods['food']['roasted']['count']
-
-    # Incorporar estos valores en tu inventario
-    inventoryFood = [
+# Acceder a los valores de "count" para cada comida
+vegetables_count = foods['food']['vegetables']['count']
+fish_count = foods['food']['fish']['count']
+meat_count = foods['food']['meat']['count']
+salads_count = foods['food']['salads']['count']
+pescatarian_count = foods['food']['pescatarian']['count']
+roasted_count = foods['food']['roasted']['count']
+# Incorporar estos valores en tu inventario
+inventoryFood = [
         f"* * * * * Foods *",
         f"                  *",
         f"                  *",
@@ -227,23 +279,65 @@ def inventoryFoods(santuarios, foods):
         f"* * * * * * * * * *"
     ]
 
+def inventoryFoods(inventoryFood):
+    map = [
+        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"*                                                         *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
+        f"*                                                         *",
+        f"*                         Castle                          *",
+        f"*                                                         *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
+        f"*                                                         *",
+        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+
+ 
+
+   
+
     for i in range(len(map)):
         print(map[i], inventoryFood[i])
 
 
 ########################################### INVENTARI WEAPONS #####################################################
 
-def inventoryWeapons(santuarios, player):
-    jugadores = player.keys()
-    ultimo_jugador = list(jugadores)[-1]
 
-    # Acceder a la información de armas del último jugador
-    weapons_info = player[ultimo_jugador]['weapons']
 
-    # Acceder a los detalles de las armas del último jugador
-    uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
-    count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
-    equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
+
+jugadores = player.keys()
+ultimo_jugador = list(jugadores)[-1]
+
+# Acceder a la información de armas del último jugador
+weapons_info = player[ultimo_jugador]['weapons']
+
+# Acceder a los detalles de las armas del último jugador
+uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
+count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
+equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
+inventoryWeap = [
+            f"* * * * * Weapons *",
+            f"                  *",
+            f"                  *",
+            f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
+            f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+            f"Sword         {uses['sword']}/{count['sword']} *",
+            f"  {'(equipped)' if equipped['sword'] else ''}                *",
+            f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
+            f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+            f"Shield        {uses['shield']}/{count['shield']} *",
+            f"  {'(equipped)' if equipped['shield'] else ''}                *",
+            f"* * * * * * * * * *",
+            f"* * * * * * * * * * *"
+        ]
+
+def inventoryWeapons(inventoryWeap):
+    
 
     map = [
         f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
@@ -259,21 +353,7 @@ def inventoryWeapons(santuarios, player):
         f"*                                                         *",
         f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
-    inventoryWeap = [
-            f"* * * * * Weapons *",
-            f"                  *",
-            f"                  *",
-            f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
-            f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
-            f"Sword         {uses['sword']}/{count['sword']} *",
-            f"  {'(equipped)' if equipped['sword'] else ''}                *",
-            f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
-            f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
-            f"Shield        {uses['shield']}/{count['shield']} *",
-            f"  {'(equipped)' if equipped['shield'] else ''}                *",
-            f"* * * * * * * * * *",
-            f"* * * * * * * * * * *"
-        ]
+   
 
     for i in range(len(map)):
         print(map[i], inventoryWeap[i])
@@ -383,7 +463,6 @@ def showStartedGames():
         f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
     ]
     print("".join(showGames))
-
 
 
 
