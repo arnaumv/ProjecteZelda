@@ -16,6 +16,11 @@ h3 {
 h4  {
     font-size: 20px;
     font-family: 'Georgia', serif;
+  /* text-align: left*/;}
+
+h5  {
+    font-size: 20px;
+    font-family: 'Georgia', serif;
    text-align: left;}
 /********************   Estilos para el menú ********************/
 /********************   Estilos para el menú ********************/
@@ -199,7 +204,7 @@ footer {
     height: 310px; /* Ajusta este valor según tus necesidades */
     border: 3px solid #a1891fa9; /* Ajusta el color y el grosor del borde según tus necesidades */
     box-sizing: border-box;
-    margin: 0 10px; /* Añade espacio a los lados de cada imagen */
+    margin: 0 20px; /* Aumenta el espacio a los lados de cada imagen */
     transition: transform 0.3s ease, background-color 0.3s ease; /* Añade transiciones para suavizar el cambio de zoom y color de fondo */
 }
 
@@ -290,7 +295,14 @@ footer {
 /******** Estilo para texto con imagen a la izqueieda ********/ 
 
 
+.left-image {
+    float: left;
+    margin-right: 20px;
+}
 
+.text {
+    overflow: auto;  /* Esto es para limpiar el float */
+}
 
 
 
@@ -331,12 +343,17 @@ footer {
     transform: scale(1.05); /* Aumenta el tamaño de la tarjeta de noticias un 5% */
     transition: transform 0.3s ease-in-out; /* Añade una transición suave al efecto de zoom */
 }
+
+
+
 /**************  Estilos para la pagina del TUTORIAL  **************/
 
+
+/*Estilos para "ARMAS" */   
 .map-gridWeapons {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
 }
 
 .map-itemWeapons {
@@ -385,6 +402,26 @@ footer {
 }
 
 
+@media (max-width: 958px) {
+    .map-gridWeapons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .map-itemWeapons {
+        width: 50%; /* Ajusta el ancho para pantallas más pequeñas */
+        height: auto; /* Ajusta la altura para pantallas más pequeñas */
+        margin-right: 0; /* Elimina el margen derecho */
+        margin-left: 0; /* Elimina el margen izquierdo */
+    }
+
+    .map-imageWeapons {
+        width: 100%; /* Ajusta el ancho de la imagen para pantallas más pequeñas */
+    }
+}
+
+
+
 
 
 .map-grid {
@@ -403,7 +440,7 @@ footer {
 
 .map-image {
     max-height: 60%;  /* Establece una altura máxima para las imágenes */
-    border: 2px solid #99ca82;  /* Ajusta el color y el grosor del borde según tus preferencias */
+    border: 2px solid #d8cb1a;  /* Ajusta el color y el grosor del borde según tus preferencias */
     box-sizing: border-box;
     object-fit: cover;  /* Asegura que las imágenes mantengan sus proporciones */
 }
