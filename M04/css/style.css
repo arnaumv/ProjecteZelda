@@ -82,6 +82,24 @@ h4  {
     color: #000000;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /****************** Estilos para el footer ********************/
 footer {
     text-align: center;
@@ -208,7 +226,111 @@ footer {
 }
 
 
+/* Carrusel de imágenes */
 
+.carousel {
+    position: relative;
+    width: 80%; /* Ajusta este valor según tus necesidades */
+    margin: auto; /* Centra el carrusel */
+    overflow: hidden;
+}
+
+  .carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+
+  
+  .carousel img {
+    width: 100%;
+    height: auto;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s;
+  }
+
+  .prev {
+    left: 0;
+  }
+
+  .next {
+    right: 0;
+  }
+
+  .carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+
+  .carousel-item img {
+    width: 100%;
+    height: 300px; /* Ajusta este valor según tus necesidades */
+    object-fit: cover; /* Asegura que las imágenes se redimensionen correctamente */
+}
+
+
+/******** Estilo para texto con imagen a la izqueieda ********/ 
+
+
+
+
+
+
+
+
+
+
+/*********  Noticias *************"*/   
+.news-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 50px; /* Añade espacio en la parte superior */
+}
+.news-card {
+    width: calc(100% / 3 - 20px); /* Ajusta este valor según tus necesidades */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.news-card img {
+    width: 100%;
+    height: 200px; /* Ajusta este valor según tus necesidades */
+    object-fit: cover;
+}
+
+.news-card p {
+    padding: 10px;
+}
+.news-card p a {
+    color: inherit; /* Hace que el color del enlace sea el mismo que el del texto circundante */
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+.news-card:hover {
+    background-color: #a3d8a8; /* Cambia este valor al color que prefieras */
+    transform: scale(1.05); /* Aumenta el tamaño de la tarjeta de noticias un 5% */
+    transition: transform 0.3s ease-in-out; /* Añade una transición suave al efecto de zoom */
+}
 /**************  Estilos para la pagina del TUTORIAL  **************/
 
 .map-gridWeapons {

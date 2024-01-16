@@ -44,8 +44,85 @@
  
         </section>
 
-        
 
+        <section class="game-info">
+            <img src="image/cuina.jpeg" alt="Descripción de la imagen">
+            <p class="texto-justificado">La saga cuenta con más de 15 juegos creados para casi todas las plataformas de Nintendo, muchos de los cuales introdujeron elementos jugables y gráficos que revolucionaron la industria del juego interactivo, como el salto automático, la fijación de blancos al presionar un botón, la asignación de objetos a botones y la mecánica y concepción actual de un juego de aventuras/RPG en 3 dimensiones. <br><br>Desde el lanzamiento del primer videojuego, The Legend of Zelda, en 1986, la serie logró una inmensa popularidad acompañada de numerosas críticas favorables en la industria de los videojuegos, así como un éxito comercial en todo el mundo.</p>
+        </section>
+
+
+        <div class="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item">
+                <img src="image/BANNER1.jpg" alt="Imagen 1">
+              </div>
+              <div class="carousel-item">
+                <img src="image/SLIDE2.jpg" alt="Imagen 2">
+              </div>
+              <div class="carousel-item">
+                <img src="image/SLIDE4.jpg" alt="Imagen 3">
+              </div>
+              <!-- Añade más imágenes según sea necesario -->
+            </div>
+          
+            <button class="carousel-btn prev" onclick="prevSlide()">&#8249;</button>
+            <button class="carousel-btn next" onclick="nextSlide()">&#8250;</button>
+          </div>
+          
+          <script>
+            let currentIndex = 0;
+          
+            function nextSlide() {
+              currentIndex = (currentIndex + 1) % document.querySelectorAll('.carousel-item').length;
+              updateCarousel();
+            }
+          
+            function prevSlide() {
+              currentIndex = (currentIndex - 1 + document.querySelectorAll('.carousel-item').length) % document.querySelectorAll('.carousel-item').length;
+              updateCarousel();
+            }
+          
+            function updateCarousel() {
+              document.querySelector('.carousel-inner').style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+          </script>
+
+<section class="game-info">
+    <h3>Noticias</h3>
+    <br><br>
+    
+    <div class="news-container">
+        <div class="news-card">
+            <img src="/image/noticia1.jpg" alt="Noticia 1">
+            <p><a href="url_noticia_1">¿Es ‘The Legend of Zelda: Tears of the Kingdom’ realmente el mejor videojuego de la historia?</a></p>
+        </div>
+        <div class="news-card">
+            <img src="image/notoica2.jpeg" alt="Noticia 2">
+            <p><a href="https://elpais.com/icon/2023-05-31/hombres-de-50-anos-enganchados-a-un-videojuego-como-y-por-que-el-nuevo-zelda-lo-ha-conseguido.html">Hombres de 50 años enganchados a un videojuego: cómo y por qué el nuevo ‘Zelda’ lo ha conseguido</a></p>
+        </div>
+        <div class="news-card">
+            <img src="image/noticia3.png" alt="Noticia 3">
+            <p><a href="https://www.vidaextra.com/rpg/adios-a-the-legend-of-zelda-tears-of-the-kingdom-mi-viaje-hyrule-ha-terminado-acabar-ganondorf-apoteosica-batalla">Adiós a The Legend of Zelda: Tears of the Kingdom: mi viaje por Hyrule ha terminado tras acabar con Ganondorf en una apoteósica batalla </a></p>
+        </div>
+        <div class="news-card">
+            <img src="image/noticia4.jpg" alt="Noticia 4">
+            <p><a href="https://as.com/meristation/reportajes/25-anos-de-ocarina-of-time-el-zelda-que-enseno-como-hacer-aventuras-en-3d-r/">25 años de Ocarina of Time, el Zelda que enseñó cómo hacer aventuras en 3D</a></p>
+        </div>
+
+        <div class="news-card">
+            <img src="image/noticai5.png" alt="Noticia 4">
+            <p><a href="https://as.com/meristation/noticias/en-que-orden-jugar-la-saga-the-legend-of-zelda-n/">En qué orden jugar la saga The Legend of Zelda</a></p>
+        </div>
+
+        <div class="news-card">
+            <img src="image/noticia6.png" alt="Noticia 4">
+            <p><a href="https://www.xataka.com/videojuegos/nintendo-esta-llevando-su-guerra-emuladores-zelda-tears-of-the-kingdom-final">Nintendo está llevando su guerra contra los emuladores de 'Zelda: Tears of the Kingdom' hasta el final </a></p>
+        </div>
+
+
+
+    </div>
+</section>
 
         <section class="game-info">
             <h3>Personajes</h3>
