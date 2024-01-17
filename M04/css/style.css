@@ -404,21 +404,25 @@ footer {
 
 @media (max-width: 958px) {
     .map-gridWeapons {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
+        justify-content: space-around;
     }
 
     .map-itemWeapons {
-        width: 50%; /* Ajusta el ancho para pantallas más pequeñas */
-        height: auto; /* Ajusta la altura para pantallas más pequeñas */
-        margin-right: 0; /* Elimina el margen derecho */
-        margin-left: 0; /* Elimina el margen izquierdo */
+        width: 200px; /* Ajusta el ancho a un valor fijo */
+        height: 200px; /* Ajusta la altura a un valor fijo */
+        overflow: hidden; /* Oculta cualquier parte de la imagen que exceda el tamaño del contenedor */
     }
-
+    
     .map-imageWeapons {
-        width: 100%; /* Ajusta el ancho de la imagen para pantallas más pequeñas */
+        width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
+        height: 100%; /* Ajusta la altura de la imagen al 100% del contenedor */
+        object-fit: cover; /* Asegura que la imagen cubra todo el contenedor manteniendo su aspecto */
     }
 }
+
 
 
 
