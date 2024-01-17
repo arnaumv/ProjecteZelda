@@ -5,22 +5,51 @@ from menus import player_name
 from consultas import * 
 import random
 import os
+import pandas as pd
 import pymysql
-import mysql.connector
+import logging
+import sshtunnel
+from sshtunnel import SSHTunnelForwarder
 
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
 
+ssh_host = 'nombre del hist'
+ssh_username = 'username_ssh'
+ssh_password = 'contraseña_ssh'
+database_username = 'username'
+database_password = 'contraseña'
+database_name = 'ejemplo'
+ip = 'ip'
 
 ############################### QUERYS ##############################
 
+def open_ssh_tunnel(verbose=False):
+    if verbose:
+        sshtunnel.DEFAULT_LOGLEVEL = logging.DEBUG
+    
+    global tunnel
+    tunnel = SSHTunnelForwarder(
+        (ssh_host, 22),
+        ssh_username = ssh_username,
+        ssh_password = ssh_password,
+        remote_bind_address = ('ip', 3306)
+    )
+    
+    tunnel.start()
+
+def mysql_connect():
+    global connection
+    
+    connection = pymysql.connect(
+        host='ip',
+        user=database_username,
+        passwd=database_password,
+        db=database_name,
+        port=tunnel.local_bind_port
+    )
+
+
 def db_query(qry):
-    cnx = mysql.connector.connect(user='root', password='pwd', host='127.0.0.1', database='world')
-    cur = cnx.cursor()
-    cur.execute("SELECT * FROM city")
-    rst = cur.fetchall()
-    cnx.close()
-    return rst
+    return pd.read_sql_query(qry, connection)
 
 
 ###############################  OPCIONES MENU INICIO ##############################
