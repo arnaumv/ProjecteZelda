@@ -402,7 +402,7 @@ footer {
 }
 
 
-@media (max-width: 958px) {
+@media (max-width: 1158px) {
     .map-gridWeapons {
         flex-direction: row;
         flex-wrap: wrap;
