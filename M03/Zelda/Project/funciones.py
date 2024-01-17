@@ -12,7 +12,7 @@ import sshtunnel
 from sshtunnel import SSHTunnelForwarder
 
 
-ssh_host = 'nombre del hist'
+ssh_host = 'nombre del host'
 ssh_username = 'username_ssh'
 ssh_password = 'contraseña_ssh'
 database_username = 'username'
