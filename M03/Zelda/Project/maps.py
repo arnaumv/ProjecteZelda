@@ -140,3 +140,6 @@ while lp:
         continue
 
     move_player()
+
+    def openSanctuari();
+        
