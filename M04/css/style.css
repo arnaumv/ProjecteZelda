@@ -69,8 +69,8 @@ h5  {
     padding: 10px 15px; /* Ajuste del espacio alrededor del texto */
 
     /* Aplicación de la fuente y ajustes */
-    font-family: 'Verdana, Geneva', sans-serif;
-    font-size: 20px; /* Reducción del tamaño de la fuente para mejorar la adaptabilidad */
+    font-family: 'Georgia', serif;
+    font-size: 24px; /* Reducción del tamaño de la fuente para mejorar la adaptabilidad */
     letter-spacing: 1px; /* Reducción del espacio entre letras */
 
     /* Media query para dispositivos más pequeños */
@@ -171,12 +171,15 @@ footer {
     position: relative; /* Para controlar la superposición */
 }
 
-.full-width-image img {
-    padding-top: 5px;
+.full-width-image video {
+    
+    padding-bottom: 5px;
     width: 100%;
     height: 400px;
     display: block;
+    object-fit: cover; /* Para asegurar que el video cubra todo el espacio disponible */
     filter: blur(3px); /* Aplica un desenfoque de 5px a la imagen */
+
 }
 
 .image-title {
@@ -409,7 +412,6 @@ footer {
         align-items: center;
         justify-content: space-around;
     }
-
     .map-itemWeapons {
         width: 200px; /* Ajusta el ancho a un valor fijo */
         height: 200px; /* Ajusta la altura a un valor fijo */
@@ -422,7 +424,6 @@ footer {
         object-fit: cover; /* Asegura que la imagen cubra todo el contenedor manteniendo su aspecto */
     }
 }
-
 
 
 
