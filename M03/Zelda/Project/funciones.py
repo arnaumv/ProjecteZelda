@@ -15,6 +15,7 @@ from sshtunnel import SSHTunnelForwarder
 ssh_host = 'nombre del host'
 ssh_username = 'username_ssh'
 ssh_password = 'contraseña_ssh'
+ssh_private_key_path = '/ruta/a/tu/llave/privada.pem'
 database_username = 'username'
 database_password = 'contraseña'
 database_name = 'ejemplo'
@@ -31,6 +32,7 @@ def open_ssh_tunnel(verbose=False):
         (ssh_host, 22),
         ssh_username = ssh_username,
         ssh_password = ssh_password,
+        ssh_pkey = ssh_private_key_path
         remote_bind_address = ('ip', 3306)
     )
     
