@@ -53,6 +53,21 @@ def mysql_connect():
 def db_query(qry):
     return pd.read_sql_query(qry, connection)
 
+# PROMPT #
+
+prompt = []
+
+def promptAfegir(text):
+    global prompt
+    prompt.append(text)
+    if len(prompt) >= 4:
+        prompt.pop(0)
+
+
+def promptDibuixar():
+    global prompt
+    for cnt  in range(0, len(prompt)):
+        print(prompt[cnt])
 
 ###############################  OPCIONES MENU INICIO ##############################
 

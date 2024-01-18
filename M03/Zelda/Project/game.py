@@ -7,4 +7,4 @@ from funciones import player
 
 inventoryMain(santuarios, playerInfo)
 mostrar_menu_aleatorio()
-prompt_usuari()
+promptDibuixar()

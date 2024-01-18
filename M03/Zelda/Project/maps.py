@@ -200,7 +200,25 @@ def move_player(map_data, elements, direction, num_steps):
     return True
 
 
+#Funcion para pescar
 
+def fish(map_data, elements):
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+        
+        if map_data[y_pos + 1][x_pos] == "~" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~":
+            probabilidad = 0.2
+            numero_aleatorio = random.random()
+            if numero_aleatorio < 0.2:
+                promptAfegir("You got a fish")
+                player[last_player]["food"]["fish"]["count"] =+ 1
+                return
+            else:
+                promptAfegir("You didn't get a fish")
+                return
+
+                
 
 ## Definir las conexiones entre los mapas
 map_connections = {
@@ -272,3 +290,4 @@ while True:
             break
         else:
             print("You can't go there, it's not a valid position")
+
