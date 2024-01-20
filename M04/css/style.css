@@ -14,7 +14,7 @@ h3 {
 }
 
 h4  {
-    font-size: 20px;
+    font-size: 25px;
     font-family: 'Georgia', serif;
   /* text-align: left*/;}
 
@@ -27,7 +27,7 @@ h5  {
 .sticky-menu {
     position: sticky;
     top: 0;
-    background-image: url('/image/zelda.jpg');
+    background-image: url('../image/zelda.jpg');
     background-size: cover;
     background-position: center;
     z-index: 1000;
@@ -439,19 +439,19 @@ footer {
     display: flex;
     flex-direction: column;
     /*align-items: center;*/
-    width: 45%;  /* Ajusta este valor según el espacio que quieras entre las imágenes */
+    width: 46%;  /* Ajusta este valor según el espacio que quieras entre las imágenes */
     overflow: auto;  /* Asegura que el contenido no se desborde */
 }
 
 .map-image {
     max-height: 60%;  /* Establece una altura máxima para las imágenes */
-    border: 2px solid #d8cb1a;  /* Ajusta el color y el grosor del borde según tus preferencias */
+    border: 2px solid #c0ae5e;  /* Ajusta el color y el grosor del borde según tus preferencias */
     box-sizing: border-box;
     object-fit: cover;  /* Asegura que las imágenes mantengan sus proporciones */
 }
 
 .texto-tutorial {
-    text-align:  center; /* Centrar el texto */
+    text-align:  justify; /* Centrar el texto */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipo de fuente elegante y profesional */
     font-size: 17px; /* Tamaño de letra más grande */
     /*padding-left: 180px; /* Espacio a la izquierda del texto */
