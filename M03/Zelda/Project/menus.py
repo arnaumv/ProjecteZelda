@@ -3,9 +3,8 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-
-
-
+conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+cur = conn.cursor()
 
 def clear_terminal():
     if os.name == 'nt':  # Para sistemas Windows
@@ -151,7 +150,7 @@ def savedGamesMenu():
             # Construir el formato para mostrar los juegos
             for i in range(len(resultados)):
                 max_lives_last_player = 3
-                games[i] = (f'{i+1}: {resultados[i][2]} - {resultados[i][1]}, {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
+                games[i] = (f'{i+1}: {resultados[i][1]} - {resultados[i][2]}, {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
 
             show_games = [
                 f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
@@ -165,7 +164,7 @@ def savedGamesMenu():
                 f"\n * {games[6]}  *",
                 f"\n * {games[7]}  *",
                 f"\n *                                                                             *",
-                f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+                f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * * *"
             ]
             print("".join(show_games))
 
@@ -278,14 +277,13 @@ def newGameMenu():
             # Guardo informacion del juagdor en el diccionario player para poder usarlo en otras funciones durante la partida
             new_player_data = {
                 "inventory": {
-                "lives": 3,
-                "max_lives": 3,
-                "timeBlood": 25,
-                "weapon1": "Wood Sword",
-                "weapon2": "Wood Shield",
-                "totalFood": 0,
-                "totalWeapons": 2,
-                "chests_opened": 0,  # Add this line
+                    "lives": 3,
+                    "max_lives": 3,
+                    "timeBlood": 25,
+                    "weapon1": "Wood Sword",
+                    "weapon2": "Wood Shield",
+                    "totalFood": 0,
+                    "totalWeapons": 2,
                 },
                 "weapons": {
                     "wood sword": {"uses": 5, "count": 2, "equipped": True},
@@ -319,8 +317,32 @@ def newGameMenu():
             # Ir a la sección 'Legend'
             legendMenu(player_name)  # Pasar player_name a legendMenu()
 
-            # INSERT into the database
-            insert_into_database(player_name)
+            # INSERT en la base de datos
+            try:
+                conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+                cur = conn.cursor()
+
+                # Obtener la fecha y hora actual
+                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
+                # Valores por defecto para hearts_remaining y region
+                hearts_remaining = 3
+                default_region = 'Hyrule'
+
+                # Consulta para insertar en la tabla game
+                insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
+                               f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
+
+                cur.execute(insert_query)
+                conn.commit()
+
+                cur.close()
+                conn.close()
+                break  # Salir del bucle al completar la inserción
+            except pymysql.Error as e:
+                print(f"Error: {e}")
+                break
 
         else: 
             print(f'"{player_name}" is not a valid name')
@@ -430,7 +452,6 @@ def plotMenu(player_name):
             print("The adventure begins")
             ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
             # Start the game section
-            
             break
         
         else:

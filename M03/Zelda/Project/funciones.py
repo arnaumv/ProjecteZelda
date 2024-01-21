@@ -5,6 +5,11 @@ from menus import player_name
 from consultas import * 
 import random
 import os
+import pymysql
+
+conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+cur = conn.cursor()
+
 import pandas as pd
 import pymysql
 import logging
@@ -59,22 +64,6 @@ def close_ssh_tunnel():
     global tunnel
     tunnel.close()
 
-# PROMPT #
-
-prompt = []
-
-def promptAfegir(text):
-    global prompt
-    prompt.append(text)
-    if len(prompt) >= 4:
-        prompt.pop(0)
-
-
-def promptDibuixar():
-    global prompt
-    for cnt  in range(0, len(prompt)):
-        print(prompt[cnt])
-
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles
@@ -100,7 +89,11 @@ def prompt_game1():
         print("Invalid action")
         accio = input("What to do now? ").lower()
 
-    if accio == "new game":
+    # Realitzar accions segons l'opció escollida
+    if accio == "continue":
+        # Acció per a "Continue"
+        pass
+    elif accio == "new game":
         newGameMenu()
         pass
     elif accio == "help":
@@ -214,16 +207,15 @@ def mainMenu():
 
 player = {
     "default": {
-       "inventory": {
-        "lives": 3,
-        "max_lives": 3,
-        "timeBlood": 25,
-        "weapon1": "Wood Sword",
-        "weapon2": "Wood Shield",
-        "totalFood": 0,
-        "totalWeapons": 2,
-        "chests_opened": 0,  # Add this line
-      },
+        "inventory": {
+            "lives": 3,
+            "max_lives": 3,
+            "timeBlood": 25,
+            "weapon1": "Wood Sword",
+            "weapon2": "Wood Shield",
+            "totalFood": 0,
+            "totalWeapons": 2,
+        },
         "weapons": {
             "wood sword": {"uses": 5, "count": 2, "equipped": True},
             "sword": {"uses": 9, "count": 1, "equipped": False},
@@ -423,108 +415,108 @@ def inventoryWeapons(inventoryWeap):
 
 
 
-def check_game_records():
-    # Open SSH tunnel
-    open_ssh_tunnel()
-
-    # Establish the connection with the database
-    mysql_connect()
-
-    # Use the global connection object
-    global connection
-
-    # Create a cursor
-    cursor = connection.cursor()
-
-    # Execute the SQL query
-    query = "SELECT COUNT(*) FROM game"
-    cursor.execute(query)
-
-    # Get the result
-    result = cursor.fetchone()
-
-    # Close the cursor and the connection
-    cursor.close()
-    connection.close()
-
-    # Close SSH tunnel
-    close_ssh_tunnel()
-
-    # Check if there is more than one record
-    if result[0] > 0:
-        plays = True
-    else:
-        plays = False
-
-    # Return the value of plays
-    return plays
 
 
-from datetime import datetime
 
-def save_game_state_to_db(game_state, user_name):
-    last_player = list(player.keys())[-1]
-    open_ssh_tunnel()
-    mysql_connect()
 
-    # Use the global connection object
-    global connection
+def show_games():
+    try:
+        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+        cur = conn.cursor()
 
-    # Create a cursor object
-    cur = connection.cursor()
+        # Query para seleccionar los valores específicos de la tabla game
+        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
+        cur.execute(select_query)
 
-    # Update the last added user's game state in the table
-    cur.execute('''
-        UPDATE game 
-        SET date_started = %s, hearts_remaining = %s, blood_moon_countdown = %s, region = %s
-        WHERE user_name = (SELECT user_name FROM game ORDER BY date_started DESC LIMIT 1)
-    ''', (datetime.now(), game_state['hearts_remaining'], game_state['blood_moon_countdown'], game_state['region']))
+        # Obtener los resultados
+        resultados = cur.fetchall()
 
-    # Commit the changes
-    connection.commit()
+        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
 
-    # Get the game_id of the last updated game
-    cur.execute("SELECT game_id FROM game WHERE user_name = %s ORDER BY date_started DESC LIMIT 1", (user_name,))
-    game_id = cur.fetchone()[0]
+        # Construir el formato para mostrar los juegos
+        for i in range(len(resultados)):
+            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
+                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
 
-    # Get the opened chests and the map name
-    opened_chests_count = count_opened_chests(game_state['region'])
-    map_name = game_state['region']
+        show_games = [
+            f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+            f"\n*                                                                             *",
+            f"\n* {games[0]}  *",
+            f"\n* {games[1]}  *",
+            f"\n* {games[2]}  *",
+            f"\n* {games[3]}  *",
+            f"\n* {games[4]}  *",
+            f"\n* {games[5]}  *",
+            f"\n* {games[6]}  *",
+            f"\n* {games[7]}  *",
+            f"\n*                                                                             *",
+            f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+        ]
+        print("".join(show_games))
 
-    # Insert the map name and the count of opened chests into the game_chests_opened table
-    cur.execute('''
-        INSERT INTO game_chests_opened (game_id, region, num)
-        VALUES (%s, %s, %s)
-    ''', (game_id, map_name, opened_chests_count))
+        cur.close()
+        conn.close()
+    except pymysql.Error as e:
+        print(f"Error: {e}")
 
-    # Commit the changes
-    connection.commit()
 
-    # Get the opened sanctuaries and the map name
-    opened_sanctuaries_count = count_opened_sanctuaries()
 
-    # Insert the map name and the count of opened sanctuaries into the game_sanctuaries_opened table
-    for map_name, count in opened_sanctuaries_count.items():
-        cur.execute('''
-            INSERT INTO game_sanctuaries_opened (game_id, region, num)
-            VALUES (%s, %s, %s)
-        ''', (game_id, map_name, count))
 
-    # Commit the changes
-    connection.commit()
 
-    # Insert the food information into the game_food table
-    for food_name, food_info in player[last_player]['food'].items():
-        cur.execute('''
-            INSERT INTO game_food (game_id, food_name, quantity_remaining)
-            VALUES (%s, %s, %s)
-        ''', (game_id, food_name, food_info['count']))
 
-    # Commit the changes
-    connection.commit()
 
-    mysql_disconnect()
-    close_ssh_tunnel()
+
+
+
+
+
+
+
+
+def showStartedGames():
+    import mysql.connector
+    try:
+        conexion = mysql.connector.connect(
+        user = "root",
+        password = "",
+        host = "localhost",
+        database = "zelda",
+        port=3306
+        )
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    cursor = conexion.cursor()
+
+    tabla = "datosplayer"
+
+    consulta = f"SELECT * FROM {tabla}"
+    cursor.execute(consulta)
+    resultados = cursor.fetchall()
+
+    games = ["".ljust(74), "".ljust(74), "".ljust(74),"".ljust(74),"".ljust(74),"".ljust(74), "".ljust(74),"".ljust(74),]
+
+    for i in range(len(resultados)):
+        games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) + f'♥ {resultados[i][4]}/{resultados[i][5]}') 
+
+    showGames = [
+        f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"\n*                                                                             *",
+        f"\n* {games[0]}  *",
+        f"\n* {games[1]}  *",
+        f"\n* {games[2]}  *",
+        f"\n* {games[3]}  *",
+        f"\n* {games[4]}  *",
+        f"\n* {games[5]}  *",
+        f"\n* {games[6]}  *",
+        f"\n* {games[7]}  *",
+        f"\n*                                                                             *",
+        f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+    print("".join(showGames))
+
+
 
 
 
