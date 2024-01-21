@@ -260,11 +260,10 @@ def move_player(current_map, map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
-def go_by(x, map_data, elements):
+def go_by(place, map_data, elements):
     valid_position = [" "]
-    place = x.lower()
     for element in elements:
-        if element["name"].lower() == place or element["symbol"] == element:
+        if element["symbol"] == place:
             x_pos, y_pos = element["x"], element["y"]
         else:
             promptAfegir("This element doesn't exist")
