@@ -273,7 +273,7 @@ def go_by(x, map_data, elements):
             
 
 
-#Funcion para pescar y cazar
+#Funcion para pescar
 
 def fish(map_data, elements):
     for element in elements:
@@ -290,6 +290,8 @@ def fish(map_data, elements):
             else:
                 promptAfegir("You didn't get a fish")
                 return
+
+#Funciones para los cofres y los santuarios
 
 def close_chests(map_data, elements):
     for element in elements:
