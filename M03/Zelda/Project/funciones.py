@@ -12,12 +12,12 @@ import sshtunnel
 from sshtunnel import SSHTunnelForwarder
 
 
-ssh_host = '40.113.32.30'
+ssh_host = '20.26.234.155'
 ssh_username = 'azureuser'
 ssh_password = 'proyectozelda2024.'
 database_username = 'root'
 database_password = 'root'
-database_name = 'proyecto_zelda'
+database_name = 'Zelda'
 localhost = '127.0.0.1'
 
 def open_ssh_tunnel(verbose=False):
