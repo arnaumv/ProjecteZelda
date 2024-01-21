@@ -49,6 +49,15 @@ def mysql_connect():
         port=tunnel.local_bind_port
     )
 
+def run_query(sql):
+    """Runs a given SQL query via the global database connection.
+
+    :param sql: MySQL query
+    :return: Pandas dataframe containing results
+    """
+
+    return pd.read_sql_query(sql, connection)
+
 def mysql_disconnect():
     #Closes the MySQL database connection.
     connection.close()
