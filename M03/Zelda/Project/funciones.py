@@ -234,6 +234,8 @@ player = {
             "weapon2": "Wood Shield",
             "totalFood": 0,
             "totalWeapons": 2,
+            "chests_opened": 0,
+            "sanctuaries_opened": 0,
         },
         "weapons": {
             "wood sword": {"uses": 5, "count": 2, "equipped": True},
