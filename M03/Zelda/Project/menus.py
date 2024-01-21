@@ -3,7 +3,7 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-from funciones import open_ssh_tunnel, mysql_connect, mysql_disconnect, close_ssh_tunnel, connection
+
 
 
 
@@ -320,34 +320,7 @@ def newGameMenu():
             legendMenu(player_name)  # Pasar player_name a legendMenu()
 
             # INSERT into the database
-            try:
-                # Open SSH tunnel and connect to the MySQL server
-                open_ssh_tunnel()
-                mysql_connect()
-
-                # Get the current date and time
-                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-                # Default values for hearts_remaining and region
-                hearts_remaining = 3
-                default_region = 'Hyrule'
-
-                # Query to insert into the game table
-                insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
-                            f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
-
-                with connection.cursor() as cur:
-                    cur.execute(insert_query)
-                    connection.commit()
-
-                # Close the MySQL connection and the SSH tunnel
-                mysql_disconnect()
-                close_ssh_tunnel()
-
-                break  # Exit the loop after completing the insertion
-            except pymysql.Error as e:
-                print(f"Error: {e}")
-                break
+            insert_into_database(player_name)
 
         else: 
             print(f'"{player_name}" is not a valid name')
@@ -457,7 +430,7 @@ def plotMenu(player_name):
             print("The adventure begins")
             ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
             # Start the game section
-            print(player)
+            
             break
         
         else:

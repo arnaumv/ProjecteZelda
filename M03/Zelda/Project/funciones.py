@@ -1,5 +1,5 @@
 from datetime import datetime
-import menus
+from menus import *
 from menus import current_player_name
 from menus import player_name
 from consultas import * 
@@ -10,7 +10,7 @@ import pymysql
 import logging
 import sshtunnel
 from sshtunnel import SSHTunnelForwarder
-import maps
+
 
 
 ssh_host = '20.26.234.155'

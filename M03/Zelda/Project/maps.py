@@ -1,7 +1,6 @@
 
 import os
-from funciones import player
-import funciones
+
 from consultas import * 
 
 x = "X"
