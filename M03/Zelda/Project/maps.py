@@ -271,23 +271,32 @@ def go_by(x, map_data, elements):
         if map_data[y_pos - 1][x_pos] in valid_position:
             for element in elements:
                 if element["symbol"] == "X":
+                    map_data[y_pos][x_pos] = " "
                     element["x"] = x_pos
                     element["y"] = y_pos - 1
+                    map_data[element["y"]][element["x"]] = "X"
         elif map_data[y_pos + 1][x_pos] in valid_position:
             for element in elements:
                 if element["symbol"] == "X":
+                    map_data[y_pos][x_pos] = " "
                     element["x"] = x_pos
                     element["y"] = y_pos + 1
+                    map_data[element["y"]][element["x"]] = "X"
         elif map_data[y_pos][x_pos - 1] in valid_position:
             for element in elements:
                 if element["symbol"] == "X":
+                    map_data[y_pos][x_pos] = " "
                     element["x"] = x_pos - 1
                     element["y"] = y_pos
+                    map_data[element["y"]][element["x"]] = "X"
         elif map_data[y_pos][x_pos + 1] in valid_position:
             for element in elements:
                 if element["symbol"] == "X":
+                    map_data[y_pos][x_pos] = " "
                     element["x"] = x_pos + 1
                     element["y"] = y_pos
+                    map_data[element["y"]][element["x"]] = "X"
+                    
         else:
             promptAfegir("Error, the element you are trying to go to has no valid positions")
             break
@@ -363,7 +372,7 @@ def all_chests_open(map_data, elements):
     if cnt == 0:
         close_chests(map_data, elements)
 
-def open(map_data, elements, place):
+def open(map_data, elements, place, map_name):
     if place.lower() == "sanctuary":
         for element in elements:
             if element["name"] == "Sanctuary":
@@ -372,8 +381,11 @@ def open(map_data, elements, place):
                     sanctuary = element["symbol"]
                     player[last_player]["sanctuaries"][sanctuary]["name"].replace("?","")
                     player[last_player]["sanctuaries"][sanctuary]["opened"] = True
+                    player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
                     player[last_player]["inventory"]["max_lives"] += 1
                     promptAfegir(f"You opened {sanctuary}")
+                    count_opened_sanctuaries = count_opened_sanctuaries()  # Cuenta los santuarios abiertos
+
     elif place.lower() == "chest":
         for element in elements:
             if element["symbol"] == "M":
@@ -392,11 +404,18 @@ def open(map_data, elements, place):
                         player[last_player]["weapons"][item]["count"] += 1
                         promptAfegir(f"You obtained a {item}")
                     element["symbol"] = "W"
+                    element["opened"] = True  # Marca el cofre como abierto
+                    player[last_player]["inventory"]["chests_opened"] += 1  # Suma 1 a cofres abiertos
                     all_chests_open(map_data, elements)
+                    opened_chests_count = count_opened_chests(map_name)  # Cuenta los cofres abiertos
+                    print(f"Number of opened chests: {opened_chests_count}")
                 else:
                     promptAfegir("This chest has alredy been opened")
-                    
 
+def count_opened_chests(map_name):
+    elements = maps[map_name]['elements']
+    opened_chests = [element for element in elements if element['name'] == 'Chest' and element['opened'] == True]
+    return len(opened_chests)
 
 
 def attack(map_data, elements):

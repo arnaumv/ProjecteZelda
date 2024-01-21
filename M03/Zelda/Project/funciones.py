@@ -1,70 +1,10 @@
 from datetime import datetime
 from menus import *
-from menus import current_player_name
-from menus import player_name
-from consultas import * 
 import random
-import os
 import pandas as pd
-import pymysql
 import logging
 import sshtunnel
 from sshtunnel import SSHTunnelForwarder
-
-
-ssh_host = '20.26.234.155'
-ssh_username = 'azureuser'
-ssh_password = 'proyectozelda2024.'
-database_username = 'root'
-database_password = 'root'
-database_name = 'Zelda'
-localhost = '127.0.0.1'
-
-def open_ssh_tunnel(verbose=False):
-    """Open an SSH tunnel and connect using a username and password.
-    :param verbose: Set to True to show logging
-    :return tunnel: Global SSH tunnel connection
-    """
-    if verbose:
-        sshtunnel.DEFAULT_LOGLEVEL = logging.DEBUG
-    global tunnel
-    tunnel = SSHTunnelForwarder(
-        (ssh_host, 22),
-        ssh_username = ssh_username,
-        ssh_password = ssh_password,
-        remote_bind_address = ('127.0.0.1', 3306)
-    )
-    tunnel.start()
-
-def mysql_connect():
-    """Connect to a MySQL server using the SSH tunnel connection
-    :return connection: Global MySQL database connection
-    """
-    global connection
-    connection = pymysql.connect(
-        host='127.0.0.1',
-        user=database_username,
-        passwd=database_password,
-        db=database_name,
-        port=tunnel.local_bind_port
-    )
-
-def run_query(sql):
-    """Runs a given SQL query via the global database connection.
-
-    :param sql: MySQL query
-    :return: Pandas dataframe containing results
-    """
-
-    return pd.read_sql_query(sql, connection)
-
-def mysql_disconnect():
-    #Closes the MySQL database connection.
-    connection.close()
-
-def close_ssh_tunnel():
-    #Closes the SSH tunnel connection.
-    tunnel.close
 
 
 # PROMPT #
@@ -108,11 +48,7 @@ def prompt_game1():
         print("Invalid action")
         accio = input("What to do now? ").lower()
 
-    # Realitzar accions segons l'opció escollida
-    if accio == "continue":
-        # Acció per a "Continue"
-        pass
-    elif accio == "new game":
+    if accio == "new game":
         newGameMenu()
         pass
     elif accio == "help":
@@ -203,20 +139,6 @@ def prompt_game2():
         # Acció per a "Exit"
         pass
 
-# Funcion que ejecuta el menu del juego 
-def mainMenu():
-    # Primero ejecuta check_game_records
-    plays = check_game_records()
-
-    if plays:
-        # Si el resultado es True, ejecuta estas funciones
-        mostrar_menu_aleatorio2()
-        prompt_game2()
-    else:
-        # Si el resultado es False, ejecuta estas funciones
-        mostrar_menu_aleatorio()
-        prompt_game1()
-
 ##################################################################################
 
 ##########################      INFO PLAYER        #########################
@@ -226,17 +148,16 @@ def mainMenu():
 
 player = {
     "default": {
-        "inventory": {
-            "lives": 3,
-            "max_lives": 3,
-            "timeBlood": 25,
-            "weapon1": "Wood Sword",
-            "weapon2": "Wood Shield",
-            "totalFood": 0,
-            "totalWeapons": 2,
-            "chests_opened": 0,
-            "sanctuaries_opened": 0,
-        },
+       "inventory": {
+        "lives": 3,
+        "max_lives": 3,
+        "timeBlood": 25,
+        "weapon1": "Wood Sword",
+        "weapon2": "Wood Shield",
+        "totalFood": 0,
+        "totalWeapons": 2,
+        "chests_opened": 0,  # Add this line
+      },
         "weapons": {
             "wood sword": {"uses": 5, "count": 2, "equipped": True},
             "sword": {"uses": 9, "count": 1, "equipped": False},
@@ -432,110 +353,35 @@ def inventoryWeapons(inventoryWeap):
         print(map[i], inventoryWeap[i])
 
 
+# Utiliza el método replace y asigna el resultado a la posición 0 de hyrule
+#hyrule[0] = hyrule[0].replace(hyrule[0][1], "X")
+#print(hyrule[0])
+    
+                
+def print_map(map_data, elements, inventory, map_name="Hyrule"):
+    # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
+    for element in elements:
+        if element["name"] == "Enemy":
+            map_data[element["y"]][element["x"]] = element["symbol"] + str(element["life"])
+        else:
+            map_data[element["y"]][element["x"]] = element["symbol"]
+
+    # Calculate the length of the longest line
+    max_length = max(len("".join(row)) for row in map_data)
+    max_length = max(max_length, len(map_name))
+
+    # Imprimir borde superior con el nombre del mapa y el título del inventario
+    print(f"\n* {map_name}  * * * * * * * * * * * * * * * * * * * * * * * * * *{inventory[0]}")
 
 
+    # Imprime cada fila de map_data y las líneas restantes de inventory uno al lado del otro
+    for i in range(len(map_data)):  # Comenzar desde 0
+        # Limit the inventory to 20 characters per line
+        inventory_line = inventory[i+1][:20] if i+1 < len(inventory) else ''  # Start from 1 in inventory
+        print("*" + "".join(map_data[i]).ljust(max_length) +"*" + inventory_line.ljust(20))  # Pad inventory_line to 20 characters
 
-
-
-
-
-
-def show_games():
-    try:
-        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-        cur = conn.cursor()
-
-        # Query para seleccionar los valores específicos de la tabla game
-        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
-        cur.execute(select_query)
-
-        # Obtener los resultados
-        resultados = cur.fetchall()
-
-        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
-
-        # Construir el formato para mostrar los juegos
-        for i in range(len(resultados)):
-            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
-                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
-
-        show_games = [
-            f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-            f"\n*                                                                             *",
-            f"\n* {games[0]}  *",
-            f"\n* {games[1]}  *",
-            f"\n* {games[2]}  *",
-            f"\n* {games[3]}  *",
-            f"\n* {games[4]}  *",
-            f"\n* {games[5]}  *",
-            f"\n* {games[6]}  *",
-            f"\n* {games[7]}  *",
-            f"\n*                                                                             *",
-            f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
-        ]
-        print("".join(show_games))
-
-        cur.close()
-        conn.close()
-    except pymysql.Error as e:
-        print(f"Error: {e}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def showStartedGames():
-    import mysql.connector
-    try:
-        conexion = mysql.connector.connect(
-        user = "root",
-        password = "",
-        host = "localhost",
-        database = "zelda",
-        port=3306
-        )
-
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-
-    cursor = conexion.cursor()
-
-    tabla = "datosplayer"
-
-    consulta = f"SELECT * FROM {tabla}"
-    cursor.execute(consulta)
-    resultados = cursor.fetchall()
-
-    games = ["".ljust(74), "".ljust(74), "".ljust(74),"".ljust(74),"".ljust(74),"".ljust(74), "".ljust(74),"".ljust(74),]
-
-    for i in range(len(resultados)):
-        games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) + f'♥ {resultados[i][4]}/{resultados[i][5]}') 
-
-    showGames = [
-        f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-        f"\n*                                                                             *",
-        f"\n* {games[0]}  *",
-        f"\n* {games[1]}  *",
-        f"\n* {games[2]}  *",
-        f"\n* {games[3]}  *",
-        f"\n* {games[4]}  *",
-        f"\n* {games[5]}  *",
-        f"\n* {games[6]}  *",
-        f"\n* {games[7]}  *",
-        f"\n*                                                                             *",
-        f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-    print("".join(showGames))
+    # Imprimir borde inferior con el mensaje
+    print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * * *")
 
 
 
