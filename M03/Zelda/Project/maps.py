@@ -223,7 +223,7 @@ def unequip(item):
                 
 def timeblood(elements):
     while player[last_player]["inventory"]["timeBlood"] > 0:
-        player[last_player]["inventory"]["timeBlood"] =- 1
+        player[last_player]["inventory"]["timeBlood"] -= 1
         break
     if player[last_player]["inventory"]["timeBlood"] == 0:
         for element in elements:
@@ -292,7 +292,44 @@ def go_by(x, map_data, elements):
             promptAfegir("Error, the element you are trying to go to has no valid positions")
             break
             
+#cocinar y comer
+        
+def cook(map_data, elements, item):
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+        if map_data[y_pos + 1][x_pos] == "C" or map_data[y_pos - 1][x_pos] == "C" or map_data[y_pos][x_pos + 1] == "C" or map_data[y_pos][x_pos - 1] == "C" and "pescar" == True:
+            if item == "salad" and player[last_player]["food"]["vegetable"]["count"] > 2:
+                player[last_player]["food"]["salad"]["count"] += 1
+                player[last_player]["food"]["vegetable"]["count"] -= 2
+            else:
+                promptAfegir("You don't have enough vegetables")
+            if item == "pescatarian" and player[last_player]["food"]["vegetable"]["count"] > 1 and player[last_player]["food"]["fish"]["count"] > 1:
+                player[last_player]["food"]["pescatarian"]["count"] += 1
+                player[last_player]["food"]["vegetable"]["count"] -= 1
+                player[last_player]["food"]["fish"]["count"] -= 1
+            else:
+                promptAfegir("You don't have enough vegetables or fish")
+            if item == "roasted" and player[last_player]["food"]["vegetable"]["count"] > 1 and player[last_player]["food"]["meat"]["count"] > 1:
+                player[last_player]["food"]["roasted"]["count"] += 1
+                player[last_player]["food"]["vegetable"]["count"] -= 1
+                player[last_player]["food"]["meat"]["count"] -= 1
+            else:
+                promptAfegir("You don't have enough vegetables or fish")
 
+
+def eat(item):
+    if player[last_player]["lives"] < player[last_player]["max_lives"]:
+        if player[last_player]["food"][item]["count"] > 0:
+            player[last_player]["lives"] += player[last_player]["food"][item]["hearts"]
+            if player[last_player]["lives"] > player[last_player]["max_lives"]:
+                player[last_player]["lives"] = player[last_player]["max_lives"]
+        else:
+            promptAfegir(f"You don't have {item}")
+    else:
+        promptAfegir("You are alredy full health")
+
+                
 
 #Funcion para pescar
 
@@ -301,11 +338,11 @@ def fish(map_data, elements):
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
         
-        if map_data[y_pos + 1][x_pos] == "~" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~" and "pescar" == True:
+        if map_data[y_pos + 1][x_pos] == "C" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~" and "pescar" == True:
             numero_aleatorio = random.random()
             if numero_aleatorio < 0.2:
                 promptAfegir("You got a fish")
-                player[last_player]["food"]["fish"]["count"] =+ 1
+                player[last_player]["food"]["fish"]["count"] += 1
                 return
             else:
                 promptAfegir("You didn't get a fish")
@@ -322,7 +359,7 @@ def all_chests_open(map_data, elements):
     cnt = 0
     for element in elements:
         if element["symbol"] == "M":
-            cnt =+ 1
+            cnt += 1
     if cnt == 0:
         close_chests(map_data, elements)
 
@@ -335,7 +372,7 @@ def open(map_data, elements, place):
                     sanctuary = element["symbol"]
                     player[last_player]["sanctuaries"][sanctuary]["name"].replace("?","")
                     player[last_player]["sanctuaries"][sanctuary]["opened"] = True
-                    player[last_player]["inventory"]["max_lives"] =+ 1
+                    player[last_player]["inventory"]["max_lives"] += 1
                     promptAfegir(f"You opened {sanctuary}")
     elif place.lower() == "chest":
         for element in elements:
@@ -347,12 +384,12 @@ def open(map_data, elements, place):
                     if map_data.lower() in map_swords:
                         swords = ["sword", "wood sword"]
                         item = random.choice(swords)
-                        player[last_player]["weapons"][item]["count"] =+ 1
+                        player[last_player]["weapons"][item]["count"] += 1
                         promptAfegir(f"You obtained a {item}")
                     elif map_data.lower() in map_shields:
                         shields = ["shield", "wood shield"]
                         item = random.choice(shields)
-                        player[last_player]["weapons"][item]["count"] =+ 1
+                        player[last_player]["weapons"][item]["count"] += 1
                         promptAfegir(f"You obtained a {item}")
                     element["symbol"] = "W"
                     all_chests_open(map_data, elements)
@@ -373,27 +410,27 @@ def attack(map_data, elements):
                         break
                 map_data[fox_x_pos][fox_y_pos] = " "
                 promptAfegir("You got meat")
-                player[last_player]["food"]["meat"]["count"] =+ 1
+                player[last_player]["food"]["meat"]["count"] += 1
             elif map_data[y_pos - 1][x_pos] == "T" or map_data[y_pos + 1][x_pos] == "T" or map_data[y_pos][x_pos - 1] == "T" or map_data[y_pos][x_pos + 1] == "T":
                 if player[last_player]["inventory"]["weapon1"] == "":
                     numero_aleatorio = random.random()
                     if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
-                        player[last_player]["food"]["vegetable"]["count"] =+ 1
+                        player[last_player]["food"]["vegetable"]["count"] += 1
                         promptAfegir("You got an apple")
                     elif numero_aleatorio < 0.1:
                         drops = ["wood sword", "wood shield"]
                         item = random.choice(drops)
-                        player[last_player]["weapons"][item][count] =+ 1
+                        player[last_player]["weapons"][item][count] += 1
                         promptAfegir(f"You got a {item}")
             elif "E" in map_data[y_pos - 1][x_pos] or "E" in map_data[y_pos + 1][x_pos] or "E" in map_data[y_pos][x_pos - 1] or "E" in map_data[y_pos][x_pos + 1]:
                 for element in elements:
                     if element["symbol"] == "E":
                         en_x_pos, en_y_pos = element["x"], element["y"]
                         if map_data[en_y_pos - 1][en_x_pos] == "X" or map_data[en_y_pos + 1][en_x_pos] == "X" or map_data[en_y_pos][en_x_pos - 1] == "X" or map_data[en_y_pos][en_x_pos + 1] == "X":
-                            element["life"] =- 1
+                            element["life"] -= 1
                             if element["life"] < 1:
                                 map_data[en_y_pos][en_x_pos] = " "
-                            player[last_player]["inventory"]["lives"] =- 1
+                            player[last_player]["inventory"]["lives"] -= 1
                             promptAfegir(f"Be careful Link, you only have {player[last_player]["inventory"]["lives"]} hearts")
                             position_valid = False
                             while not position_valid:
@@ -412,7 +449,7 @@ def attack(map_data, elements):
                 numero_aleatorio = random.random()
                 if numero_aleatorio < 0.1:
                     promptAfegir("You got a lizard")
-                    player[last_player]["food"]["meat"]["count"] =+ 1
+                    player[last_player]["food"]["meat"]["count"] += 1
                 else:
                     promptAfegir("You did not anything")
                         
@@ -436,8 +473,8 @@ def ganon(elements):
     else:
         sentence = random.choice(sentences)
         promptAfegir(sentence)
-        maps["Castle"]["elements"][1]["lifes"] =- 1
-        player[last_player]["inventory"]["lives"] =- 1
+        maps["Castle"]["elements"][1]["lifes"] -= 1
+        player[last_player]["inventory"]["lives"] -= 1
         if maps["Castle"]["elements"][1]["lifes"] < 1:
             promptAfegir("You have defeated Ganon.")
             return
