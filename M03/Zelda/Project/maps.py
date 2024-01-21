@@ -237,7 +237,7 @@ def timeblood(elements):
   
 def move_player(map_data, elements, direction, num_steps):
     valid_position = [" "]
-    if map_data.lower() == "castle" and not direction == "right" or not direction == "left":
+    if map_data == "Castle" and not direction == "right" or not direction == "left":
         promptAfegir("You can't go there")
     for element in elements:
         if element["symbol"] == "X":
