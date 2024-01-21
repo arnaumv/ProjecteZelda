@@ -3,8 +3,9 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
+from funciones import open_ssh_tunnel, mysql_connect, mysql_disconnect, close_ssh_tunnel, connection
+
+
 
 def clear_terminal():
     if os.name == 'nt':  # Para sistemas Windows
@@ -150,7 +151,7 @@ def savedGamesMenu():
             # Construir el formato para mostrar los juegos
             for i in range(len(resultados)):
                 max_lives_last_player = 3
-                games[i] = (f'{i+1}: {resultados[i][1]} - {resultados[i][2]}, {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
+                games[i] = (f'{i+1}: {resultados[i][2]} - {resultados[i][1]}, {resultados[i][4]}'.ljust(69) + f'♥ {resultados[i][3]}/{max_lives_last_player}')
 
             show_games = [
                 f"\n * Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
@@ -164,7 +165,7 @@ def savedGamesMenu():
                 f"\n * {games[6]}  *",
                 f"\n * {games[7]}  *",
                 f"\n *                                                                             *",
-                f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * * *"
+                f"\n * Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
             ]
             print("".join(show_games))
 
@@ -277,13 +278,14 @@ def newGameMenu():
             # Guardo informacion del juagdor en el diccionario player para poder usarlo en otras funciones durante la partida
             new_player_data = {
                 "inventory": {
-                    "lives": 3,
-                    "max_lives": 3,
-                    "timeBlood": 25,
-                    "weapon1": "Wood Sword",
-                    "weapon2": "Wood Shield",
-                    "totalFood": 0,
-                    "totalWeapons": 2,
+                "lives": 3,
+                "max_lives": 3,
+                "timeBlood": 25,
+                "weapon1": "Wood Sword",
+                "weapon2": "Wood Shield",
+                "totalFood": 0,
+                "totalWeapons": 2,
+                "chests_opened": 0,  # Add this line
                 },
                 "weapons": {
                     "wood sword": {"uses": 5, "count": 2, "equipped": True},
@@ -317,29 +319,32 @@ def newGameMenu():
             # Ir a la sección 'Legend'
             legendMenu(player_name)  # Pasar player_name a legendMenu()
 
-            # INSERT en la base de datos
+            # INSERT into the database
             try:
-                conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-                cur = conn.cursor()
+                # Open SSH tunnel and connect to the MySQL server
+                open_ssh_tunnel()
+                mysql_connect()
 
-                # Obtener la fecha y hora actual
+                # Get the current date and time
                 current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-
-                # Valores por defecto para hearts_remaining y region
+                # Default values for hearts_remaining and region
                 hearts_remaining = 3
                 default_region = 'Hyrule'
 
-                # Consulta para insertar en la tabla game
+                # Query to insert into the game table
                 insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
-                               f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
+                            f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
 
-                cur.execute(insert_query)
-                conn.commit()
+                with connection.cursor() as cur:
+                    cur.execute(insert_query)
+                    connection.commit()
 
-                cur.close()
-                conn.close()
-                break  # Salir del bucle al completar la inserción
+                # Close the MySQL connection and the SSH tunnel
+                mysql_disconnect()
+                close_ssh_tunnel()
+
+                break  # Exit the loop after completing the insertion
             except pymysql.Error as e:
                 print(f"Error: {e}")
                 break
@@ -452,6 +457,7 @@ def plotMenu(player_name):
             print("The adventure begins")
             ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
             # Start the game section
+            print(player)
             break
         
         else:

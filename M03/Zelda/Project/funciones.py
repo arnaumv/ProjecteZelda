@@ -1,16 +1,79 @@
 from datetime import datetime
-from menus import *
+import menus
 from menus import current_player_name
 from menus import player_name
 from consultas import * 
 import random
 import os
+import pandas as pd
 import pymysql
+import logging
+import sshtunnel
+from sshtunnel import SSHTunnelForwarder
+import maps
 
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
+
+ssh_host = '20.26.234.155'
+ssh_username = 'azureuser'
+ssh_password = 'proyectozelda2024.'
+database_username = 'root'
+database_password = 'root'
+database_name = 'Zelda'
+localhost = '127.0.0.1'
+
+def open_ssh_tunnel(verbose=False):
+    """Open an SSH tunnel and connect using a username and password.
+    :param verbose: Set to True to show logging
+    :return tunnel: Global SSH tunnel connection
+    """
+    if verbose:
+        sshtunnel.DEFAULT_LOGLEVEL = logging.DEBUG
+    global tunnel
+    tunnel = SSHTunnelForwarder(
+        (ssh_host, 22),
+        ssh_username = ssh_username,
+        ssh_password = ssh_password,
+        remote_bind_address = ('127.0.0.1', 3306)
+    )
+    tunnel.start()
+
+def mysql_connect():
+    """Connect to a MySQL server using the SSH tunnel connection
+    :return connection: Global MySQL database connection
+    """
+    global connection
+    connection = pymysql.connect(
+        host='127.0.0.1',
+        user=database_username,
+        passwd=database_password,
+        db=database_name,
+        port=tunnel.local_bind_port
+    )
+
+def mysql_disconnect():
+    #Closes the MySQL database connection.
+    connection.close()
+
+def close_ssh_tunnel():
+    #Closes the SSH tunnel connection.
+    global tunnel
+    tunnel.close()
+
+# PROMPT #
+
+prompt = []
+
+def promptAfegir(text):
+    global prompt
+    prompt.append(text)
+    if len(prompt) >= 4:
+        prompt.pop(0)
 
 
+def promptDibuixar():
+    global prompt
+    for cnt  in range(0, len(prompt)):
+        print(prompt[cnt])
 
 ###############################  OPCIONES MENU INICIO ##############################
 
@@ -37,11 +100,7 @@ def prompt_game1():
         print("Invalid action")
         accio = input("What to do now? ").lower()
 
-    # Realitzar accions segons l'opció escollida
-    if accio == "continue":
-        # Acció per a "Continue"
-        pass
-    elif accio == "new game":
+    if accio == "new game":
         newGameMenu()
         pass
     elif accio == "help":
@@ -155,15 +214,16 @@ def mainMenu():
 
 player = {
     "default": {
-        "inventory": {
-            "lives": 3,
-            "max_lives": 3,
-            "timeBlood": 25,
-            "weapon1": "Wood Sword",
-            "weapon2": "Wood Shield",
-            "totalFood": 0,
-            "totalWeapons": 2,
-        },
+       "inventory": {
+        "lives": 3,
+        "max_lives": 3,
+        "timeBlood": 25,
+        "weapon1": "Wood Sword",
+        "weapon2": "Wood Shield",
+        "totalFood": 0,
+        "totalWeapons": 2,
+        "chests_opened": 0,  # Add this line
+      },
         "weapons": {
             "wood sword": {"uses": 5, "count": 2, "equipped": True},
             "sword": {"uses": 9, "count": 1, "equipped": False},
@@ -363,108 +423,108 @@ def inventoryWeapons(inventoryWeap):
 
 
 
+def check_game_records():
+    # Open SSH tunnel
+    open_ssh_tunnel()
+
+    # Establish the connection with the database
+    mysql_connect()
+
+    # Use the global connection object
+    global connection
+
+    # Create a cursor
+    cursor = connection.cursor()
+
+    # Execute the SQL query
+    query = "SELECT COUNT(*) FROM game"
+    cursor.execute(query)
+
+    # Get the result
+    result = cursor.fetchone()
+
+    # Close the cursor and the connection
+    cursor.close()
+    connection.close()
+
+    # Close SSH tunnel
+    close_ssh_tunnel()
+
+    # Check if there is more than one record
+    if result[0] > 0:
+        plays = True
+    else:
+        plays = False
+
+    # Return the value of plays
+    return plays
 
 
+from datetime import datetime
 
+def save_game_state_to_db(game_state, user_name):
+    last_player = list(player.keys())[-1]
+    open_ssh_tunnel()
+    mysql_connect()
 
-def show_games():
-    try:
-        conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-        cur = conn.cursor()
+    # Use the global connection object
+    global connection
 
-        # Query para seleccionar los valores específicos de la tabla game
-        select_query = "SELECT game_id, user_name, date_started, hearts_remaining, region FROM game"
-        cur.execute(select_query)
+    # Create a cursor object
+    cur = connection.cursor()
 
-        # Obtener los resultados
-        resultados = cur.fetchall()
+    # Update the last added user's game state in the table
+    cur.execute('''
+        UPDATE game 
+        SET date_started = %s, hearts_remaining = %s, blood_moon_countdown = %s, region = %s
+        WHERE user_name = (SELECT user_name FROM game ORDER BY date_started DESC LIMIT 1)
+    ''', (datetime.now(), game_state['hearts_remaining'], game_state['blood_moon_countdown'], game_state['region']))
 
-        games = ["".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74), "".ljust(74)]
+    # Commit the changes
+    connection.commit()
 
-        # Construir el formato para mostrar los juegos
-        for i in range(len(resultados)):
-            games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) +
-                         f'♥ {resultados[i][3]}/{resultados[i][4]}')
+    # Get the game_id of the last updated game
+    cur.execute("SELECT game_id FROM game WHERE user_name = %s ORDER BY date_started DESC LIMIT 1", (user_name,))
+    game_id = cur.fetchone()[0]
 
-        show_games = [
-            f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-            f"\n*                                                                             *",
-            f"\n* {games[0]}  *",
-            f"\n* {games[1]}  *",
-            f"\n* {games[2]}  *",
-            f"\n* {games[3]}  *",
-            f"\n* {games[4]}  *",
-            f"\n* {games[5]}  *",
-            f"\n* {games[6]}  *",
-            f"\n* {games[7]}  *",
-            f"\n*                                                                             *",
-            f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
-        ]
-        print("".join(show_games))
+    # Get the opened chests and the map name
+    opened_chests_count = count_opened_chests(game_state['region'])
+    map_name = game_state['region']
 
-        cur.close()
-        conn.close()
-    except pymysql.Error as e:
-        print(f"Error: {e}")
+    # Insert the map name and the count of opened chests into the game_chests_opened table
+    cur.execute('''
+        INSERT INTO game_chests_opened (game_id, region, num)
+        VALUES (%s, %s, %s)
+    ''', (game_id, map_name, opened_chests_count))
 
+    # Commit the changes
+    connection.commit()
 
+    # Get the opened sanctuaries and the map name
+    opened_sanctuaries_count = count_opened_sanctuaries()
 
+    # Insert the map name and the count of opened sanctuaries into the game_sanctuaries_opened table
+    for map_name, count in opened_sanctuaries_count.items():
+        cur.execute('''
+            INSERT INTO game_sanctuaries_opened (game_id, region, num)
+            VALUES (%s, %s, %s)
+        ''', (game_id, map_name, count))
 
+    # Commit the changes
+    connection.commit()
 
+    # Insert the food information into the game_food table
+    for food_name, food_info in player[last_player]['food'].items():
+        cur.execute('''
+            INSERT INTO game_food (game_id, food_name, quantity_remaining)
+            VALUES (%s, %s, %s)
+        ''', (game_id, food_name, food_info['count']))
 
+    # Commit the changes
+    connection.commit()
 
-
-
-
-
-
-
-
-
-def showStartedGames():
-    import mysql.connector
-    try:
-        conexion = mysql.connector.connect(
-        user = "root",
-        password = "",
-        host = "localhost",
-        database = "zelda",
-        port=3306
-        )
-
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-
-    cursor = conexion.cursor()
-
-    tabla = "datosplayer"
-
-    consulta = f"SELECT * FROM {tabla}"
-    cursor.execute(consulta)
-    resultados = cursor.fetchall()
-
-    games = ["".ljust(74), "".ljust(74), "".ljust(74),"".ljust(74),"".ljust(74),"".ljust(74), "".ljust(74),"".ljust(74),]
-
-    for i in range(len(resultados)):
-        games[i] = (f'{resultados[i][0]}: {resultados[i][1]} - {resultados[i][2]}'.ljust(68) + f'♥ {resultados[i][4]}/{resultados[i][5]}') 
-
-    showGames = [
-        f"\n* Saved Games * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
-        f"\n*                                                                             *",
-        f"\n* {games[0]}  *",
-        f"\n* {games[1]}  *",
-        f"\n* {games[2]}  *",
-        f"\n* {games[3]}  *",
-        f"\n* {games[4]}  *",
-        f"\n* {games[5]}  *",
-        f"\n* {games[6]}  *",
-        f"\n* {games[7]}  *",
-        f"\n*                                                                             *",
-        f"\n* Play X, Erase X, Help, Back * * * * * * * * * * * * * * * * * * * * * * * * *"
-    ]
-    print("".join(showGames))
-
-
+    mysql_disconnect()
+    close_ssh_tunnel()
 
 
 
