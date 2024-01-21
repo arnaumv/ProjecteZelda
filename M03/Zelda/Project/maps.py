@@ -39,7 +39,7 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 46, "y" : 7, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 20, "y" : 8, "life" : 1,"max_life": 1,"EnemyNumber" : 1},
             {"name" : "Sanctuary" , "symbol" : sanctuary_value1, "x" : 28, "y" : 8, "SanctuaryNumber" : 1},
-            {"name" : "Chest" , "symbol" : "M", "x" : 46, "y" : 8, "item" : "Sword"},
+            {"name" : "Chest" , "symbol" : "M", "x" : 46, "y" : 8,},
             {"name" : "Tree" , "symbol" : "T", "x" : 44, "y" : 8, "hits" : 0},
             {"name" : "Fox" , "symbol" : "F", "x" : 50, "y" : 8, "visible" : False}
         ]
@@ -67,7 +67,7 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 17, "y" : 7, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 18, "y" : 6, "hits" : 0},
             {"name" : "Fox" , "symbol" : "F", "x" : 29, "y" : 1, "visible" : False},
-            {"name" : "Chest" , "symbol" : "M", "x" : 35, "y" : 7, "item" : "Shield"},
+            {"name" : "Chest" , "symbol" : "M", "x" : 35, "y" : 7,},
             {"name" : "Sanctuary" , "symbol" : sanctuary_value3, "x" : 48, "y" : 8, "SanctuaryNumber" : 3},
             {"name" : "Enemy" , "symbol" : "E", "x" : 50, "y" : 2, "life" : 2,"EnemyNumber" : 1}
         ]
@@ -90,7 +90,7 @@ maps = {
             {"name" : "Enemy" , "symbol" : "E", "x" : 2, "y" : 3, "life" : 1,"max_life": 1, "EnemyNumber" : 0},
             {"name" : "Player" , "symbol" : "X", "x" : 1, "y" : 8},
             {"name" : "Tree" , "symbol" : "T", "x" : 4, "y" : 7, "hits" : 0},
-            {"name" : "Chest" , "symbol" : "M", "x" : 7, "y" : 8, "item" : "Sword"},
+            {"name" : "Chest" , "symbol" : "M", "x" : 7, "y" : 8,},
             {"name" : "Cuina" , "symbol" : "C", "x" : 14, "y" : 3},
             {"name" : "Tree" , "symbol" : "T", "x" : 28, "y" : 1, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 29, "y" : 1, "hits" : 0},
@@ -100,7 +100,7 @@ maps = {
             {"name" : "Enemy" , "symbol" : "E", "x" : 37, "y" : 5, "life" : 2,"max_life": 2,"EnemyNumber" : 1},
             {"name" : "Fox" , "symbol" : "F", "x" : 47, "y" : 7, "visible" : False},
             {"name" : "Sanctuary" , "symbol" : sanctuary_value4, "x" : 45, "y" : 2, "SanctuaryNumber" : 4},
-            {"name" : "Chest" , "symbol" : "M", "x" : 51, "y" : 0, "item" : "Sword"},
+            {"name" : "Chest" , "symbol" : "M", "x" : 51, "y" : 0,},
         ]
     },
 
@@ -125,8 +125,8 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 14, "y" : 5, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 14, "y" : 7, "hits" : 0},
             {"name" : "Cuina" , "symbol" : "C", "x" : 18, "y" : 2},
-            {"name" : "Chest" , "symbol" : "M", "x" : 21, "y" : 0, "item" : "Shield"},
-            {"name" : "Chest" , "symbol" : "M", "x" : 22, "y" : 8, "item" : "Shield"},
+            {"name" : "Chest" , "symbol" : "M", "x" : 21, "y" : 0,},
+            {"name" : "Chest" , "symbol" : "M", "x" : 22, "y" : 8,},
             {"name" : "Sanctuary" , "symbol" : sanctuary_value6, "x" : 32, "y" : 8, "SanctuaryNumber" : 6},
             {"name" : "Tree" , "symbol" : "T", "x" : 34, "y" : 2, "hits" : 0},
             {"name" : "Tree" , "symbol" : "T", "x" : 35, "y" : 2, "hits" : 0},
@@ -134,7 +134,7 @@ maps = {
             {"name" : "Tree" , "symbol" : "T", "x" : 37, "y" : 1, "hits" : 0},
             {"name" : "Enemy" , "symbol" : "E", "x" : 37, "y" : 5, "life" : 2, "max_life": 2, "EnemyNumber" : 1},
             {"name" : "Sanctuary" , "symbol" : sanctuary_value5, "x" : 50, "y" : 5, "SanctuaryNumber" : 5},
-            {"name" : "Chest" , "symbol" : "M", "x" : 50, "y" : 1, "item" : "Shield"}
+            {"name" : "Chest" , "symbol" : "M", "x" : 50, "y" : 1,}
         ]
     },
 }
@@ -291,25 +291,54 @@ def fish(map_data, elements):
                 promptAfegir("You didn't get a fish")
                 return
 
-def open(map_data, elements, element):
-    if element.lower() == "sanctuary":
+def close_chests(map_data, elements):
+    for element in elements:
+        if element["symbol"] == "W":
+            element["symbol"] = "M"
+
+def all_chests_open(map_data, elements):
+    cnt = 0
+    for element in elements:
+        if element["symbol"] == "M":
+            cnt =+ 1
+    if cnt == 0:
+        close_chests(map_data, elements)
+
+def open(map_data, elements, place):
+    if place.lower() == "sanctuary":
         for element in elements:
             if element["name"] == "Sanctuary":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
                     sanctuary = element["symbol"]
-                    player[last_player]["sanctuaries"][sanctuary]["name"].replace("?"," ")
+                    player[last_player]["sanctuaries"][sanctuary]["name"].replace("?","")
                     player[last_player]["sanctuaries"][sanctuary]["opened"] = True
                     player[last_player]["inventory"]["max_lives"] =+ 1
-    if element.lower() == "chest":
+                    promptAfegir(f"You opened {sanctuary}")
+    elif place.lower() == "chest":
         for element in elements:
-            if element["name"] == "Sanctuary":
+            if element["symbol"] == "M":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
-                    sanctuary = element["symbol"]
-                    player[last_player]["sanctuaries"][sanctuary]["name"].replace("?"," ")
-                    player[last_player]["sanctuaries"][sanctuary]["opened"] = True
-                    player[last_player]["inventory"]["max_lives"] =+ 1
+                    map_swords = ["hyrule", "gerudo"]
+                    map_shields = ["death mountain", "necluda"]
+                    if map_data.lower() in map_swords:
+                        swords = ["sword", "wood sword"]
+                        item = random.choice(swords)
+                        player[last_player]["weapons"][item]["count"] =+ 1
+                        promptAfegir(f"You obtained a {item}")
+                    elif map_data.lower() in map_shields:
+                        shields = ["shield", "wood shield"]
+                        item = random.choice(shields)
+                        player[last_player]["weapons"][item]["count"] =+ 1
+                        promptAfegir(f"You obtained a {item}")
+                    element["symbol"] = "W"
+                    all_chests_open(map_data, elements)
+                else:
+                    promptAfegir("This chest has alredy been opened")
+                    
+
+
 
 ## Definir las conexiones entre los mapas
 map_connections = {
