@@ -152,6 +152,7 @@ maps = {
         ],
         "elements" : [
             {"name" : "Player" , "symbol" : "X", "x" : 1, "y" : 8},
+            {"name" : "Ganon", "lifes": 8, "max_lifes" : 8}
             ]
         
     }
@@ -301,7 +302,6 @@ def fish(map_data, elements):
             x_pos, y_pos = element["x"], element["y"]
         
         if map_data[y_pos + 1][x_pos] == "~" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~" and "pescar" == True:
-            probabilidad = 0.2
             numero_aleatorio = random.random()
             if numero_aleatorio < 0.2:
                 promptAfegir("You got a fish")
@@ -360,6 +360,89 @@ def open(map_data, elements, place):
                     promptAfegir("This chest has alredy been opened")
                     
 
+
+
+def attack(map_data, elements):
+    for element in elements:
+        if element["Symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+            if map_data[y_pos - 1][x_pos] == "F" or map_data[y_pos + 1][x_pos] == "F" or map_data[y_pos][x_pos - 1] == "F" or map_data[y_pos][x_pos + 1] == "F":
+                for element in elements:
+                    if element["symbol"] == "F":
+                        fox_x_pos, fox_y_pos = element["x"], element["y"]
+                        break
+                map_data[fox_x_pos][fox_y_pos] = " "
+                promptAfegir("You got meat")
+                player[last_player]["food"]["meat"]["count"] =+ 1
+            elif map_data[y_pos - 1][x_pos] == "T" or map_data[y_pos + 1][x_pos] == "T" or map_data[y_pos][x_pos - 1] == "T" or map_data[y_pos][x_pos + 1] == "T":
+                if player[last_player]["inventory"]["weapon1"] == "":
+                    numero_aleatorio = random.random()
+                    if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
+                        player[last_player]["food"]["vegetable"]["count"] =+ 1
+                        promptAfegir("You got an apple")
+                    elif numero_aleatorio < 0.1:
+                        drops = ["wood sword", "wood shield"]
+                        item = random.choice(drops)
+                        player[last_player]["weapons"][item][count] =+ 1
+                        promptAfegir(f"You got a {item}")
+            elif "E" in map_data[y_pos - 1][x_pos] or "E" in map_data[y_pos + 1][x_pos] or "E" in map_data[y_pos][x_pos - 1] or "E" in map_data[y_pos][x_pos + 1]:
+                for element in elements:
+                    if element["symbol"] == "E":
+                        en_x_pos, en_y_pos = element["x"], element["y"]
+                        if map_data[en_y_pos - 1][en_x_pos] == "X" or map_data[en_y_pos + 1][en_x_pos] == "X" or map_data[en_y_pos][en_x_pos - 1] == "X" or map_data[en_y_pos][en_x_pos + 1] == "X":
+                            element["life"] =- 1
+                            if element["life"] < 1:
+                                map_data[en_y_pos][en_x_pos] = " "
+                            player[last_player]["inventory"]["lives"] =- 1
+                            promptAfegir(f"Be careful Link, you only have {player[last_player]["inventory"]["lives"]} hearts")
+                            position_valid = False
+                            while not position_valid:
+                                valid_position = [" "]
+                                directions = ["up", "right", "down","left"]
+                                direction = random.choice(directions)
+                                new_en_x_pos = en_x_pos + (1 if direction == "right" else -1) if direction in ["left", "right"] else en_x_pos
+                                new_en_y_pos = en_y_pos + (1 if direction == "down" else -1) if direction in ["up", "down"] else en_y_pos 
+                                if map_data[new_en_y_pos][new_en_x_pos] in valid_position:
+                                    position_valid = True
+                                else:
+                                    continue
+                            element["x"], element["y"] = new_en_x_pos, new_en_y_pos
+                            promptAfegir("Brave, keep fighting Link")
+            else:
+                numero_aleatorio = random.random()
+                if numero_aleatorio < 0.1:
+                    promptAfegir("You got a lizard")
+                    player[last_player]["food"]["meat"]["count"] =+ 1
+                else:
+                    promptAfegir("You did not anything")
+                        
+def ganon(elements):
+    sentences = [
+    "Ganon is powerful, are you sure you can defeat him?",
+    "Ganon's strength is supernatural, Zelda fought with bravery.",
+    "To Ganon, you are like a fly, find a weak spot and attack.",
+    "Ganon will not surrender easily.",
+    "Ganon has fought great battles, is an expert fighter.",
+    "Link, transform your fears into strengths.",
+    "Keep it up, Link, Ganon can't hold out much longer.",
+    "Link, history repeats itself, Ganon can be defeated.",
+    "Think of all the warriors who have tried before.",
+    "You fight for the weaker ones, Link, persevere."
+    ]
+    if maps["Castle"]["map"][8][18] == "X" or maps["Castle"]["map"][8][19] == "X" or maps["Castle"]["map"][8][20] == "X":
+        attack = True
+    if not attack:
+        promptAfegir("You are not close enough to ganon to attack")
+    else:
+        sentence = random.choice(sentences)
+        promptAfegir(sentence)
+        maps["Castle"]["elements"][1]["lifes"] =- 1
+        player[last_player]["inventory"]["lives"] =- 1
+        if maps["Castle"]["elements"][1]["lifes"] < 1:
+            promptAfegir("You have defeated Ganon.")
+            return
+        
+    
 
 
 ## Definir las conexiones entre los mapas
