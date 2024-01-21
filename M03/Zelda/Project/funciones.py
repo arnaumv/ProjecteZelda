@@ -12,46 +12,51 @@ import sshtunnel
 from sshtunnel import SSHTunnelForwarder
 
 
-ssh_host = 'nombre del host'
-ssh_username = 'username_ssh'
-ssh_password = 'contraseña_ssh'
-ssh_private_key_path = '/ruta/a/tu/llave/privada.pem'
-database_username = 'username'
-database_password = 'contraseña'
-database_name = 'ejemplo'
-ip = 'ip'
-
-############################### QUERYS ##############################
+ssh_host = '40.113.32.30'
+ssh_username = 'azureuser'
+ssh_password = 'proyectozelda2024.'
+database_username = 'root'
+database_password = 'root'
+database_name = 'proyecto_zelda'
+localhost = '127.0.0.1'
 
 def open_ssh_tunnel(verbose=False):
+    """Open an SSH tunnel and connect using a username and password.
+    :param verbose: Set to True to show logging
+    :return tunnel: Global SSH tunnel connection
+    """
     if verbose:
         sshtunnel.DEFAULT_LOGLEVEL = logging.DEBUG
-    
     global tunnel
     tunnel = SSHTunnelForwarder(
         (ssh_host, 22),
         ssh_username = ssh_username,
         ssh_password = ssh_password,
-        ssh_pkey = ssh_private_key_path
-        remote_bind_address = ('ip', 3306)
+        remote_bind_address = ('127.0.0.1', 3306)
     )
-    
     tunnel.start()
 
 def mysql_connect():
+    """Connect to a MySQL server using the SSH tunnel connection
+    :return connection: Global MySQL database connection
+    """
     global connection
-    
     connection = pymysql.connect(
-        host='ip',
+        host='127.0.0.1',
         user=database_username,
         passwd=database_password,
         db=database_name,
         port=tunnel.local_bind_port
     )
 
+def mysql_disconnect():
+    #Closes the MySQL database connection.
+    connection.close()
 
-def db_query(qry):
-    return pd.read_sql_query(qry, connection)
+def close_ssh_tunnel():
+    #Closes the SSH tunnel connection.
+    tunnel.close
+
 
 # PROMPT #
 
