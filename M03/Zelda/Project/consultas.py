@@ -1,6 +1,4 @@
 import mysql.connector
-from funciones import db_query
-
 
 def check_game_records():
     # Establecer la conexión con la base de datos
@@ -30,6 +28,3 @@ def check_game_records():
 
     # Devolver el valor de plays
     return plays
-
-def create_player_data(player_name):
-    db_query()

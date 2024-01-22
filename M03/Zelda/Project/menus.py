@@ -3,8 +3,8 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
+#conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+#cur = conn.cursor()
 
 def clear_terminal():
     if os.name == 'nt':  # Para sistemas Windows
@@ -432,14 +432,14 @@ def legendMenu(player_name):
 def plotMenu(player_name):
     clear_terminal()
     from funciones import player
-    print("   * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print("  * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
          f"\n *   Now history is repeating itself, and Princess Zelda has been captured by * "
           "\n *   Ganon. He has taken over the Guardians and filled Hyrule with monsters.  * "
           "\n *                                                                            * "
           "\n *                                                                            * "
-          f"\n *   But a young man named '{player_name}' has just awakened and                        * "
+          f"\n *   But a young man named '{player_name}' has just awakened and                       * "
           "\n *   must reclaim the Guardians to defeat Ganon and save Hyrule.              * "
           "\n *                                                                            * "
           "\n *                                                                            * "
@@ -450,7 +450,7 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
-            print(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
+            ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
             # Start the game section
             break
         
@@ -608,3 +608,10 @@ def map(santuarios):
     ]
 
     print("".join(map))
+
+
+
+
+
+
+
