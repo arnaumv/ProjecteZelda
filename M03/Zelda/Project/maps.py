@@ -547,7 +547,17 @@ def go_by(x, map_data, elements):
         return
     map_data[prev_y][prev_x] = " "  # Remove the player's previous position from the map
              
-             
+
+### time blood ###
+def timeblood(elements, player, last_player):
+    player[last_player]["inventory"]["timeBlood"] -= 1
+    if player[last_player]["inventory"]["timeBlood"] == 0:
+        for element in elements:
+            if element["symbol"] == "E" and element["name"] != "GANON":
+                element["life"] = element["max_life"]
+        player[last_player]["inventory"]["timeBlood"] = 25
+        print('The Blood moon rises once again. Please be careful, Link.')
+       
              
 ### FUNCION PARA ATACAR ###           
 def attack(map_data, elements):
@@ -747,6 +757,8 @@ def game_logic():
                     continue
 
                 if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
+                    timeblood(maps[current_map]["elements"], player, ultimo_jugador)
+
                     break
                 else:
                     print("You can't go there, it's not a valid position")
