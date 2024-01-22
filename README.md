@@ -17,7 +17,7 @@ The storyline unfolds in a Python programming environment and is played through 
 
 1. Clone this repository: `git clone https://github.com/your_username/your-zelda-repo.git`
 2. Navigate to the game directory: `cd tu-repo-zelda`
-3. Run the game: `python main.py`
+3. Run the game: `python game.py`
 
 
 ## About Us
