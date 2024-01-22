@@ -450,8 +450,9 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
-            ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
-            # Start the game section
+            from maps import game_logic
+            game_logic()  # Call the game logic function here
+
             break
         
         else:

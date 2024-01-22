@@ -64,6 +64,9 @@ def close_ssh_tunnel():
     global tunnel
     tunnel.close()
 
+
+
+
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles
@@ -132,7 +135,7 @@ def prompt_game1():
         pass
 
 
-# Este será el menú principal del juego si hay algun jugador registrado
+# Este será el menú principal del juego si hay algun jugador registrado  ####
 
 def prompt_game2():
     opcions_valides = ["continue", "new game", "help", "about", "exit", "reports"]
