@@ -485,16 +485,25 @@ def cook(map_data, elements, item, last_player):
 
 
 def eat(item):
-    if player[last_player]["lives"] < player[last_player]["max_lives"]:
-        if player[last_player]["food"][item]["count"] > 0:
-            player[last_player]["lives"] += player[last_player]["food"][item]["hearts"]
-            if player[last_player]["lives"] > player[last_player]["max_lives"]:
-                player[last_player]["lives"] = player[last_player]["max_lives"]
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    if player[ultimo_jugador]["inventory"]["lives"] < player[ultimo_jugador]["inventory"]["max_lives"]:
+        if player[ultimo_jugador]["food"][item]["count"] > 0:
+            if item == "vegetal":
+                player[ultimo_jugador]["inventory"]["lives"] += 1
+            elif item == "amanida":
+                player[ultimo_jugador]["inventory"]["lives"] += 2
+            elif item == "pescatarian":
+                player[ultimo_jugador]["inventory"]["lives"] += 3
+            elif item == "rostit":
+                player[ultimo_jugador]["inventory"]["lives"] += 4
+            player[ultimo_jugador]["food"][item]["count"] -= 1
+            if player[ultimo_jugador]["inventory"]["lives"] > player[ultimo_jugador]["inventory"]["max_lives"]:
+                player[ultimo_jugador]["inventory"]["lives"] = player[ultimo_jugador]["inventory"]["max_lives"]
         else:
-            promptAfegir(f"You don't have {item}")
+            promptAfegir(f"No tens {item}")
     else:
-        promptAfegir("You are alredy full health")
-
+        promptAfegir("Ja estàs ple de salut")
 
 
 #### FUNCION PARA MOVERSE A UNA POSICION CONCRETA ####
@@ -620,11 +629,15 @@ def open(map_data, elements, place, map_name):
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
                     sanctuary = element["symbol"].replace("?","")
-                    player[last_player]["sanctuaries"][sanctuary]["name"] = sanctuary
-                    player[last_player]["sanctuaries"][sanctuary]["opened"] = True
-                    player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
-                    player[last_player]["inventory"]["max_lives"] += 1
-                    print(f"You opened {sanctuary}")
+                    if player[last_player]["sanctuaries"][sanctuary]["opened"]:
+                        print('You already opened this sanctuary')
+                    else:
+                        player[last_player]["sanctuaries"][sanctuary]["name"] = sanctuary
+                        player[last_player]["sanctuaries"][sanctuary]["opened"] = True
+                        player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
+                        player[last_player]["inventory"]["max_lives"] += 1
+                        print('You opened the sanctuary, your maximum health has increased by 1')
+                        element["symbol"] = sanctuary  # Update the sanctuary name in the elements list
 
     elif place.capitalize() == "Chest":
         for element in elements:
@@ -748,6 +761,10 @@ def game_logic():
                 open(maps[current_map]["map"], maps[current_map]["elements"], "Chest", current_map)
                 break
             
+            ### ABRIR SANTUARIO ###
+            if command[0] == "open" and command[1] == "sanctuary":
+                open(maps[current_map]["map"], maps[current_map]["elements"], "Sanctuary", current_map)
+                break
             ### cocinar ###
             if command[0] == "cook":
                 if len(command) < 2:
@@ -755,6 +772,16 @@ def game_logic():
                     continue
                 item_to_cook = command[1]
                 cook(maps[current_map]["map"], maps[current_map]["elements"], item_to_cook, last_player)
+                break
+             ### comer ###
+            if command[0] == "eat":
+                if len(command) < 2:
+                    print("You need to specify what you want to eat.")
+                    continue
+                item_to_eat = command[1]
+                
+                eat(item_to_eat)
+                print(player)
                 break
 
                 
