@@ -251,20 +251,21 @@ def create_main_inventory(player):
     player_name = ultimo_jugador  # Assuming the player's name is the last key in the player dictionary
 
     inventoryM = [
-        f" * * * * Inventory *",
-        f"                   *",
-        f" {player_name}      ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}*",
+        " * * * * Inventory *",
+        "                   *",
+        f" {player_name:<13}♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}*",
         f"  Blood moon in {playerInfo['inventory']['timeBlood']} *",
-        f"                   *",
-        f" Equipment         *",
+        "                   *",
+        " Equipment         *",
         f"       {playerInfo['inventory']['weapon1']}  *",
         f"       {playerInfo['inventory']['weapon2']} *",
         f" Food            {playerInfo['inventory']['totalFood']} *",
         f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
-        f"                   *"
+        "                   *"
     ]
 
     return inventoryM
+
 
 ###  HE CREADO ESTA FUNCION PARA QUE EMUESTRE EL INVENTARIO WEAPONS ACTUALIZADO ####
 
@@ -304,31 +305,31 @@ def create_food_inventory(player):
     jugadores = player.keys()
     ultimo_jugador = list(jugadores)[-1]
 
-    foods = {
-        "food": player[ultimo_jugador]["food"]
-    }
+    #foods = {
+    #    "food": player[ultimo_jugador]["food"]
+    #}
 
-    # Access the "count" values for each food
-    vegetables_count = foods['food']['vegetables']['count']
-    fish_count = foods['food']['fish']['count']
-    meat_count = foods['food']['meat']['count']
-    salads_count = foods['food']['salads']['count']
-    pescatarian_count = foods['food']['pescatarian']['count']
-    roasted_count = foods['food']['roasted']['count']
+   # Access the "count" values for each food
+    vegetables_count = player[ultimo_jugador]['food']['vegetables']['count']
+    fish_count = player[ultimo_jugador]['food']['fish']['count']
+    meat_count = player[ultimo_jugador]['food']['meat']['count']
+    salads_count = player[ultimo_jugador]['food']['salads']['count']
+    pescatarian_count = player[ultimo_jugador]['food']['pescatarian']['count']
+    roasted_count = player[ultimo_jugador]['food']['roasted']['count']
 
     # Incorporate these values into your inventory
     inventoryFood = [
-        f"* * * * * Foods *",
-        f"                  *",
-        f"                  *",
-        f"Vegetables      {str(vegetables_count).rjust(1)} *",
-        f"Fish            {str(fish_count).rjust(1)} *",
-        f"Meat            {str(meat_count).rjust(1)} *",
-        f"                  *",
-        f"Salads          {str(salads_count).rjust(1)} *",
-        f"Pescatarian     {str(pescatarian_count).rjust(1)} *",
-        f"Roasted         {str(roasted_count).rjust(1)} *",
-        f"                  *",
+        f" * * * * * * Foods *",
+        f"                   *",
+        f"                   *",
+        f" Vegetables     {str(vegetables_count).rjust(1)}  *",
+        f" Fish           {str(fish_count).rjust(1)}  *",
+        f" Meat           {str(meat_count).rjust(1)}  *",
+        f"                   *",
+        f" Salads         {str(salads_count).rjust(1)}  *",
+        f" Pescatarian    {str(pescatarian_count).rjust(1)}  *",
+        f" Roasted        {str(roasted_count).rjust(1)}  *",
+        f"                   *",
         f"* * * * * * * * * *"
     ]
 
@@ -419,7 +420,6 @@ def unequip(item):
             return
 
 
-#Funcion para moverse por el mapa
   
   
 #### FUNCION PARA MOVERSE POR EL MAPA ####
@@ -446,7 +446,54 @@ def move_player(map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
+            
+#cocinar y comer
+        
+def cook(map_data, elements, item, last_player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    x_pos, y_pos = None, None
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+    if x_pos is not None and y_pos is not None:
+        if map_data[y_pos + 1][x_pos] == "C" or map_data[y_pos - 1][x_pos] == "C" or map_data[y_pos][x_pos + 1] == "C" or map_data[y_pos][x_pos - 1] == "C":
+            if item == "salads":
+                if "vegetables" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 2:
+                    player[ultimo_jugador]["food"]["salads"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 2
+                else:
+                    print("Not enough vegetables")
+            elif item == "pescatarian":
+                if "vegetables" in player[ultimo_jugador]["food"] and "fish" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 1 and player[ultimo_jugador]["food"]["fish"]["count"] >= 1:
+                    player[ultimo_jugador]["food"]["pescatarian"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 1
+                    player[ultimo_jugador]["food"]["fish"]["count"] -= 1
+                else:
+                    print("Not enough vegetables and fish")
+            elif item == "roasted":
+                if "vegetables" in player[ultimo_jugador]["food"] and "meat" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 1 and player[ultimo_jugador]["food"]["meat"]["count"] >= 1:
+                    player[ultimo_jugador]["food"]["roasted"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 1
+                    player[ultimo_jugador]["food"]["meat"]["count"] -= 1
+                else:
+                    print("Not enough vegetables and meat")
+        else:
+            print("You are not next to a 'C'.")
+    else:
+        print("Player position not found.")
 
+
+def eat(item):
+    if player[last_player]["lives"] < player[last_player]["max_lives"]:
+        if player[last_player]["food"][item]["count"] > 0:
+            player[last_player]["lives"] += player[last_player]["food"][item]["hearts"]
+            if player[last_player]["lives"] > player[last_player]["max_lives"]:
+                player[last_player]["lives"] = player[last_player]["max_lives"]
+        else:
+            promptAfegir(f"You don't have {item}")
+    else:
+        promptAfegir("You are alredy full health")
 
 
 
@@ -550,7 +597,22 @@ def attack(map_data, elements):
 
 
 
-### FUNCION PARA ABRIR COFRES ###                       
+### FUNCION PARA ABRIR COFRES ###   
+
+def close_chests(map_data, elements):
+    for element in elements:
+        if element["symbol"] == "W":
+            element["symbol"] = "M"
+
+def all_chests_open(map_data, elements):
+    cnt = 0
+    for element in elements:
+        if element["symbol"] == "M":
+            cnt += 1
+    if cnt == 0:
+        close_chests(map_data, elements)
+        
+                            
 def open(map_data, elements, place, map_name):
     if place.capitalize() == "Sanctuary":
         for element in elements:
@@ -616,6 +678,16 @@ def game_logic():
     global current_inventory
     directions = ["up", "down", "left", "right"]
     while True:
+        # Get the keys from the player dictionary
+        jugadores = player.keys()
+
+        # Get the last player added to the dictionary
+        ultimo_jugador = list(jugadores)[-1]
+
+        # Check if player is dead
+        if player[ultimo_jugador]['inventory']['lives'] <= 0:
+            deadMenu()
+            break
         print_map(maps[current_map]["map"], maps[current_map]["elements"], player, current_inventory, map_name=current_map)
         
         while True:
@@ -668,6 +740,21 @@ def game_logic():
 
             if command[0] == "attack":
                 attack(maps[current_map]["map"], maps[current_map]["elements"])
+                break
+            
+            
+            ### ESTO DEBERIA DE ABRIR LOS COFRES ##
+            if command[0] == "open" and command[1] == "chest":
+                open(maps[current_map]["map"], maps[current_map]["elements"], "Chest", current_map)
+                break
+            
+            ### cocinar ###
+            if command[0] == "cook":
+                if len(command) < 2:
+                    print("You need to specify what you want to cook.")
+                    continue
+                item_to_cook = command[1]
+                cook(maps[current_map]["map"], maps[current_map]["elements"], item_to_cook, last_player)
                 break
 
                 

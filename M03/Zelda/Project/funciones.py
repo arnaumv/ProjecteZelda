@@ -187,6 +187,7 @@ def prompt_game2():
         # Acció per a "Exit"
         pass
 
+
 # Funcion que ejecuta el menu del juego 
 def mainMenu():
     # Primero ejecuta check_game_records
@@ -209,7 +210,8 @@ def mainMenu():
     
 
 player = {
-    "default": {
+       
+     "Link": {
         "inventory": {
             "lives": 3,
             "max_lives": 3,
