@@ -248,6 +248,10 @@ def create_main_inventory(player):
         "inventory": player[ultimo_jugador]["inventory"]
     }
 
+    # Calculate total food count
+    totalFood = sum(food["count"] for food in player[ultimo_jugador]["food"].values())
+    playerInfo["inventory"]["totalFood"] = totalFood
+
     player_name = ultimo_jugador  # Assuming the player's name is the last key in the player dictionary
 
     inventoryM = [
@@ -259,7 +263,7 @@ def create_main_inventory(player):
         " Equipment         *",
         f"       {playerInfo['inventory']['weapon1']}  *",
         f"       {playerInfo['inventory']['weapon2']} *",
-        f" Food            {playerInfo['inventory']['totalFood']} *",
+        f" Food           {playerInfo['inventory']['totalFood']} *",
         f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
         "                   *"
     ]
@@ -286,13 +290,13 @@ def create_weapons_inventory(player):
         f"                  *",
         f"                  *",
         f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
-        f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+        f"  {'(equipped)' if equipped['wood sword'] else '':<15} *",
         f"Sword         {uses['sword']}/{count['sword']} *",
-        f"  {'(equipped)' if equipped['sword'] else ''}                *",
+        f"  {'(equipped)' if equipped['sword'] else '':<15} *",
         f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
-        f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+        f"  {'(equipped)' if equipped['wood shield'] else '':<15} *",
         f"Shield        {uses['shield']}/{count['shield']} *",
-        f"  {'(equipped)' if equipped['shield'] else ''}                *",
+        f"  {'(equipped)' if equipped['shield'] else '':<15} *",
         f"* * * * * * * * * *",
         f"* * * * * * * * * * *"
     ]
@@ -385,25 +389,37 @@ def inventoryMain(player, player_name):
     for i in range(len(map)):
         inventory_line = inventoryM[i] if i < len(inventoryM) else ''
         print(map[i], inventory_line)
-        
+    
+    while True:
+        command = input("Enter 'back' to return to the game: ").lower()
+        if command == "back":
+            break
+        else:
+            print("Invalid command. Please enter 'back' to return to the game.")    
         
         
 #### FUNCION PARA EQUIPAR ARMAS ###
 def equip(item):
-    if item in player[last_player]["weapons"] and player[last_player]["weapons"][item]["equipped"] == False:
+    if item not in player[last_player]["weapons"]:
+        print(f"You don't have {item} in your weapons.")
+        return
+    if player[last_player]["weapons"][item]["equipped"] == False:
         if "sword" in item:
             old_item = player[last_player]["inventory"]["weapon1"]
-            player[last_player]["weapons"][old_item]["equipped"] = False
+            if old_item is not None:
+                old_item = old_item.lower()  # convert to lowercase
+                player[last_player]["weapons"][old_item]["equipped"] = False
             player[last_player]["inventory"]["weapon1"] = item
             player[last_player]["weapons"][item]["equipped"] = True
         elif "shield" in item:
             old_item = player[last_player]["inventory"]["weapon2"]
-            player[last_player]["weapons"][old_item]["equipped"] = False
+            if old_item is not None:
+                old_item = old_item.lower()  # convert to lowercase
+                player[last_player]["weapons"][old_item]["equipped"] = False
             player[last_player]["inventory"]["weapon2"] = item
             player[last_player]["weapons"][item]["equipped"] = True
         else:
             print("You can't equip this item")
-        return
 
 
 ### FUNCION PARA DESEQUIPAR ARMAS ###
@@ -487,23 +503,27 @@ def cook(map_data, elements, item, last_player):
 def eat(item):
     jugadores = player.keys()
     ultimo_jugador = list(jugadores)[-1]
+    if item not in player[ultimo_jugador]["food"]:
+        print(f"{item} does not exist in your food inventory. Please try again.")
+        return
+
     if player[ultimo_jugador]["inventory"]["lives"] < player[ultimo_jugador]["inventory"]["max_lives"]:
         if player[ultimo_jugador]["food"][item]["count"] > 0:
-            if item == "vegetal":
+            if item == "vegetables":
                 player[ultimo_jugador]["inventory"]["lives"] += 1
-            elif item == "amanida":
+            elif item == "salads":
                 player[ultimo_jugador]["inventory"]["lives"] += 2
             elif item == "pescatarian":
                 player[ultimo_jugador]["inventory"]["lives"] += 3
-            elif item == "rostit":
+            elif item == "roasted":
                 player[ultimo_jugador]["inventory"]["lives"] += 4
             player[ultimo_jugador]["food"][item]["count"] -= 1
             if player[ultimo_jugador]["inventory"]["lives"] > player[ultimo_jugador]["inventory"]["max_lives"]:
                 player[ultimo_jugador]["inventory"]["lives"] = player[ultimo_jugador]["inventory"]["max_lives"]
         else:
-            promptAfegir(f"No tens {item}")
+            print(f"No tens {item}")
     else:
-        promptAfegir("Ja estàs ple de salut")
+        print("Ja estàs ple de salut")
 
 
 #### FUNCION PARA MOVERSE A UNA POSICION CONCRETA ####
@@ -515,6 +535,7 @@ def go_by(x, map_data, elements):
     for element in elements:
         if element["name"].lower() == place or element["symbol"].lower() == x:
             x_pos, y_pos = element["x"], element["y"]
+            
             break  # Break the loop once the element is found
     if x_pos is None or y_pos is None:
         print("This element doesn't exist")
@@ -527,21 +548,25 @@ def go_by(x, map_data, elements):
             if element["symbol"] == "X":
                 element["x"] = x_pos
                 element["y"] = y_pos - 1
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos + 1][x_pos] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos
                 element["y"] = y_pos + 1
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos][x_pos - 1] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos - 1
                 element["y"] = y_pos
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos][x_pos + 1] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos + 1
                 element["y"] = y_pos
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     else:
         print("Error, the element you are trying to go to has no valid positions")
         return
@@ -554,37 +579,119 @@ def timeblood(elements, player, last_player):
     if player[last_player]["inventory"]["timeBlood"] == 0:
         for element in elements:
             if element["symbol"] == "E" and element["name"] != "GANON":
-                element["life"] = element["max_life"]
-        player[last_player]["inventory"]["timeBlood"] = 25
+                if "max_life" in element:
+                    element["life"] = element["max_life"]
+                else:
+                    # print(f"Element {element['name']} does not have a 'max_life' key.")
+                    player[last_player]["inventory"]["timeBlood"] = 25
         print('The Blood moon rises once again. Please be careful, Link.')
        
              
 ### FUNCION PARA ATACAR ###           
-def attack(map_data, elements):
+def attack(map_data, elements, current_map):
+    
+    
     for element in elements:
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
-            player[last_player]["inventory"]["lives"] -= 1
-            promptAfegir(f'Be careful Link, you only have {player[last_player]["inventory"]["lives"]} hearts')
+            if current_map == "CASTLE":
+                sentences = [
+                    "Ganon is powerful, are you sure you can defeat him?",
+                    "Ganon's strength is supernatural, Zelda fought with bravery.",
+                    "To Ganon, you are like a fly, find a weak spot and attack.",
+                    "Ganon will not surrender easily.",
+                    "Ganon has fought great battles, is an expert fighter.",
+                    "Link, transform your fears into strengths.",
+                    "Keep it up, Link, Ganon can't hold out much longer.",
+                    "Link, history repeats itself, Ganon can be defeated.",
+                    "Think of all the warriors who have tried before.",
+                    "You fight for the weaker ones, Link, persevere."
+                ]
+                attack = maps["Castle"]["map"][8][18] == "X" or maps["Castle"]["map"][8][19] == "X" or maps["Castle"]["map"][8][20] == "X"
+                if not attack:
+                    print("You are not close enough to ganon to attack")
+                else:
+                    sentence = random.choice(sentences)
+                    print(sentence)
+                    maps["Castle"]["elements"][1]["lifes"] -= 1
+                    player[last_player]["inventory"]["lives"] -= 1
+                    if maps["Castle"]["elements"][1]["lifes"] < 1:
+                        print("You have defeated Ganon.")
+                        return
+            # Check if player is attacking an enemy
+            if map_data[y_pos - 1][x_pos] != " " or map_data[y_pos + 1][x_pos] != " " or map_data[y_pos][x_pos - 1] != " " or map_data[y_pos][x_pos + 1] != " ":
+                player[last_player]["inventory"]["lives"] -= 1
+
+            # Check which shield is equipped before reducing uses
+            for weapon in player[last_player]["weapons"]:
+                if player[last_player]["weapons"][weapon]["equipped"] and "shield" in weapon:
+                    player[last_player]["weapons"][weapon]["uses"] -= 1
+                    if player[last_player]["weapons"][weapon]["uses"] < 1:
+                        player[last_player]["weapons"][weapon]["equipped"] = False
+                        print(f"{weapon} is now unequipped because it has no uses left.")
+                    break
+
+            print(f'Be careful {last_player}, you only have {player[last_player]["inventory"]["lives"]} hearts')
             if map_data[y_pos - 1][x_pos] == "F" or map_data[y_pos + 1][x_pos] == "F" or map_data[y_pos][x_pos - 1] == "F" or map_data[y_pos][x_pos + 1] == "F":
                 for element in elements:
                     if element["symbol"] == "F":
                         fox_x_pos, fox_y_pos = element["x"], element["y"]
                         break
-                map_data[fox_x_pos][fox_y_pos] = " "
-                print("You got meat")
-                player[last_player]["food"]["meat"]["count"] += 1
+                # Calculate if the 'Fox' is visible or not
+                is_visible = random.random() < 0.5
+                if is_visible:
+                    print('You see a Fox')
+                    if 0 <= fox_x_pos < len(map_data) and 0 <= fox_y_pos < len(map_data[0]):
+                        map_data[fox_x_pos][fox_y_pos] = " "
+                    else:
+                        print("Fox position is out of map bounds.")
+                    print("You got meat")
+                    player[last_player]["food"]["meat"]["count"] += 1
+                    if player[last_player]["inventory"]["weapon1"] != "":
+                        # Check which weapon is equipped before reducing uses
+                        for weapon in player[last_player]["weapons"]:
+                            if player[last_player]["weapons"][weapon]["equipped"] and "sword" in weapon:
+                                player[last_player]["weapons"][weapon]["uses"] -= 1
+                                if player[last_player]["weapons"][weapon]["uses"] < 1:
+                                    player[last_player]["weapons"][weapon]["equipped"] = False
+                                    print(f"{weapon} is now unequipped because it has no uses left.")
+                                break
+                else:
+                    print('You don\'t see a Fox')
+            # Rest of the code...
             elif map_data[y_pos - 1][x_pos] == "T" or map_data[y_pos + 1][x_pos] == "T" or map_data[y_pos][x_pos - 1] == "T" or map_data[y_pos][x_pos + 1] == "T":
-                if player[last_player]["inventory"]["weapon1"] == "":
+                if "respawn" in map_data[y_pos][x_pos]:  # tree is waiting to respawn
+                    print(f"The tree is not ready yet, {map_data[y_pos][x_pos]['respawn']} turns left")
+                else:
                     numero_aleatorio = random.random()
-                    if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
-                        player[last_player]["food"]["vegetable"]["count"] += 1
-                        print("You got an apple")
-                    elif numero_aleatorio < 0.1:
-                        drops = ["wood sword", "wood shield"]
-                        item = random.choice(drops)
-                        player[last_player]["weapons"][item][count] += 1
-                        print(f"You got a {item}")
+                    if player[last_player]["inventory"]["weapon1"] == "":
+                        if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
+                            player[last_player]["food"]["vegetables"]["count"] += 1
+                            print("You got an apple")
+                        elif numero_aleatorio < 0.1:
+                            drops = ["wood sword", "wood shield"]
+                            item = random.choice(drops)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                    else:  # player has a sword equipped
+                        if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.2:
+                            player[last_player]["food"]["vegetables"]["count"] += 1
+                            print("You got an apple")
+                        elif numero_aleatorio < 0.2:
+                            drops = ["wood sword", "wood shield"]
+                            item = random.choice(drops)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        player[last_player]["weapons"]["sword"]["uses"] -= 1
+                        if player[last_player]["weapons"]["sword"]["uses"] < 1:
+                            player[last_player]["weapons"]["sword"]["equipped"] = False
+                            print("Sword is now unequipped because it has no uses left.")
+                        player[last_player]["actions_with_sword"] += 1
+                        if player[last_player]["actions_with_sword"] >= 4:
+                            map_data[y_pos][x_pos] = {"symbol": "T", "respawn": 10}
+                            player[last_player]["actions_with_sword"] = 0
+                            print("The tree disappeared and will reappear in 10 turns")
+                        
             elif "E" in map_data[y_pos - 1][x_pos] or "E" in map_data[y_pos + 1][x_pos] or "E" in map_data[y_pos][x_pos - 1] or "E" in map_data[y_pos][x_pos + 1]:
                 for element in elements:
                     if element["symbol"] == "E":
@@ -613,6 +720,35 @@ def attack(map_data, elements):
                     player[last_player]["food"]["meat"]["count"] += 1
                 else:
                     print("You did not anything")
+
+
+
+
+#Funcion para pescar
+
+def fish(map_data, elements):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    x_pos, y_pos = None, None
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+        
+    if x_pos is not None and y_pos is not None:
+        if y_pos > 0 and y_pos < len(map_data) - 1 and x_pos > 0 and x_pos < len(map_data[0]) - 1:
+            if map_data[y_pos + 1][x_pos] == "~" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~":
+                numero_aleatorio = random.random()
+                if numero_aleatorio < 0.2:
+                    print("You got a fish")
+                    if "fish" in player[ultimo_jugador]["inventory"]:
+                        player[ultimo_jugador]["inventory"]["fish"]["count"] += 1
+                    else:
+                        player[ultimo_jugador]["inventory"]["fish"] = {"count": 1}
+                    return
+                else:
+                    print("You didn't get a fish")
+                    return
+
 
 
 
@@ -654,22 +790,54 @@ def open(map_data, elements, place, map_name):
             if element["symbol"] == "M":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
-                    map_swords = ["Hyrule", "Gerudo"]
-                    map_shields = ["Death mountain", "Necluda"]
-                    if map_name in map_swords:
-                        swords = ["sword", "wood sword"]
-                        item = random.choice(swords)
-                        player[last_player]["weapons"][item]["count"] += 1
-                        print(f"You obtained a {item}")
-                    elif map_name in map_shields:
-                        shields = ["shield", "wood shield"]
-                        item = random.choice(shields)
-                        player[last_player]["weapons"][item]["count"] += 1
-                        print(f"You obtained a {item}")
-                    element["symbol"] = "W"
-                    element["opened"] = True  # Marca el cofre como abierto
+                    if element.get("opened", False) == False:
+                        map_swords = ["Hyrule", "Gerudo"]
+                        map_shields = ["Death mountain", "Necluda"]
+                        if map_name in map_swords:
+                            swords = ["sword", "wood sword"]
+                            item = random.choice(swords)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        elif map_name in map_shields:
+                            shields = ["shield", "wood shield"]
+                            item = random.choice(shields)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        element["symbol"] = "W"
+                        element["opened"] = True  # Mark the chest as opened
+                    else:
+                        print("This chest has already been opened")
                 else:
-                    print("This chest has alredy been opened")
+                    print("You need to be next to the chest to open it")
+
+
+                        
+def ganon(elements):
+    sentences = [
+    "Ganon is powerful, are you sure you can defeat him?",
+    "Ganon's strength is supernatural, Zelda fought with bravery.",
+    "To Ganon, you are like a fly, find a weak spot and attack.",
+    "Ganon will not surrender easily.",
+    "Ganon has fought great battles, is an expert fighter.",
+    "Link, transform your fears into strengths.",
+    "Keep it up, Link, Ganon can't hold out much longer.",
+    "Link, history repeats itself, Ganon can be defeated.",
+    "Think of all the warriors who have tried before.",
+    "You fight for the weaker ones, Link, persevere."
+    ]
+    if maps["Castle"]["map"][8][18] == "X" or maps["Castle"]["map"][8][19] == "X" or maps["Castle"]["map"][8][20] == "X":
+        attack = True
+    if not attack:
+        promptAfegir("You are not close enough to ganon to attack")
+    else:
+        sentence = random.choice(sentences)
+        promptAfegir(sentence)
+        maps["Castle"]["elements"][1]["lifes"] -= 1
+        player[last_player]["inventory"]["lives"] -= 1
+        if maps["Castle"]["elements"][1]["lifes"] < 1:
+            promptAfegir("You have defeated Ganon.")
+            return
+        
 
 
 ## Definir las conexiones entre los mapas
@@ -715,10 +883,13 @@ def game_logic():
         
         while True:
             command = input("What to do now? ").lower().split()
+            if not command:  # Check if command list is empty
+                print("Invalid Option")
+                continue
             if command[0] == "show" and command[1] == "map":
                 # Display the map and the inventory
                 inventoryMain(player, player_name)
-                continue
+                break
             if command[0] == "show" and command[1] == "inventory":
                 if command[2] == "help":
                     # Llamar a la función helpInventoryMenu
@@ -746,27 +917,35 @@ def game_logic():
                     continue
             if command[0] == "go" and command[1] == "by":
                 go_by(command[2], maps[current_map]["map"], maps[current_map]["elements"])
+                
                 break
 
-            if command[0] == "go" and command[1] in directions:
-                direction = command[1]
-                try:
-                    num_steps = int(command[2])
-                except ValueError:
-                    print("You can't go there, it's not a valid position")
+            if command[0] == "go":
+                if len(command) < 3:
+                    print("You need to specify a direction and the number of steps.")
                     continue
 
-                if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
-                    timeblood(maps[current_map]["elements"], player, ultimo_jugador)
+                if command[1] in directions:
+                    direction = command[1]
+                    try:
+                        num_steps = int(command[2])
+                    except ValueError:
+                        print("You can't go there, it's not a valid position")
+                        continue
 
-                    break
-                else:
-                    print("You can't go there, it's not a valid position")
+                    if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
+                        timeblood(maps[current_map]["elements"], player, ultimo_jugador)
+                        break
+                    else:
+                        print("You can't go there, it's not a valid position")
 
             if command[0] == "attack":
-                attack(maps[current_map]["map"], maps[current_map]["elements"])
+                
+                attack(maps[current_map]["map"], maps[current_map]["elements"], current_map)
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
+
                 break
-            
+                        
             
             ### ESTO DEBERIA DE ABRIR LOS COFRES ##
             if command[0] == "open" and command[1] == "chest":
@@ -793,7 +972,26 @@ def game_logic():
                 item_to_eat = command[1]
                 
                 eat(item_to_eat)
-                print(player)
+                break
+            if command[0] == "fish":
+                fish(maps[current_map]["map"], maps[current_map]["elements"])
+                break
+            
+            ##EQUIPAR ARMAS ###
+            if command[0] == "equip":
+                if len(command) < 2:
+                    print("You need to specify what you want to equip.")
+                    continue
+                item_to_equip = command[1]
+                equip(item_to_equip)
+                break
+
+            if command[0] == "unequip":
+                if len(command) < 2:
+                    print("You need to specify what you want to unequip.")
+                    continue
+                item_to_unequip = command[1]
+                unequip(item_to_unequip)
                 break
 
                 

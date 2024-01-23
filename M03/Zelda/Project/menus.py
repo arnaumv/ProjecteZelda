@@ -241,7 +241,7 @@ def newGameMenu():
 
     clear_terminal()
 
-    print("   * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    print(" * New game  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                             * "
           "\n *                                                                             * "
           "\n *                                                                             * "
@@ -284,6 +284,8 @@ def newGameMenu():
                     "weapon2": "Wood Shield",
                     "totalFood": 0,
                     "totalWeapons": 2,
+                    "openedchest": 0,  
+
                 },
                 "weapons": {
                     "wood sword": {"uses": 5, "count": 2, "equipped": True},
@@ -308,6 +310,7 @@ def newGameMenu():
                     "S5": {"name": "S5?", "opened": False},
                     "S6": {"name": "S6?", "opened": False},
                 },
+                "actions_with_sword": 0
             }
             
             # Agregar al nuevo jugador al diccionario player
