@@ -234,11 +234,9 @@ def timeblood(elements):
 
 #Funcion para moverse por el mapa
     
-  
-def move_player(current_map, map_data, elements, direction, num_steps):
-    valid_position = [" "]
-    if current_map == "Castle" and not direction == "right" or not direction == "left":
-        promptAfegir("You can't go there")
+
+def move_player(map_data, elements, direction, num_steps):
+    valid_positions = [" "]  # Añade aquí cualquier otro símbolo que represente una posición inválida
     for element in elements:
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
@@ -246,7 +244,7 @@ def move_player(current_map, map_data, elements, direction, num_steps):
                 new_x_pos = x_pos + (1 if direction == "right" else -1) if direction in ["left", "right"] else x_pos
                 new_y_pos = y_pos + (1 if direction == "down" else -1) if direction in ["up", "down"] else y_pos
 
-                if new_x_pos < 0 or new_y_pos < 0 or new_y_pos >= len(map_data) or new_x_pos >= len(map_data[new_y_pos]) or map_data[new_y_pos][new_x_pos] not in valid_position:
+                if new_x_pos < 0 or new_y_pos < 0 or new_y_pos >= len(map_data) or new_x_pos >= len(map_data[new_y_pos]) or map_data[new_y_pos][new_x_pos] not in valid_positions:
                     return False
 
                 # Set the old position to empty
@@ -260,83 +258,45 @@ def move_player(current_map, map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
-def go_by(place, map_data, elements):
+def go_by(x, map_data, elements):
     valid_position = [" "]
+    place = x.lower()
+    x_pos, y_pos = None, None  # Initialize x_pos and y_pos
+    prev_x, prev_y = None, None  # Initialize prev_x and prev_y
     for element in elements:
-        if element["symbol"] == place:
+        if element["name"].lower() == place or element["symbol"].lower() == x:
             x_pos, y_pos = element["x"], element["y"]
-        else:
-            promptAfegir("This element doesn't exist")
-        if map_data[y_pos - 1][x_pos] in valid_position:
-            for element in elements:
-                if element["symbol"] == "X":
-                    map_data[y_pos][x_pos] = " "
-                    element["x"] = x_pos
-                    element["y"] = y_pos - 1
-                    map_data[element["y"]][element["x"]] = "X"
-        elif map_data[y_pos + 1][x_pos] in valid_position:
-            for element in elements:
-                if element["symbol"] == "X":
-                    map_data[y_pos][x_pos] = " "
-                    element["x"] = x_pos
-                    element["y"] = y_pos + 1
-                    map_data[element["y"]][element["x"]] = "X"
-        elif map_data[y_pos][x_pos - 1] in valid_position:
-            for element in elements:
-                if element["symbol"] == "X":
-                    map_data[y_pos][x_pos] = " "
-                    element["x"] = x_pos - 1
-                    element["y"] = y_pos
-                    map_data[element["y"]][element["x"]] = "X"
-        elif map_data[y_pos][x_pos + 1] in valid_position:
-            for element in elements:
-                if element["symbol"] == "X":
-                    map_data[y_pos][x_pos] = " "
-                    element["x"] = x_pos + 1
-                    element["y"] = y_pos
-                    map_data[element["y"]][element["x"]] = "X"
-                    
-        else:
-            promptAfegir("Error, the element you are trying to go to has no valid positions")
-            break
-            
-#cocinar y comer
-        
-def cook(map_data, elements, item):
+            break  # Break the loop once the element is found
+    if x_pos is None or y_pos is None:
+        print("This element doesn't exist")
+        return  # Return from the function if the element does not exist
     for element in elements:
         if element["symbol"] == "X":
-            x_pos, y_pos = element["x"], element["y"]
-        if map_data[y_pos + 1][x_pos] == "C" or map_data[y_pos - 1][x_pos] == "C" or map_data[y_pos][x_pos + 1] == "C" or map_data[y_pos][x_pos - 1] == "C" and "pescar" == True:
-            if item == "salad" and player[last_player]["food"]["vegetable"]["count"] > 2:
-                player[last_player]["food"]["salad"]["count"] += 1
-                player[last_player]["food"]["vegetable"]["count"] -= 2
-            else:
-                promptAfegir("You don't have enough vegetables")
-            if item == "pescatarian" and player[last_player]["food"]["vegetable"]["count"] > 1 and player[last_player]["food"]["fish"]["count"] > 1:
-                player[last_player]["food"]["pescatarian"]["count"] += 1
-                player[last_player]["food"]["vegetable"]["count"] -= 1
-                player[last_player]["food"]["fish"]["count"] -= 1
-            else:
-                promptAfegir("You don't have enough vegetables or fish")
-            if item == "roasted" and player[last_player]["food"]["vegetable"]["count"] > 1 and player[last_player]["food"]["meat"]["count"] > 1:
-                player[last_player]["food"]["roasted"]["count"] += 1
-                player[last_player]["food"]["vegetable"]["count"] -= 1
-                player[last_player]["food"]["meat"]["count"] -= 1
-            else:
-                promptAfegir("You don't have enough vegetables or fish")
-
-
-def eat(item):
-    if player[last_player]["lives"] < player[last_player]["max_lives"]:
-        if player[last_player]["food"][item]["count"] > 0:
-            player[last_player]["lives"] += player[last_player]["food"][item]["hearts"]
-            if player[last_player]["lives"] > player[last_player]["max_lives"]:
-                player[last_player]["lives"] = player[last_player]["max_lives"]
-        else:
-            promptAfegir(f"You don't have {item}")
+            prev_x, prev_y = element["x"], element["y"]  # Store the player's current position before moving
+    if map_data[y_pos - 1][x_pos] in valid_position:
+        for element in elements:
+            if element["symbol"] == "X":
+                element["x"] = x_pos
+                element["y"] = y_pos - 1
+    elif map_data[y_pos + 1][x_pos] in valid_position:
+        for element in elements:
+            if element["symbol"] == "X":
+                element["x"] = x_pos
+                element["y"] = y_pos + 1
+    elif map_data[y_pos][x_pos - 1] in valid_position:
+        for element in elements:
+            if element["symbol"] == "X":
+                element["x"] = x_pos - 1
+                element["y"] = y_pos
+    elif map_data[y_pos][x_pos + 1] in valid_position:
+        for element in elements:
+            if element["symbol"] == "X":
+                element["x"] = x_pos + 1
+                element["y"] = y_pos
     else:
-        promptAfegir("You are alredy full health")
-
+        print("Error, the element you are trying to go to has no valid positions")
+        return
+    map_data[prev_y][prev_x] = " "  # Remove the player's previous position from the map
                 
 
 #Funcion para pescar
@@ -372,50 +332,39 @@ def all_chests_open(map_data, elements):
         close_chests(map_data, elements)
 
 def open(map_data, elements, place, map_name):
-    if place.lower() == "sanctuary":
+    if place.capitalize() == "Sanctuary":
         for element in elements:
             if element["name"] == "Sanctuary":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
-                    sanctuary = element["symbol"]
-                    player[last_player]["sanctuaries"][sanctuary]["name"].replace("?","")
+                    sanctuary = element["symbol"].replace("?","")
+                    player[last_player]["sanctuaries"][sanctuary]["name"] = sanctuary
                     player[last_player]["sanctuaries"][sanctuary]["opened"] = True
                     player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
                     player[last_player]["inventory"]["max_lives"] += 1
-                    promptAfegir(f"You opened {sanctuary}")
-                    count_opened_sanctuaries = count_opened_sanctuaries()  # Cuenta los santuarios abiertos
+                    print(f"You opened {sanctuary}")
 
-    elif place.lower() == "chest":
+    elif place.capitalize() == "Chest":
         for element in elements:
             if element["symbol"] == "M":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
-                    map_swords = ["hyrule", "gerudo"]
-                    map_shields = ["death mountain", "necluda"]
-                    if map_data.lower() in map_swords:
+                    map_swords = ["Hyrule", "Gerudo"]
+                    map_shields = ["Death mountain", "Necluda"]
+                    if map_name in map_swords:
                         swords = ["sword", "wood sword"]
                         item = random.choice(swords)
                         player[last_player]["weapons"][item]["count"] += 1
-                        promptAfegir(f"You obtained a {item}")
-                    elif map_data.lower() in map_shields:
+                        print(f"You obtained a {item}")
+                    elif map_name in map_shields:
                         shields = ["shield", "wood shield"]
                         item = random.choice(shields)
                         player[last_player]["weapons"][item]["count"] += 1
-                        promptAfegir(f"You obtained a {item}")
+                        print(f"You obtained a {item}")
                     element["symbol"] = "W"
                     element["opened"] = True  # Marca el cofre como abierto
-                    player[last_player]["inventory"]["chests_opened"] += 1  # Suma 1 a cofres abiertos
-                    all_chests_open(map_data, elements)
-                    opened_chests_count = count_opened_chests(map_name)  # Cuenta los cofres abiertos
-                    print(f"Number of opened chests: {opened_chests_count}")
                 else:
-                    promptAfegir("This chest has alredy been opened")
-
-def count_opened_chests(map_name):
-    elements = maps[map_name]['elements']
-    opened_chests = [element for element in elements if element['name'] == 'Chest' and element['opened'] == True]
-    return len(opened_chests)
-
+                    print("This chest has alredy been opened")
 
 def attack(map_data, elements):
     for element in elements:
@@ -498,77 +447,4 @@ def ganon(elements):
             return
         
     
-
-
-## Definir las conexiones entre los mapas
-map_connections = {
-    "Hyrule": ["Gerudo", "Death mountain", "Castle"],
-    "Death mountain": ["Hyrule", "Necluda", "Castle"],
-    "Gerudo": ["Hyrule", "Necluda", "Castle"],
-    "Necluda": ["Death mountain", "Gerudo", "Castle"]
-}
-# Diccionario de inventarios
-inventories = {
-    "main": inventoryM,
-    "weapons": inventoryWeap,
-    "food": inventoryFood
-}
-
-# Iniciar en el mapa "Hyrule"
-current_map = "Hyrule"
-current_inventory = "main"  # Iniciar con el inventario principal
-
-
-
-
-# Logica del Juego
-
-while True:
-    clear_terminal()
-    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
-    
-    while True:
-        command = input("What to do now? (ex: 'go up 3' or 'go to Castle' or 'show inventory [main/weapons/food/help]'): ").lower().split()
-
-        if len(command) < 2:
-            promptAfegir("Invalid command. Please enter a command in the format 'go [direction] [number of steps]' or 'go to [map]' or 'show inventory [main/weapons/food/help]'.")
-            continue
-
-        if command[0] == "show" and command[1] == "inventory":
-            if command[2] == "help":
-                # Llamar a la función helpInventoryMenu
-                from maps import helpInventoryMenu
-                helpInventoryMenu()
-                break
-            else:
-                # Cambiar de inventario
-                new_inventory = command[2]
-                if new_inventory in inventories:
-                    current_inventory = new_inventory
-                    break
-                else:
-                    promptAfegir(f"You can't show {new_inventory} inventory.")
-                    continue
-
-        if command[0] == "go" and command[1] == "to":
-            # Cambiar de mapa
-            new_map = " ".join(command[2:]).capitalize()
-            if new_map in map_connections[current_map]:
-                current_map = new_map
-                break
-            else:
-                promptAfegir(f"You can't go to {new_map} from {current_map}.")
-                continue
-
-        direction = command[1]
-        try:
-            num_steps = int(command[2])
-        except ValueError:
-            promptAfegir("You can't go there, it's not a valid position")
-            continue
-
-        if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
-            break
-        else:
-            promptAfegir("You can't go there, it's not a valid position")
 
