@@ -284,6 +284,8 @@ def newGameMenu():
                     "weapon2": "Wood Shield",
                     "totalFood": 0,
                     "totalWeapons": 2,
+                    "openedchest": 0,  
+
                 },
                 "weapons": {
                     "wood sword": {"uses": 5, "count": 2, "equipped": True},

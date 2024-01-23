@@ -495,21 +495,21 @@ def eat(item):
     ultimo_jugador = list(jugadores)[-1]
     if player[ultimo_jugador]["inventory"]["lives"] < player[ultimo_jugador]["inventory"]["max_lives"]:
         if player[ultimo_jugador]["food"][item]["count"] > 0:
-            if item == "vegetal":
+            if item == "vegetables":
                 player[ultimo_jugador]["inventory"]["lives"] += 1
-            elif item == "amanida":
+            elif item == "salads":
                 player[ultimo_jugador]["inventory"]["lives"] += 2
             elif item == "pescatarian":
                 player[ultimo_jugador]["inventory"]["lives"] += 3
-            elif item == "rostit":
+            elif item == "roasted":
                 player[ultimo_jugador]["inventory"]["lives"] += 4
             player[ultimo_jugador]["food"][item]["count"] -= 1
             if player[ultimo_jugador]["inventory"]["lives"] > player[ultimo_jugador]["inventory"]["max_lives"]:
                 player[ultimo_jugador]["inventory"]["lives"] = player[ultimo_jugador]["inventory"]["max_lives"]
         else:
-            promptAfegir(f"No tens {item}")
+            print(f"No tens {item}")
     else:
-        promptAfegir("Ja estàs ple de salut")
+        print("Ja estàs ple de salut")
 
 
 #### FUNCION PARA MOVERSE A UNA POSICION CONCRETA ####
@@ -576,7 +576,17 @@ def attack(map_data, elements):
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
             player[last_player]["inventory"]["lives"] -= 1
-            promptAfegir(f'Be careful Link, you only have {player[last_player]["inventory"]["lives"]} hearts')
+
+            # Check which shield is equipped before reducing uses
+            for weapon in player[last_player]["weapons"]:
+                if player[last_player]["weapons"][weapon]["equipped"] and "shield" in weapon:
+                    player[last_player]["weapons"][weapon]["uses"] -= 1
+                    if player[last_player]["weapons"][weapon]["uses"] < 1:
+                        player[last_player]["weapons"][weapon]["equipped"] = False
+                        print(f"{weapon} is now unequipped because it has no uses left.")
+                    break
+
+            promptAfegir(f'Be careful {last_player}, you only have {player[last_player]["inventory"]["lives"]} hearts')
             if map_data[y_pos - 1][x_pos] == "F" or map_data[y_pos + 1][x_pos] == "F" or map_data[y_pos][x_pos - 1] == "F" or map_data[y_pos][x_pos + 1] == "F":
                 for element in elements:
                     if element["symbol"] == "F":
@@ -585,6 +595,16 @@ def attack(map_data, elements):
                 map_data[fox_x_pos][fox_y_pos] = " "
                 print("You got meat")
                 player[last_player]["food"]["meat"]["count"] += 1
+                if player[last_player]["inventory"]["weapon1"] != "":
+                    # Check which weapon is equipped before reducing uses
+                    for weapon in player[last_player]["weapons"]:
+                        if player[last_player]["weapons"][weapon]["equipped"] and "sword" in weapon:
+                            player[last_player]["weapons"][weapon]["uses"] -= 1
+                            if player[last_player]["weapons"][weapon]["uses"] < 1:
+                                player[last_player]["weapons"][weapon]["equipped"] = False
+                                print(f"{weapon} is now unequipped because it has no uses left.")
+                            break
+            # Rest of the code...
             elif map_data[y_pos - 1][x_pos] == "T" or map_data[y_pos + 1][x_pos] == "T" or map_data[y_pos][x_pos - 1] == "T" or map_data[y_pos][x_pos + 1] == "T":
                 if player[last_player]["inventory"]["weapon1"] == "":
                     numero_aleatorio = random.random()
@@ -624,6 +644,35 @@ def attack(map_data, elements):
                     player[last_player]["food"]["meat"]["count"] += 1
                 else:
                     print("You did not anything")
+
+
+
+
+#Funcion para pescar
+
+def fish(map_data, elements):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    x_pos, y_pos = None, None
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+        
+    if x_pos is not None and y_pos is not None:
+        if y_pos > 0 and y_pos < len(map_data) - 1 and x_pos > 0 and x_pos < len(map_data[0]) - 1:
+            if map_data[y_pos + 1][x_pos] == "~" or map_data[y_pos - 1][x_pos] == "~" or map_data[y_pos][x_pos + 1] == "~" or map_data[y_pos][x_pos - 1] == "~":
+                numero_aleatorio = random.random()
+                if numero_aleatorio < 0.2:
+                    print("You got a fish")
+                    if "fish" in player[ultimo_jugador]["inventory"]:
+                        player[ultimo_jugador]["inventory"]["fish"]["count"] += 1
+                    else:
+                        player[ultimo_jugador]["inventory"]["fish"] = {"count": 1}
+                    return
+                else:
+                    print("You didn't get a fish")
+                    return
+
 
 
 
@@ -812,7 +861,9 @@ def game_logic():
                 item_to_eat = command[1]
                 
                 eat(item_to_eat)
-                print(player)
+                break
+            if command[0] == "fish":
+                fish(maps[current_map]["map"], maps[current_map]["elements"])
                 break
 
                 
