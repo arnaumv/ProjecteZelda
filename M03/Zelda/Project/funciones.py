@@ -12,7 +12,6 @@ import pymysql
 
 
 
-
 ###############################  OPCIONES MENU INICIO ##############################
 
 # Lista de funciones de menú disponibles

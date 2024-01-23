@@ -998,6 +998,9 @@ def game_logic():
                 item_to_unequip = command[1]
                 unequip(item_to_unequip)
                 break
+            if command[0] == "exit":
+                mainMenu()
+                break
 
                 
 game_logic()
