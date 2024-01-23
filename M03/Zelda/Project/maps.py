@@ -879,6 +879,7 @@ def game_logic():
         if player[ultimo_jugador]['inventory']['lives'] <= 0:
             deadMenu()
             break
+        clear_terminal()
         print_map(maps[current_map]["map"], maps[current_map]["elements"], player, current_inventory, map_name=current_map)
         
         while True:
