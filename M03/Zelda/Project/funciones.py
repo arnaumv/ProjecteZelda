@@ -137,7 +137,7 @@ def prompt_game2():
 def mainMenu():
     # Primero ejecuta check_game_records
     #plays = check_game_records()
-    plays = False
+    plays = check_game_records()
     if plays:
         # Si el resultado es True, ejecuta estas funciones
         mostrar_menu_aleatorio2()

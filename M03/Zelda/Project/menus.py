@@ -340,7 +340,7 @@ def newGameMenu():
 
             # Consulta para insertar en la tabla game
             insert_query = "INSTERT INTO game (user_name, date_started, hearts_remaining, region) VALUES (%s, %s, %s, %s)"
-            values = f"('{player_name}', {current_datetime}, {hearts_remaining}, '{default_region}')"
+            values = (player_name, current_datetime, hearts_remaining, default_region)
             cursor.execute(insert_query, values)
             connection.commit()
             # Close the cursor and the connection
