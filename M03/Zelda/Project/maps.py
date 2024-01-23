@@ -248,6 +248,10 @@ def create_main_inventory(player):
         "inventory": player[ultimo_jugador]["inventory"]
     }
 
+    # Calculate total food count
+    totalFood = sum(food["count"] for food in player[ultimo_jugador]["food"].values())
+    playerInfo["inventory"]["totalFood"] = totalFood
+
     player_name = ultimo_jugador  # Assuming the player's name is the last key in the player dictionary
 
     inventoryM = [
@@ -259,7 +263,7 @@ def create_main_inventory(player):
         " Equipment         *",
         f"       {playerInfo['inventory']['weapon1']}  *",
         f"       {playerInfo['inventory']['weapon2']} *",
-        f" Food            {playerInfo['inventory']['totalFood']} *",
+        f" Food           {playerInfo['inventory']['totalFood']} *",
         f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
         "                   *"
     ]
@@ -499,6 +503,10 @@ def cook(map_data, elements, item, last_player):
 def eat(item):
     jugadores = player.keys()
     ultimo_jugador = list(jugadores)[-1]
+    if item not in player[ultimo_jugador]["food"]:
+        print(f"{item} does not exist in your food inventory. Please try again.")
+        return
+
     if player[ultimo_jugador]["inventory"]["lives"] < player[ultimo_jugador]["inventory"]["max_lives"]:
         if player[ultimo_jugador]["food"][item]["count"] > 0:
             if item == "vegetables":
@@ -581,7 +589,9 @@ def attack(map_data, elements):
     for element in elements:
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
-            player[last_player]["inventory"]["lives"] -= 1
+            # Check if player is attacking an enemy
+            if map_data[y_pos - 1][x_pos] != " " or map_data[y_pos + 1][x_pos] != " " or map_data[y_pos][x_pos - 1] != " " or map_data[y_pos][x_pos + 1] != " ":
+                player[last_player]["inventory"]["lives"] -= 1
 
             # Check which shield is equipped before reducing uses
             for weapon in player[last_player]["weapons"]:
