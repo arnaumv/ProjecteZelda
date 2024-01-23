@@ -245,6 +245,9 @@ player = {
             "S5":  {"name": "S5?" , "opened": False} ,
             "S6":  {"name": "S6?" , "opened": False} ,
         },
+        
+        "actions_with_sword": 0
+
     }
 }
 

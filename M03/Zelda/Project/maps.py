@@ -286,13 +286,13 @@ def create_weapons_inventory(player):
         f"                  *",
         f"                  *",
         f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
-        f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+        f"  {'(equipped)' if equipped['wood sword'] else '':<15} *",
         f"Sword         {uses['sword']}/{count['sword']} *",
-        f"  {'(equipped)' if equipped['sword'] else ''}                *",
+        f"  {'(equipped)' if equipped['sword'] else '':<15} *",
         f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
-        f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+        f"  {'(equipped)' if equipped['wood shield'] else '':<15} *",
         f"Shield        {uses['shield']}/{count['shield']} *",
-        f"  {'(equipped)' if equipped['shield'] else ''}                *",
+        f"  {'(equipped)' if equipped['shield'] else '':<15} *",
         f"* * * * * * * * * *",
         f"* * * * * * * * * * *"
     ]
@@ -396,20 +396,26 @@ def inventoryMain(player, player_name):
         
 #### FUNCION PARA EQUIPAR ARMAS ###
 def equip(item):
-    if item in player[last_player]["weapons"] and player[last_player]["weapons"][item]["equipped"] == False:
+    if item not in player[last_player]["weapons"]:
+        print(f"You don't have {item} in your weapons.")
+        return
+    if player[last_player]["weapons"][item]["equipped"] == False:
         if "sword" in item:
             old_item = player[last_player]["inventory"]["weapon1"]
-            player[last_player]["weapons"][old_item]["equipped"] = False
+            if old_item is not None:
+                old_item = old_item.lower()  # convert to lowercase
+                player[last_player]["weapons"][old_item]["equipped"] = False
             player[last_player]["inventory"]["weapon1"] = item
             player[last_player]["weapons"][item]["equipped"] = True
         elif "shield" in item:
             old_item = player[last_player]["inventory"]["weapon2"]
-            player[last_player]["weapons"][old_item]["equipped"] = False
+            if old_item is not None:
+                old_item = old_item.lower()  # convert to lowercase
+                player[last_player]["weapons"][old_item]["equipped"] = False
             player[last_player]["inventory"]["weapon2"] = item
             player[last_player]["weapons"][item]["equipped"] = True
         else:
             print("You can't equip this item")
-        return
 
 
 ### FUNCION PARA DESEQUIPAR ARMAS ###
@@ -586,36 +592,67 @@ def attack(map_data, elements):
                         print(f"{weapon} is now unequipped because it has no uses left.")
                     break
 
-            promptAfegir(f'Be careful {last_player}, you only have {player[last_player]["inventory"]["lives"]} hearts')
+            print(f'Be careful {last_player}, you only have {player[last_player]["inventory"]["lives"]} hearts')
             if map_data[y_pos - 1][x_pos] == "F" or map_data[y_pos + 1][x_pos] == "F" or map_data[y_pos][x_pos - 1] == "F" or map_data[y_pos][x_pos + 1] == "F":
                 for element in elements:
                     if element["symbol"] == "F":
                         fox_x_pos, fox_y_pos = element["x"], element["y"]
                         break
-                map_data[fox_x_pos][fox_y_pos] = " "
-                print("You got meat")
-                player[last_player]["food"]["meat"]["count"] += 1
-                if player[last_player]["inventory"]["weapon1"] != "":
-                    # Check which weapon is equipped before reducing uses
-                    for weapon in player[last_player]["weapons"]:
-                        if player[last_player]["weapons"][weapon]["equipped"] and "sword" in weapon:
-                            player[last_player]["weapons"][weapon]["uses"] -= 1
-                            if player[last_player]["weapons"][weapon]["uses"] < 1:
-                                player[last_player]["weapons"][weapon]["equipped"] = False
-                                print(f"{weapon} is now unequipped because it has no uses left.")
-                            break
+                # Calculate if the 'Fox' is visible or not
+                is_visible = random.random() < 0.5
+                if is_visible:
+                    promptAfegir('You see a Fox')
+                    if 0 <= fox_x_pos < len(map_data) and 0 <= fox_y_pos < len(map_data[0]):
+                        map_data[fox_x_pos][fox_y_pos] = " "
+                    else:
+                        print("Fox position is out of map bounds.")
+                    print("You got meat")
+                    player[last_player]["food"]["meat"]["count"] += 1
+                    if player[last_player]["inventory"]["weapon1"] != "":
+                        # Check which weapon is equipped before reducing uses
+                        for weapon in player[last_player]["weapons"]:
+                            if player[last_player]["weapons"][weapon]["equipped"] and "sword" in weapon:
+                                player[last_player]["weapons"][weapon]["uses"] -= 1
+                                if player[last_player]["weapons"][weapon]["uses"] < 1:
+                                    player[last_player]["weapons"][weapon]["equipped"] = False
+                                    print(f"{weapon} is now unequipped because it has no uses left.")
+                                break
+                else:
+                    print('You don\'t see a Fox')
             # Rest of the code...
             elif map_data[y_pos - 1][x_pos] == "T" or map_data[y_pos + 1][x_pos] == "T" or map_data[y_pos][x_pos - 1] == "T" or map_data[y_pos][x_pos + 1] == "T":
-                if player[last_player]["inventory"]["weapon1"] == "":
+                if "respawn" in map_data[y_pos][x_pos]:  # tree is waiting to respawn
+                    print(f"The tree is not ready yet, {map_data[y_pos][x_pos]['respawn']} turns left")
+                else:
                     numero_aleatorio = random.random()
-                    if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
-                        player[last_player]["food"]["vegetable"]["count"] += 1
-                        print("You got an apple")
-                    elif numero_aleatorio < 0.1:
-                        drops = ["wood sword", "wood shield"]
-                        item = random.choice(drops)
-                        player[last_player]["weapons"][item][count] += 1
-                        print(f"You got a {item}")
+                    if player[last_player]["inventory"]["weapon1"] == "":
+                        if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.1:
+                            player[last_player]["food"]["vegetables"]["count"] += 1
+                            print("You got an apple")
+                        elif numero_aleatorio < 0.1:
+                            drops = ["wood sword", "wood shield"]
+                            item = random.choice(drops)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                    else:  # player has a sword equipped
+                        if numero_aleatorio <= 0.4 and numero_aleatorio >= 0.2:
+                            player[last_player]["food"]["vegetables"]["count"] += 1
+                            print("You got an apple")
+                        elif numero_aleatorio < 0.2:
+                            drops = ["wood sword", "wood shield"]
+                            item = random.choice(drops)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        player[last_player]["weapons"]["sword"]["uses"] -= 1
+                        if player[last_player]["weapons"]["sword"]["uses"] < 1:
+                            player[last_player]["weapons"]["sword"]["equipped"] = False
+                            print("Sword is now unequipped because it has no uses left.")
+                        player[last_player]["actions_with_sword"] += 1
+                        if player[last_player]["actions_with_sword"] >= 4:
+                            map_data[y_pos][x_pos] = {"symbol": "T", "respawn": 10}
+                            player[last_player]["actions_with_sword"] = 0
+                            print("The tree disappeared and will reappear in 10 turns")
+                        
             elif "E" in map_data[y_pos - 1][x_pos] or "E" in map_data[y_pos + 1][x_pos] or "E" in map_data[y_pos][x_pos - 1] or "E" in map_data[y_pos][x_pos + 1]:
                 for element in elements:
                     if element["symbol"] == "E":
@@ -778,6 +815,9 @@ def game_logic():
         
         while True:
             command = input("What to do now? ").lower().split()
+            if not command:  # Check if command list is empty
+                print("Invalid Option")
+                continue
             if command[0] == "show" and command[1] == "map":
                 # Display the map and the inventory
                 inventoryMain(player, player_name)
@@ -864,6 +904,23 @@ def game_logic():
                 break
             if command[0] == "fish":
                 fish(maps[current_map]["map"], maps[current_map]["elements"])
+                break
+            
+            ##EQUIPAR ARMAS ###
+            if command[0] == "equip":
+                if len(command) < 2:
+                    print("You need to specify what you want to equip.")
+                    continue
+                item_to_equip = command[1]
+                equip(item_to_equip)
+                break
+
+            if command[0] == "unequip":
+                if len(command) < 2:
+                    print("You need to specify what you want to unequip.")
+                    continue
+                item_to_unequip = command[1]
+                unequip(item_to_unequip)
                 break
 
                 
