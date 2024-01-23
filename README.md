@@ -15,7 +15,7 @@ The storyline unfolds in a Python programming environment and is played through 
 
 ## Execution Instructions
 
-1. Clone this repository: `git clone https://github.com/your_username/your-zelda-repo.git`
+1. Clone this repository: `git clone https://github.com/arnaumv/ProjecteZelda.git`
 2. Navigate to the game directory: `cd tu-repo-zelda`
 3. Run the game: `python game.py`
 
