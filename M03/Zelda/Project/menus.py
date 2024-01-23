@@ -321,31 +321,34 @@ def newGameMenu():
             legendMenu(player_name)  # Pasar player_name a legendMenu()
 
             # INSERT en la base de datos
-            try:
-                conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-                cur = conn.cursor()
+                # Open SSH tunnel
+            open_ssh_tunnel()
 
-                # Obtener la fecha y hora actual
-                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # Connect to MySQL server
+            mysql_connect()
+
+            # Create a cursor
+            cursor = connection.cursor()
+
+            # Obtener la fecha y hora actual
+            current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
-                # Valores por defecto para hearts_remaining y region
-                hearts_remaining = 3
-                default_region = 'Hyrule'
+            # Valores por defecto para hearts_remaining y region
+            hearts_remaining = 3
+            default_region = 'Hyrule'
 
-                # Consulta para insertar en la tabla game
-                insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
-                               f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
+            # Consulta para insertar en la tabla game
+            insert_query = f"INSERT INTO game (user_name, date_started, hearts_remaining, region) " \
+                            f"VALUES ('{player_name}', '{current_datetime}', {hearts_remaining}, '{default_region}')"
+            cursor.execute(insert_query)
+            # Close the cursor and the connection
+            cursor.close()
+            mysql_disconnect()
 
-                cur.execute(insert_query)
-                conn.commit()
-
-                cur.close()
-                conn.close()
-                break  # Salir del bucle al completar la inserción
-            except pymysql.Error as e:
-                print(f"Error: {e}")
-                break
+            # Close SSH tunnel
+            close_ssh_tunnel()
+            break  # Salir del bucle al completar la inserción
 
         else: 
             print(f'"{player_name}" is not a valid name')
