@@ -400,7 +400,7 @@ def aboutMenu():                                                                
                                                                                                                 
 def legendMenu(player_name):
         clear_terminal()
-        print("   * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        print(" * Legend * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
               "\n *    10,000 years ago, Hyrule was a land of prosperity thanks to the Sheikah * "
               "\n *    tribe. The Sheikah were a tribe of warriors who protected the Triforce, * "
               "\n *    a sacred relic that granted wishes.                                     * "
@@ -435,14 +435,15 @@ def legendMenu(player_name):
 def plotMenu(player_name):
     clear_terminal()
     from funciones import player
-    print("  * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    spaces = ' ' * (49 - len(player_name))
+    print(" * Plot * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
           "\n *                                                                            * "
           "\n *                                                                            * "
          f"\n *   Now history is repeating itself, and Princess Zelda has been captured by * "
           "\n *   Ganon. He has taken over the Guardians and filled Hyrule with monsters.  * "
           "\n *                                                                            * "
           "\n *                                                                            * "
-          f"\n *   But a young man named '{player_name}' has just awakened and                       * "
+         f"\n *   But a young man named '{player_name}'{spaces}* "
           "\n *   must reclaim the Guardians to defeat Ganon and save Hyrule.              * "
           "\n *                                                                            * "
           "\n *                                                                            * "
@@ -453,6 +454,7 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
+            clear_terminal()
             from maps import game_logic
             game_logic()  # Call the game logic function here
 
