@@ -1,30 +1,34 @@
 import mysql.connector
 
 def check_game_records():
-    # Establecer la conexión con la base de datos
-    cnx = mysql.connector.connect(user='root', password='root',
-                                  host='localhost',
-                                  database='Zelda')
+    # Open SSH tunnel
+    open_ssh_tunnel()
 
-    # Crear un cursor
-    cursor = cnx.cursor()
+    # Connect to MySQL server
+    mysql_connect()
 
-    # Ejecutar la consulta SQL
+    # Create a cursor
+    cursor = connection.cursor()
+
+    # Execute the SQL query
     query = "SELECT COUNT(*) FROM game"
     cursor.execute(query)
 
-    # Obtener el resultado
+    # Get the result
     result = cursor.fetchone()
 
-    # Cerrar el cursor y la conexión
+    # Close the cursor and the connection
     cursor.close()
-    cnx.close()
+    mysql_disconnect()
 
-    # Comprobar si hay más de un registro
+    # Close SSH tunnel
+    close_ssh_tunnel()
+
+    # Check if there are more than one record
     if result[0] > 0:
         plays = True
     else:
         plays = False
 
-    # Devolver el valor de plays
+    # Return the value of plays
     return plays

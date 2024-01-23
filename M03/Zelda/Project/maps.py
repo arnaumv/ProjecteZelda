@@ -194,7 +194,24 @@ def promptAfegir(text):
         prompt.pop(0)
 
 
-def print_map(map_data, elements, inventory, map_name="Hyrule"):
+########################################################################################
+#### HE MODIFICADO ESTA FUNCION PARA QUE COJIERA LAS FUNCIONES DE LOS INVENTARIOS  #####
+
+
+def print_map(map_data, elements, player, current_inventory, map_name="Hyrule"):
+    
+     # Create the inventories
+    inventoryM = create_main_inventory(player)
+    inventoryFood = create_food_inventory(player)
+    inventoryWeap = create_weapons_inventory(player)
+
+    # Choose the current inventory
+    inventories = {
+        "main": inventoryM,
+        "food": inventoryFood,
+        "weapons": inventoryWeap
+    }
+    inventory = inventories[current_inventory]
     # Colocar los elementos en el mapa en las posiciones indicadas por "x" y "y"
     for element in elements:
         if element["name"] == "Enemy":
@@ -220,6 +237,164 @@ def print_map(map_data, elements, inventory, map_name="Hyrule"):
     print("* Exit, Attack, Go, Equip, Unequip, Eat, Cook, Fish, Open * * * * * * * * * * * *")
 
 
+
+
+
+###  HE CREADO ESTA FUNCION PARA QUE EMUESTRE EL INVENTARIO MAIN ACTUALIZADO ####
+def create_main_inventory(player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    playerInfo = {
+        "inventory": player[ultimo_jugador]["inventory"]
+    }
+
+    player_name = ultimo_jugador  # Assuming the player's name is the last key in the player dictionary
+
+    inventoryM = [
+        " * * * * Inventory *",
+        "                   *",
+        f" {player_name:<13}♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']}*",
+        f"  Blood moon in {playerInfo['inventory']['timeBlood']} *",
+        "                   *",
+        " Equipment         *",
+        f"       {playerInfo['inventory']['weapon1']}  *",
+        f"       {playerInfo['inventory']['weapon2']} *",
+        f" Food            {playerInfo['inventory']['totalFood']} *",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']} *",
+        "                   *"
+    ]
+
+    return inventoryM
+
+
+###  HE CREADO ESTA FUNCION PARA QUE EMUESTRE EL INVENTARIO WEAPONS ACTUALIZADO ####
+
+def create_weapons_inventory(player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+
+    # Access the weapon information of the last player
+    weapons_info = player[ultimo_jugador]['weapons']
+
+    # Access the details of the last player's weapons
+    uses = {weapon: weapons_info[weapon]['uses'] for weapon in weapons_info}
+    count = {weapon: weapons_info[weapon]['count'] for weapon in weapons_info}
+    equipped = {weapon: weapons_info[weapon]['equipped'] for weapon in weapons_info}
+
+    inventoryWeap = [
+        f"* * * * * Weapons *",
+        f"                  *",
+        f"                  *",
+        f"Wood Sword    {uses['wood sword']}/{count['wood sword']} *",
+        f"  {'(equipped)' if equipped['wood sword'] else ''}      *",
+        f"Sword         {uses['sword']}/{count['sword']} *",
+        f"  {'(equipped)' if equipped['sword'] else ''}                *",
+        f"Wood Shield   {uses['wood shield']}/{count['wood shield']} *",
+        f"  {'(equipped)' if equipped['wood shield'] else ''}      *",
+        f"Shield        {uses['shield']}/{count['shield']} *",
+        f"  {'(equipped)' if equipped['shield'] else ''}                *",
+        f"* * * * * * * * * *",
+        f"* * * * * * * * * * *"
+    ]
+
+    return inventoryWeap
+
+###  HE CREADO ESTA FUNCION PARA QUE MUESTRE EL INVENTARIO FOODS ACTUALIZADO ####
+
+def create_food_inventory(player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+
+    #foods = {
+    #    "food": player[ultimo_jugador]["food"]
+    #}
+
+   # Access the "count" values for each food
+    vegetables_count = player[ultimo_jugador]['food']['vegetables']['count']
+    fish_count = player[ultimo_jugador]['food']['fish']['count']
+    meat_count = player[ultimo_jugador]['food']['meat']['count']
+    salads_count = player[ultimo_jugador]['food']['salads']['count']
+    pescatarian_count = player[ultimo_jugador]['food']['pescatarian']['count']
+    roasted_count = player[ultimo_jugador]['food']['roasted']['count']
+
+    # Incorporate these values into your inventory
+    inventoryFood = [
+        f" * * * * * * Foods *",
+        f"                   *",
+        f"                   *",
+        f" Vegetables     {str(vegetables_count).rjust(1)}  *",
+        f" Fish           {str(fish_count).rjust(1)}  *",
+        f" Meat           {str(meat_count).rjust(1)}  *",
+        f"                   *",
+        f" Salads         {str(salads_count).rjust(1)}  *",
+        f" Pescatarian    {str(pescatarian_count).rjust(1)}  *",
+        f" Roasted        {str(roasted_count).rjust(1)}  *",
+        f"                   *",
+        f"* * * * * * * * * *"
+    ]
+
+    return inventoryFood
+
+##########################################
+
+
+
+###### FUNCION QUE AL ESCRIBIR "SHOW MAP" MUESTRA EL MAPA ###### 
+def inventoryMain(player, player_name):
+    jugadores = player.keys()          
+    ultimo_jugador = list(jugadores)[-1]    #Coje el ultimo jugador añadido en el diccionario 
+    playerInfo = {
+        "inventory": player[ultimo_jugador]["inventory"]
+    }
+
+    santuarios = {
+        "sanctuaries": player[ultimo_jugador]["sanctuaries"]   #Coje el valor que hay dentro de "sanctuaries"
+    }
+
+    inventoryM = [
+        f"* * * * * Inventory *",
+        f"                    *",
+        f" {player_name}         ♥ {playerInfo['inventory']['lives']}/{playerInfo['inventory']['max_lives']} *",
+        f"  Blood moon in {playerInfo['inventory']['timeBlood']}  *",
+        f"                    *",
+        f" Equipment          *",
+        f"       {playerInfo['inventory']['weapon1']}   *",
+        f"       {playerInfo['inventory']['weapon2']}  *",
+        f" Food            {playerInfo['inventory']['totalFood']}  *",
+        f" Weapons         {playerInfo['inventory']['totalWeapons']}  *",
+        f"                    *"
+        
+        
+    ]
+
+    map = [
+        f"* Map * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+        f"*                                                         *",
+        f"*  Hyrule        {str(santuarios['sanctuaries']['S0']['name']).rjust(3)}                       Death Mountain *",
+        f"*                                 {str(santuarios['sanctuaries']['S2']['name']).rjust(3)}                     *",
+        f"*        {str(santuarios['sanctuaries']['S1']['name']).rjust(3)}                                    {str(santuarios['sanctuaries']['S3']['name']).rjust(3)}       *",
+        f"*                                                         *",
+        f"*                         Castle                          *",
+        f"*                                                         *",
+        f"*                {str(santuarios['sanctuaries']['S4']['name']).rjust(3)}                                 {str(santuarios['sanctuaries']['S5']['name']).rjust(3)}  *",
+        f"*  Gerudo                             {str(santuarios['sanctuaries']['S6']['name']).rjust(3)}        Necluda  *",
+        f"*                                                         *",
+        f"* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    ]
+
+    for i in range(len(map)):
+        inventory_line = inventoryM[i] if i < len(inventoryM) else ''
+        print(map[i], inventory_line)
+    
+    while True:
+        command = input("Enter 'back' to return to the game: ").lower()
+        if command == "back":
+            break
+        else:
+            print("Invalid command. Please enter 'back' to return to the game.")    
+        
+        
+#### FUNCION PARA EQUIPAR ARMAS ###
 def equip(item):
     if item in player[last_player]["weapons"] and player[last_player]["weapons"][item]["equipped"] == False:
         if "sword" in item:
@@ -236,6 +411,8 @@ def equip(item):
             print("You can't equip this item")
         return
 
+
+### FUNCION PARA DESEQUIPAR ARMAS ###
 def unequip(item):
         if item in player[last_player]["weapons"] and player[last_player]["weapons"][item]["equipped"] == True:
             if "sword" in item:
@@ -248,8 +425,10 @@ def unequip(item):
                 print("You can't unequip this item")
             return
 
-#Funcion para moverse por el mapa
+
   
+  
+#### FUNCION PARA MOVERSE POR EL MAPA ####
 def move_player(map_data, elements, direction, num_steps):
     valid_positions = [" "]  # Añade aquí cualquier otro símbolo que represente una posición inválida
     for element in elements:
@@ -273,6 +452,67 @@ def move_player(map_data, elements, direction, num_steps):
             element["x"], element["y"] = x_pos, y_pos
     return True
 
+            
+#cocinar y comer
+        
+def cook(map_data, elements, item, last_player):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    x_pos, y_pos = None, None
+    for element in elements:
+        if element["symbol"] == "X":
+            x_pos, y_pos = element["x"], element["y"]
+    if x_pos is not None and y_pos is not None:
+        if map_data[y_pos + 1][x_pos] == "C" or map_data[y_pos - 1][x_pos] == "C" or map_data[y_pos][x_pos + 1] == "C" or map_data[y_pos][x_pos - 1] == "C":
+            if item == "salads":
+                if "vegetables" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 2:
+                    player[ultimo_jugador]["food"]["salads"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 2
+                else:
+                    print("Not enough vegetables")
+            elif item == "pescatarian":
+                if "vegetables" in player[ultimo_jugador]["food"] and "fish" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 1 and player[ultimo_jugador]["food"]["fish"]["count"] >= 1:
+                    player[ultimo_jugador]["food"]["pescatarian"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 1
+                    player[ultimo_jugador]["food"]["fish"]["count"] -= 1
+                else:
+                    print("Not enough vegetables and fish")
+            elif item == "roasted":
+                if "vegetables" in player[ultimo_jugador]["food"] and "meat" in player[ultimo_jugador]["food"] and player[ultimo_jugador]["food"]["vegetables"]["count"] >= 1 and player[ultimo_jugador]["food"]["meat"]["count"] >= 1:
+                    player[ultimo_jugador]["food"]["roasted"]["count"] += 1
+                    player[ultimo_jugador]["food"]["vegetables"]["count"] -= 1
+                    player[ultimo_jugador]["food"]["meat"]["count"] -= 1
+                else:
+                    print("Not enough vegetables and meat")
+        else:
+            print("You are not next to a 'C'.")
+    else:
+        print("Player position not found.")
+
+
+def eat(item):
+    jugadores = player.keys()
+    ultimo_jugador = list(jugadores)[-1]
+    if player[ultimo_jugador]["inventory"]["lives"] < player[ultimo_jugador]["inventory"]["max_lives"]:
+        if player[ultimo_jugador]["food"][item]["count"] > 0:
+            if item == "vegetal":
+                player[ultimo_jugador]["inventory"]["lives"] += 1
+            elif item == "amanida":
+                player[ultimo_jugador]["inventory"]["lives"] += 2
+            elif item == "pescatarian":
+                player[ultimo_jugador]["inventory"]["lives"] += 3
+            elif item == "rostit":
+                player[ultimo_jugador]["inventory"]["lives"] += 4
+            player[ultimo_jugador]["food"][item]["count"] -= 1
+            if player[ultimo_jugador]["inventory"]["lives"] > player[ultimo_jugador]["inventory"]["max_lives"]:
+                player[ultimo_jugador]["inventory"]["lives"] = player[ultimo_jugador]["inventory"]["max_lives"]
+        else:
+            promptAfegir(f"No tens {item}")
+    else:
+        promptAfegir("Ja estàs ple de salut")
+
+
+#### FUNCION PARA MOVERSE A UNA POSICION CONCRETA ####
 def go_by(x, map_data, elements):
     valid_position = [" "]
     place = x.lower()
@@ -281,6 +521,7 @@ def go_by(x, map_data, elements):
     for element in elements:
         if element["name"].lower() == place or element["symbol"].lower() == x:
             x_pos, y_pos = element["x"], element["y"]
+            
             break  # Break the loop once the element is found
     if x_pos is None or y_pos is None:
         print("This element doesn't exist")
@@ -293,26 +534,43 @@ def go_by(x, map_data, elements):
             if element["symbol"] == "X":
                 element["x"] = x_pos
                 element["y"] = y_pos - 1
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos + 1][x_pos] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos
                 element["y"] = y_pos + 1
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos][x_pos - 1] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos - 1
                 element["y"] = y_pos
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     elif map_data[y_pos][x_pos + 1] in valid_position:
         for element in elements:
             if element["symbol"] == "X":
                 element["x"] = x_pos + 1
                 element["y"] = y_pos
+                timeblood(maps[current_map]["elements"], player, ultimo_jugador)
     else:
         print("Error, the element you are trying to go to has no valid positions")
         return
     map_data[prev_y][prev_x] = " "  # Remove the player's previous position from the map
-                        
+             
+
+### time blood ###
+def timeblood(elements, player, last_player):
+    player[last_player]["inventory"]["timeBlood"] -= 1
+    if player[last_player]["inventory"]["timeBlood"] == 0:
+        for element in elements:
+            if element["symbol"] == "E" and element["name"] != "GANON":
+                element["life"] = element["max_life"]
+        player[last_player]["inventory"]["timeBlood"] = 25
+        print('The Blood moon rises once again. Please be careful, Link.')
+       
+             
+### FUNCION PARA ATACAR ###           
 def attack(map_data, elements):
     for element in elements:
         if element["symbol"] == "X":
@@ -368,7 +626,23 @@ def attack(map_data, elements):
                     print("You did not anything")
 
 
-                    
+
+### FUNCION PARA ABRIR COFRES ###   
+
+def close_chests(map_data, elements):
+    for element in elements:
+        if element["symbol"] == "W":
+            element["symbol"] = "M"
+
+def all_chests_open(map_data, elements):
+    cnt = 0
+    for element in elements:
+        if element["symbol"] == "M":
+            cnt += 1
+    if cnt == 0:
+        close_chests(map_data, elements)
+        
+                            
 def open(map_data, elements, place, map_name):
     if place.capitalize() == "Sanctuary":
         for element in elements:
@@ -376,40 +650,49 @@ def open(map_data, elements, place, map_name):
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
                     sanctuary = element["symbol"].replace("?","")
-                    player[last_player]["sanctuaries"][sanctuary]["name"] = sanctuary
-                    player[last_player]["sanctuaries"][sanctuary]["opened"] = True
-                    player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
-                    player[last_player]["inventory"]["max_lives"] += 1
-                    print(f"You opened {sanctuary}")
+                    if player[last_player]["sanctuaries"][sanctuary]["opened"]:
+                        print('You already opened this sanctuary')
+                    else:
+                        player[last_player]["sanctuaries"][sanctuary]["name"] = sanctuary
+                        player[last_player]["sanctuaries"][sanctuary]["opened"] = True
+                        player[last_player]["sanctuaries"][sanctuary]["map"] = map_name  # Guarda el nombre del mapa actual
+                        player[last_player]["inventory"]["max_lives"] += 1
+                        print('You opened the sanctuary, your maximum health has increased by 1')
+                        element["symbol"] = sanctuary  # Update the sanctuary name in the elements list
 
     elif place.capitalize() == "Chest":
         for element in elements:
             if element["symbol"] == "M":
                 x_pos, y_pos = element["x"], element["y"]
                 if map_data[y_pos - 1][x_pos] == "X" or map_data[y_pos + 1][x_pos] == "X" or map_data[y_pos][x_pos - 1] == "X" or map_data[y_pos][x_pos + 1] == "X":
-                    map_swords = ["Hyrule", "Gerudo"]
-                    map_shields = ["Death mountain", "Necluda"]
-                    if map_name in map_swords:
-                        swords = ["sword", "wood sword"]
-                        item = random.choice(swords)
-                        player[last_player]["weapons"][item]["count"] += 1
-                        print(f"You obtained a {item}")
-                    elif map_name in map_shields:
-                        shields = ["shield", "wood shield"]
-                        item = random.choice(shields)
-                        player[last_player]["weapons"][item]["count"] += 1
-                        print(f"You obtained a {item}")
-                    element["symbol"] = "W"
-                    element["opened"] = True  # Marca el cofre como abierto
+                    if element.get("opened", False) == False:
+                        map_swords = ["Hyrule", "Gerudo"]
+                        map_shields = ["Death mountain", "Necluda"]
+                        if map_name in map_swords:
+                            swords = ["sword", "wood sword"]
+                            item = random.choice(swords)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        elif map_name in map_shields:
+                            shields = ["shield", "wood shield"]
+                            item = random.choice(shields)
+                            player[last_player]["weapons"][item]["count"] += 1
+                            print(f"You got a {item}")
+                        element["symbol"] = "W"
+                        element["opened"] = True  # Mark the chest as opened
+                    else:
+                        print("This chest has already been opened")
                 else:
-                    print("This chest has alredy been opened")
+                    print("You need to be next to the chest to open it")
+
 
 ## Definir las conexiones entre los mapas
 map_connections = {
     "Hyrule": ["Gerudo", "Death mountain", "Castle"],
     "Death mountain": ["Hyrule", "Necluda", "Castle"],
     "Gerudo": ["Hyrule", "Necluda", "Castle"],
-    "Necluda": ["Death mountain", "Gerudo", "Castle"]
+    "Necluda": ["Death mountain", "Gerudo", "Castle"],
+    "Castle": ["Hyrule", "Death mountain", "Gerudo", "Necluda"]  # Add this line
 }
 # Diccionario de inventarios
 inventories = {
@@ -425,59 +708,112 @@ current_inventory = "main"  # Iniciar con el inventario principal
 
 
 
-# Logica del Juego
-
-directions = ["up", "down", "left", "right"]
-while True:
-    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
+### Logica del Juego ###
+def game_logic():
     
+    global current_map
+    global current_inventory
+    directions = ["up", "down", "left", "right"]
     while True:
-        command = input("What to do now? (ex: 'go up 3' or 'go to Castle' or 'show inventory [main/weapons/food/help]'): ").lower().split()
+        # Get the keys from the player dictionary
+        jugadores = player.keys()
 
-        if command[0] == "show" and command[1] == "inventory":
-            if command[2] == "help":
-                # Llamar a la función helpInventoryMenu
-                from maps import helpInventoryMenu
-                helpInventoryMenu()
+        # Get the last player added to the dictionary
+        ultimo_jugador = list(jugadores)[-1]
+
+        # Check if player is dead
+        if player[ultimo_jugador]['inventory']['lives'] <= 0:
+            deadMenu()
+            break
+        print_map(maps[current_map]["map"], maps[current_map]["elements"], player, current_inventory, map_name=current_map)
+        
+        while True:
+            command = input("What to do now? ").lower().split()
+            if command[0] == "show" and command[1] == "map":
+                # Display the map and the inventory
+                inventoryMain(player, player_name)
                 break
-            else:
-                # Cambiar de inventario
-                new_inventory = command[2]
-                if new_inventory in inventories:
-                    current_inventory = new_inventory
+            if command[0] == "show" and command[1] == "inventory":
+                if command[2] == "help":
+                    # Llamar a la función helpInventoryMenu
+                    from maps import helpInventoryMenu
+                    helpInventoryMenu()
                     break
                 else:
-                    print(f"You can't show {new_inventory} inventory.")
+                    # Cambiar de inventario
+                    new_inventory = command[2]
+                    if new_inventory in inventories:
+                        current_inventory = new_inventory
+                        break
+                    else:
+                        print(f"You can't show {new_inventory} inventory.")
+                        continue
+
+            if command[0] == "go" and command[1] == "to":
+                # Cambiar de mapa
+                new_map = " ".join(command[2:]).capitalize()
+                if new_map in map_connections[current_map]:
+                    current_map = new_map
+                    break
+                else:
+                    print(f"You can't go to {new_map} from {current_map}.")
+                    continue
+            if command[0] == "go" and command[1] == "by":
+                go_by(command[2], maps[current_map]["map"], maps[current_map]["elements"])
+                
+                break
+
+            if command[0] == "go":
+                if len(command) < 3:
+                    print("You need to specify a direction and the number of steps.")
                     continue
 
-        if command[0] == "go" and command[1] == "to":
-            # Cambiar de mapa
-            new_map = " ".join(command[2:]).capitalize()
-            if new_map in map_connections[current_map]:
-                current_map = new_map
+                if command[1] in directions:
+                    direction = command[1]
+                    try:
+                        num_steps = int(command[2])
+                    except ValueError:
+                        print("You can't go there, it's not a valid position")
+                        continue
+
+                    if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
+                        timeblood(maps[current_map]["elements"], player, ultimo_jugador)
+                        break
+                    else:
+                        print("You can't go there, it's not a valid position")
+
+            if command[0] == "attack":
+                attack(maps[current_map]["map"], maps[current_map]["elements"])
                 break
-            else:
-                print(f"You can't go to {new_map} from {current_map}.")
-                continue
-        if command[0] == "go" and command[1] == "by":
-            go_by(command[2], maps[current_map]["map"], maps[current_map]["elements"])
-            break
-
-        if command[0] == "go" and command[1] in directions:
-            direction = command[1]
-            try:
-                num_steps = int(command[2])
-            except ValueError:
-                print("You can't go there, it's not a valid position")
-                continue
-
-            if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
-                break
-            else:
-                print("You can't go there, it's not a valid position")
-
-        if command[0] == "attack":
-            attack(maps[current_map]["map"], maps[current_map]["elements"])
-            break
-
             
+            
+            ### ESTO DEBERIA DE ABRIR LOS COFRES ##
+            if command[0] == "open" and command[1] == "chest":
+                open(maps[current_map]["map"], maps[current_map]["elements"], "Chest", current_map)
+                break
+            
+            ### ABRIR SANTUARIO ###
+            if command[0] == "open" and command[1] == "sanctuary":
+                open(maps[current_map]["map"], maps[current_map]["elements"], "Sanctuary", current_map)
+                break
+            ### cocinar ###
+            if command[0] == "cook":
+                if len(command) < 2:
+                    print("You need to specify what you want to cook.")
+                    continue
+                item_to_cook = command[1]
+                cook(maps[current_map]["map"], maps[current_map]["elements"], item_to_cook, last_player)
+                break
+             ### comer ###
+            if command[0] == "eat":
+                if len(command) < 2:
+                    print("You need to specify what you want to eat.")
+                    continue
+                item_to_eat = command[1]
+                
+                eat(item_to_eat)
+                print(player)
+                break
+
+                
+game_logic()

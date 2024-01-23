@@ -3,8 +3,8 @@ import os
 import pymysql
 from datetime import datetime
 from consultas import *
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
+#conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+#cur = conn.cursor()
 
 def clear_terminal():
     if os.name == 'nt':  # Para sistemas Windows
@@ -450,8 +450,9 @@ def plotMenu(player_name):
 
         if user_input.lower() == 'continue':
             print("The adventure begins")
-            ##sprint(player)  ### HE PRINTADO EL DICCIONARIO PLAYER PARA VER SI SE GUARDABA EL NOMBRE DEL JUGADOR
-            # Start the game section
+            from maps import game_logic
+            game_logic()  # Call the game logic function here
+
             break
         
         else:
@@ -463,7 +464,9 @@ def plotMenu(player_name):
 
 ################################################  DEAD    #######################################################
                                                                                                                 
-def deadMenu():                                                                                                 
+def deadMenu():
+     clear_terminal()                                                                                 
+                                                                                                
      print("* Link Dead  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"                     
         "\n *                                                                            * "                    
         "\n *                                                                            * "                    
@@ -476,6 +479,16 @@ def deadMenu():
         "\n *                                                                            * "                    
         "\n * Continue * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * "                    
     )
+     while True:
+        action = input("What to do now: ")
+
+        if action.lower() == "continue":
+            clear_terminal()
+            from funciones import mainMenu  # Importación local
+            mainMenu()
+            break
+        else:
+            print("Invalid option. Please try again.")      
 
 #################################################################################################################
 

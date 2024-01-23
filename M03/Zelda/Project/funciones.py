@@ -7,14 +7,14 @@ import random
 import os
 import pymysql
 
-conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
-cur = conn.cursor()
+#conn = pymysql.connect(host="localhost", user="root", password="root", db="Zelda")
+#cur = conn.cursor()
 
 import pandas as pd
 import pymysql
 import logging
-import sshtunnel
-from sshtunnel import SSHTunnelForwarder
+#import sshtunnel
+#from sshtunnel import SSHTunnelForwarder
 
 
 
@@ -63,6 +63,9 @@ def close_ssh_tunnel():
     #Closes the SSH tunnel connection.
     global tunnel
     tunnel.close()
+
+
+
 
 ###############################  OPCIONES MENU INICIO ##############################
 
@@ -132,7 +135,7 @@ def prompt_game1():
         pass
 
 
-# Este será el menú principal del juego si hay algun jugador registrado
+# Este será el menú principal del juego si hay algun jugador registrado  ####
 
 def prompt_game2():
     opcions_valides = ["continue", "new game", "help", "about", "exit", "reports"]
@@ -184,6 +187,7 @@ def prompt_game2():
         # Acció per a "Exit"
         pass
 
+
 # Funcion que ejecuta el menu del juego 
 def mainMenu():
     # Primero ejecuta check_game_records
@@ -206,7 +210,8 @@ def mainMenu():
     
 
 player = {
-    "default": {
+       
+     "Link": {
         "inventory": {
             "lives": 3,
             "max_lives": 3,
@@ -215,6 +220,7 @@ player = {
             "weapon2": "Wood Shield",
             "totalFood": 0,
             "totalWeapons": 2,
+            "openedchest": 0,  
         },
         "weapons": {
             "wood sword": {"uses": 5, "count": 2, "equipped": True},
