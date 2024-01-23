@@ -475,3 +475,85 @@ def ganon(elements):
         
     
 
+## Definir las conexiones entre los mapas
+map_connections = {
+    "Hyrule": ["Gerudo", "Death mountain", "Castle"],
+    "Death mountain": ["Hyrule", "Necluda", "Castle"],
+    "Gerudo": ["Hyrule", "Necluda", "Castle"],
+    "Necluda": ["Death mountain", "Gerudo", "Castle"]
+}
+# Diccionario de inventarios
+inventories = {
+    "main": inventoryM,
+    "weapons": inventoryWeap,
+    "food": inventoryFood
+}
+
+# Iniciar en el mapa "Hyrule"
+current_map = "Hyrule"
+current_inventory = "main"  # Iniciar con el inventario principal
+
+
+
+
+# Logica del Juego
+
+directions = ["up", "down", "left", "right"]
+while True:
+    print_map(maps[current_map]["map"], maps[current_map]["elements"], inventories[current_inventory], map_name=current_map)
+    
+    while True:
+        command = input("What to do now? (ex: 'go up 3' or 'go to Castle' or 'show inventory [main/weapons/food/help]'): ").lower().split()
+
+        if command[0] == "show" and command[1] == "inventory":
+            if command[2] == "help":
+                # Llamar a la función helpInventoryMenu
+                from maps import helpInventoryMenu
+                helpInventoryMenu()
+                break
+            else:
+                # Cambiar de inventario
+                new_inventory = command[2]
+                if new_inventory in inventories:
+                    current_inventory = new_inventory
+                    break
+                else:
+                    print(f"You can't show {new_inventory} inventory.")
+                    continue
+
+        if command[0] == "go" and command[1] == "to":
+            # Cambiar de mapa
+            new_map = " ".join(command[2:]).capitalize()
+            if new_map in map_connections[current_map]:
+                current_map = new_map
+                break
+            else:
+                print(f"You can't go to {new_map} from {current_map}.")
+                continue
+        if command[0] == "go" and command[1] == "by":
+            go_by(command[2], maps[current_map]["map"], maps[current_map]["elements"])
+            break
+
+        if command[0] == "go" and command[1] in directions:
+            direction = command[1]
+            try:
+                num_steps = int(command[2])
+            except ValueError:
+                print("You can't go there, it's not a valid position")
+                continue
+
+            if move_player(maps[current_map]["map"], maps[current_map]["elements"], direction, num_steps):
+                break
+            else:
+                print("You can't go there, it's not a valid position")
+
+        if command[0] == "attack":
+            attack(maps[current_map]["map"], maps[current_map]["elements"])
+            break
+
+        if command[0] == "open":
+            open(maps[current_map]["map"], maps[current_map]["elements"], command[1], current_map)
+            break
+
+
+            
