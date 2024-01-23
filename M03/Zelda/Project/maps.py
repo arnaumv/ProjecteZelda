@@ -617,8 +617,6 @@ def attack(map_data, elements, current_map):
                     player[last_player]["inventory"]["lives"] -= 1
                     if ganon_health < 1:
                         promptAfegir("You have defeated Ganon.")
-                        clear_terminal()
-                        zeldaSavedMenu()
             # Check if player is attacking an enemy
 
             # Check which shield is equipped before reducing uses
