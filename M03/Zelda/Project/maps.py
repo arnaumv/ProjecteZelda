@@ -14,6 +14,9 @@ sanctuary_value4 = player[last_player]["sanctuaries"]["S4"]["name"]
 sanctuary_value5 = player[last_player]["sanctuaries"]["S5"]["name"]
 sanctuary_value6 = player[last_player]["sanctuaries"]["S6"]["name"]
 
+ganon_heart = "♥"
+ganon_health = 8
+ganon_hearts = ganon_heart * ganon_health
 
 maps = {
     "Hyrule" : {
@@ -153,7 +156,8 @@ maps = {
         "elements" : [
             {"name" : "Player" , "symbol" : "X", "x" : 2, "y" : 8},
             {"name" : "Tree" , "symbol" : "T", "x" : 1, "y" : 8, "hits" : 0},
-            {"name" : "Ganon" , "symbol" : "G", "x" : 20, "y" :8, },
+            {"name" : "Ganon" , "symbol" : "G", "x" : 20, "y" :8},
+            {"name" : "hearts", "symbol" : ganon_hearts, "x" : 48, "y": 2},
             {"name" : "InvisibleWall" , "symbol" : " ", "x" : 0, "y" :7},
             {"name" : "InvisibleWall" , "symbol" : " ", "x" : 1, "y" :7},
             {"name" : "InvisibleWall" , "symbol" : " ", "x" : 2, "y" :7},
@@ -584,8 +588,8 @@ def timeblood(elements, player, last_player):
              
 ### FUNCION PARA ATACAR ###           
 def attack(map_data, elements, current_map):
-    
-    
+    global ganon_health
+    global ganon_hearts
     for element in elements:
         if element["symbol"] == "X":
             x_pos, y_pos = element["x"], element["y"]
@@ -608,11 +612,13 @@ def attack(map_data, elements, current_map):
                 else:
                     sentence = random.choice(sentences)
                     promptAfegir(sentence)
-                    maps["Castle"]["elements"][1]["lifes"] -= 1
+                    ganon_health = ganon_health - 1
+                    ganon_hearts = ganon_heart * ganon_health
                     player[last_player]["inventory"]["lives"] -= 1
-                    if maps["Castle"]["elements"][1]["lifes"] < 1:
+                    if ganon_health < 1:
                         promptAfegir("You have defeated Ganon.")
-                        return
+                        clear_terminal()
+                        zeldaSavedMenu()
             # Check if player is attacking an enemy
 
             # Check which shield is equipped before reducing uses
@@ -858,7 +864,8 @@ current_inventory = "main"  # Iniciar con el inventario principal
 
 ### Logica del Juego ###
 def game_logic():
-    
+    global ganon_hearts
+    global ganon_health
     global current_map
     global current_inventory
     directions = ["up", "down", "left", "right"]
@@ -872,6 +879,9 @@ def game_logic():
         # Check if player is dead
         if player[ultimo_jugador]['inventory']['lives'] <= 0:
             deadMenu()
+            break
+        if ganon_health <= 0:
+            zeldaSavedMenu()
             break
         clear_terminal()
         print_map(maps[current_map]["map"], maps[current_map]["elements"], player, current_inventory, map_name=current_map)
@@ -903,6 +913,8 @@ def game_logic():
 
             if command[0] == "go" and command[1] == "to":
                 # Cambiar de mapa
+                ganon_health = 8
+                ganon_hearts = ganon_heart * ganon_health
                 new_map = " ".join(command[2:]).capitalize()
                 if new_map in map_connections[current_map]:
                     current_map = new_map
