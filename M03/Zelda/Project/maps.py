@@ -137,7 +137,7 @@ maps = {
             {"name" : "Chest" , "symbol" : "M", "x" : 50, "y" : 1,}
         ]
         },
-    "Castle" : {
+     "Castle" : {
         "map" : [
             [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
             [" "," "," "," "," "," "," ","\\"," ","/"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -151,10 +151,37 @@ maps = {
             ["O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O","O"]
         ],
         "elements" : [
-            {"name" : "Player" , "symbol" : "X", "x" : 1, "y" : 8},
-            {"name" : "Ganon", "lifes": 8, "max_lifes" : 8}
-            ]
-        
+            {"name" : "Player" , "symbol" : "X", "x" : 2, "y" : 8},
+            {"name" : "Tree" , "symbol" : "T", "x" : 1, "y" : 8, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 46, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 47, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 48, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 49, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 50, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 51, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 52, "y" :2, "hits" : 0},
+            {"name" : "GanonHeart" , "symbol" : "♥", "x" : 53, "y" :2, "hits" : 0},
+            {"name" : "Ganon" , "symbol" : "G", "x" : 20, "y" :8},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 0, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 1, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 2, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 3, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 4, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 5, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 6, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 7, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 8, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 9, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 10, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 11, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 12, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 13, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 14, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 15, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 16, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 17, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 18, "y" :7},
+            {"name" : "InvisibleWall" , "symbol" : " ", "x" : 19, "y" :7},]  
     }
 }
 
