@@ -13,8 +13,8 @@ import pymysql
 import pandas as pd
 import pymysql
 import logging
-#import sshtunnel
-#from sshtunnel import SSHTunnelForwarder
+import sshtunnel
+from sshtunnel import SSHTunnelForwarder
 
 
 
@@ -191,8 +191,8 @@ def prompt_game2():
 # Funcion que ejecuta el menu del juego 
 def mainMenu():
     # Primero ejecuta check_game_records
-    plays = check_game_records()
-
+    #plays = check_game_records()
+    plays = False
     if plays:
         # Si el resultado es True, ejecuta estas funciones
         mostrar_menu_aleatorio2()

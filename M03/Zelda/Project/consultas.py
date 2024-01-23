@@ -1,6 +1,7 @@
 import mysql.connector
 
 def check_game_records():
+    
     # Open SSH tunnel
     open_ssh_tunnel()
 
